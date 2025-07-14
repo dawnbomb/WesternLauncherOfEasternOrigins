@@ -1,0 +1,342 @@
+﻿<Window x:Class="WesternLauncherOfEasternOrigins.GameLauncher"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:properties="clr-namespace:WesternLauncherOfEasternOrigins.Properties"
+        xmlns:local="clr-namespace:WesternLauncherOfEasternOrigins"
+        mc:Ignorable="d"
+        Title="Western Launcher of Eastern Origins     Version: Demo 5 (Augest 2025)   (Check CrystalMods.com for updates)" Height="1000" Width="1800">
+    <Window.Resources>
+
+    </Window.Resources>
+
+    <Grid  Background="#FF101010">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="321*"/>
+        </Grid.RowDefinitions>
+        <DockPanel Background="#FF131313" Grid.RowSpan="1">
+            <Menu  Foreground="White" BorderBrush="#FFED0000" Background="#FF1D1D1D"  >
+                <MenuItem Header="  📁 Local" >
+                    <MenuItem Header="  Folder: Touhou Crap" Click="OpenTHCrapFolder"  />
+                    <MenuItem Header="  Folder: Mods" Click="OpenModsFolder" />
+                    <MenuItem Header="  Folder: Game Info" Click="OpenGameInfoFolder" />
+                </MenuItem>
+                <MenuItem Header="  📶 Links">
+                    <MenuItem Header="  Link: My Website CrystalMods :)" Click="LinkMyWebsite"/>
+                    <Separator/>
+                    <MenuItem Header="  Link: Difficulty Tierlist Touhou " Click="LinkTouhouDifficultyChart"/>
+                    <MenuItem Header="  Link: Difficulty Tierlist JP Shump " Click="LinkSTGDifficultyChart"/>
+                    <Separator/>
+                    <MenuItem Header="  Link: Touhou Wiki" Click="LinkTouhouWiki"/>
+                    <MenuItem Header="  Link: Touhou Wiki Tools List"  Click="LinkTouhouWikiTools" />
+                    <MenuItem Header="  Link: Touhou Wiki Mods List" Click="LinkTouhouWikiMods"/>
+                    <Separator/>
+                    <MenuItem Header="  Link: Touhou Ultra Patches" Click="LinkTouhouUltraPatches"/>
+
+                </MenuItem>
+                <MenuItem Header="  🛠 Tools">
+                    <MenuItem Header="  Run: TouhouCrap (Modding Tool)" Click="RunTHCrap"/>
+                    <MenuItem Header="  Run: Touhou Practise Tool"  Click="PractiseModePlus"/>
+                    <MenuItem Header="  Run: Joy2Key"  Click="Joy2Key"/>
+                    <MenuItem Header="  Run: Borderless Gaming (Play 2hu in full screen)"  Click="BorderlessGaming"/>
+
+                </MenuItem>
+                
+                <MenuItem Header="  ⚙️ Settings">
+                    <!--REMINDER: ALL SETTINGS NEED A BOOL EVENT IN THE MENU FILE UNDER THE SETTING PART, OR THEY WON'T SAVE!!!-->                    
+                    <MenuItem Header="  Minimize when launching a game."              IsCheckable="True"    IsChecked="{Binding Path=AutoMinimize,       Mode=TwoWay}" />
+                    <MenuItem Header="  Run Practise Tool for compatable games." IsCheckable="True"    IsChecked="{Binding Path=AutoPractise,       Mode=TwoWay}"/>
+                    <MenuItem Header="  Practise tool auto-accepts pop-ups."               IsCheckable="True"    IsChecked="{Binding Path=SkipPractisePopups, Mode=TwoWay}"/>
+                    <MenuItem Header="  Launch Joy2Key for PC98 Era games."     IsCheckable="True"    IsChecked="{Binding Path=AutoJoy2Key,        Mode=TwoWay}" />
+                    <MenuItem Header="  Controller must be connected when launching a game."     IsCheckable="True" IsChecked="{Binding Path=ControllerCheck,        Mode=TwoWay}" />
+                    <Separator/>
+                    <MenuItem Header="  Show Volume mixer next to launch game."     IsCheckable="True" IsChecked="{Binding Path=VolumeMixerAtLauncher,        Mode=TwoWay}" />
+                    <MenuItem Header="  On startup, focus on last launched game."     IsCheckable="True" IsChecked="{Binding Path=ScrollToLastGame,        Mode=TwoWay}" />
+                    <Separator/>
+
+
+
+                    <MenuItem Header="  Show PC98 Games."     IsCheckable="True" IsChecked="{Binding Path=ShowTouhouPC98,        Mode=TwoWay}" Click="RefreshAchievements"  />
+                    <MenuItem Header="  Show easy mode."     IsCheckable="True" IsChecked="{Binding Path=ShowEasyMode,        Mode=TwoWay}" Click="RefreshAchievements"  /> <!--(Hides ExtraNB)-->
+                    <MenuItem Header="  Show normal mode."     IsCheckable="True" IsChecked="{Binding Path=ShowNormalMode,        Mode=TwoWay}" Click="RefreshAchievements"  /> <!--(Hides LunaNB)-->
+                    <MenuItem Header="  Show th08 and th13 special achievements"           IsCheckable="True"  IsChecked="{Binding Path=ShowTouhouSpecialAchievements,    Mode=TwoWay}" Checked="RefreshAchievements" Unchecked="RefreshAchievements" />
+                    
+
+
+                    <!--<MenuItem Header="  Standard Mode (IE not portable, Hover for explanation)"      IsCheckable="True" IsChecked="{Binding Path=PortableMode,                 Mode=TwoWay}" ToolTip="In standard mode, game exe locations are saved to my documents. In portable mode, their saved to this programs folder / Extra Programs / Game Info. Standard" />
+                    -->
+                    <!--<Separator/>-->
+                    
+                    
+                    <!--<MenuItem Header="  Show Game Number."   IsCheckable="True"  IsChecked="{Binding Path=ShowGameNumber,       Mode=TwoWay}"  />
+                    <MenuItem Header="  Show Game Name."     IsCheckable="True"  IsChecked="{Binding Path=ShowGameName,         Mode=TwoWay}" />
+                    <MenuItem Header="  Show Game Date."     IsCheckable="True"  IsChecked="{Binding Path=ShowGameDate,         Mode=TwoWay}" />
+                    <MenuItem Header="  Show Game Art."      IsCheckable="True"  IsChecked="{Binding Path=ShowGameArt,          Mode=TwoWay}" />
+                    <Separator/>
+                    <MenuItem Header="  Show Touhou Mainline Games"     IsCheckable="True"  IsChecked="{Binding Path=ShowTouhouMainline,    Mode=TwoWay}" />
+                    <MenuItem Header="  Show Touhou VS Shooters"        IsCheckable="True"  IsChecked="{Binding Path=ShowTouhouVSShooter,   Mode=TwoWay}" />-->
+                    <!--<MenuItem Header="  Show Touhou Fighters"           IsCheckable="True"  IsChecked="{Binding Path=ShowTouhouFighters,    Mode=TwoWay}" />-->
+                    <!--<MenuItem Header="  Show Touhou Spinoffs"           IsCheckable="True"  IsChecked="{Binding Path=ShowTouhouSpinoffs,    Mode=TwoWay}" />
+                    <MenuItem Header="  Show Touhou Fangames (Danmaku)" IsCheckable="True"  IsChecked="{Binding Path=ShowTouhouFangameDanmaku,  Mode=TwoWay}" />
+                    <MenuItem Header="  Show Touhou Fangames (Other)"   IsCheckable="True"  IsChecked="{Binding Path=ShowTouhouFangameOther,       Mode=TwoWay}" />
+                    <Separator/>
+                    <MenuItem Header="  Show Touhou Era PC98."       IsCheckable="True"  IsChecked="{Binding Path=ShowTouhouPC98,     Mode=TwoWay}" />
+                    <MenuItem Header="  Show Touhou Era Windows 1."  IsCheckable="True"  IsChecked="{Binding Path=ShowTouhouW1,       Mode=TwoWay}" />
+                    <MenuItem Header="  Show Touhou Era Windows 2."  IsCheckable="True"  IsChecked="{Binding Path=ShowTouhouW2,       Mode=TwoWay}" />
+                    <MenuItem Header="  Show Touhou Era Windows 3."  IsCheckable="True"  IsChecked="{Binding Path=ShowTouhouW3,       Mode=TwoWay}" />-->
+                </MenuItem>
+                <MenuItem Header="  🛠 DEV" Name="DevMenu">
+                    <MenuItem Header="  Editor" Click="OpenEditorWindow" Name="MenuEditor" />
+                    <MenuItem Header="  Build Latest 2" Click="BuiltLatest" />
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+
+
+        <TabControl Margin="0,0,0,0" Grid.Row="1" >
+
+            <TabItem Header=" Games " BorderBrush="#FFF90000" Name="Tab1">
+                <Grid Background="#FF131313">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="373"/>
+                        <ColumnDefinition Width="494*"/>
+                        <ColumnDefinition Width="700"/>
+                        <ColumnDefinition Width="5"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+
+
+                    <DockPanel Grid.Column="1" Grid.Row="1">
+
+                        <Border x:Name="ResourcesPanel2" DockPanel.Dock="Bottom" Height="200" Background="#FF313131" BorderBrush="Black" BorderThickness="1" Margin="0,5,0,0" >
+                            <DockPanel DockPanel.Dock="Top"  >
+                                <DockPanel  DockPanel.Dock="Top" Background="#FF4E4E4E" Height="30" >
+                                    <Label Content="Notepad: Text changes are automatically saved." HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top"/>
+                                </DockPanel>
+
+                                <TextBox x:Name="Notepad" Margin="5,5,5,5" Background="#FF1D1D1D" Foreground="White" TextChanged="NotepadTextChanged" BorderBrush="Black" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+                            </DockPanel>
+                        </Border>
+
+                        <Border BorderBrush="Black" BorderThickness="1">
+                            <DockPanel>
+                                <DockPanel  DockPanel.Dock="Top" Background="#FF444444" Height="24" >
+                                    <Label Content="Games List" Margin="0,-5,0,0"/>
+                                </DockPanel>
+                                <ScrollViewer Name="GameScrollViewer" Background="#FF1D1912">
+                                    <DockPanel x:Name="GamesPanel" LastChildFill="False" Margin="3,3,3,3">
+
+                                    </DockPanel>
+                                </ScrollViewer>
+                            </DockPanel>
+                            
+                        </Border>
+                        
+                    </DockPanel>
+
+                    <DockPanel Grid.Column="2" Margin="10,0,10,0" Grid.Row="1">
+
+                        <Border x:Name="GamePanel" DockPanel.Dock="Top" BorderBrush="#FF580051" BorderThickness="1" Margin="0,0,0,5">
+                            <DockPanel DockPanel.Dock="Top" Background="#FF150714">
+
+                                <DockPanel DockPanel.Dock="Top" Background="#FF290828" Height="28"  >
+                                    <Label Name="LabelGameName2" FontSize="18" Grid.Column="1" Content="Game Name" HorizontalAlignment="Center" Margin="0,-5,0,0"/>
+                                </DockPanel>
+
+                                <DockPanel DockPanel.Dock="Top" LastChildFill="False" Margin="0,3,0,0">
+                                    <Button Content=" Launch Game"   FontSize="22" Margin="5,2,5,2" Height="30" Width="155" Background="#FF1C1F37" Foreground="#FF29A2FF" Click="LaunchGame"  FontWeight="Bold"/>
+                                    <Button Content="  Open Volume Mixer  " Name="VolumeMixerButton"  Click="OpenVolumeMixer" Margin="5,2,0,2" />
+                                    <Label Content="Resolution: " FontSize="14" Margin="3,2,0,0"/>
+                                    <ComboBox Name="ResolutionComboBox" Width="100" Height="25" SelectedIndex="0" DropDownClosed="ResolutionBoxClosed">
+                                        <ComboBoxItem Content="720p" />
+                                        <ComboBoxItem Content="960p" />
+                                        <ComboBoxItem Content="1080p" />
+                                    </ComboBox>
+                                    <!--<CheckBox Name="CheckboxBorderless" Content="Borderless Fullscreen  " DockPanel.Dock="Left" HorizontalAlignment="Left" Foreground="White" Margin="10,0,0,0"
+                                    Checked="CheckboxBorderless_Checked"
+                                    Unchecked="CheckboxBorderless_Unchecked"/>-->
+                                </DockPanel>
+
+                                <DockPanel DockPanel.Dock="Top" Margin="5,5,10,10">
+                                    <Button DockPanel.Dock="Right" Content=" Open " Click="OpenGameFolder" />
+                                    <Button x:Name="BrowseButton"  Content=" Browse... " Click="SetGameLocation" />
+                                    <TextBox x:Name="GameLocationTextbox" Background="#FF232323" Foreground="#FFD6D6D6" BorderBrush="#FF5D5D5D" />
+                                </DockPanel>
+
+
+                            </DockPanel>
+                        </Border>
+
+
+
+                        <!--<DockPanel Width="350" DockPanel.Dock="Right" Margin="5,0,0,0"> -->
+                        <!--Right-->
+                        <!--
+                            
+                        </DockPanel>
+
+                        <DockPanel LastChildFill="True">
+                            -->
+                        <!--Left-->
+                        <!--
+                            
+                        </DockPanel>-->
+
+                        
+                        <Border x:Name="GameInfoPanel" DockPanel.Dock="Top" BorderBrush="#FF583000" BorderThickness="1" Margin="0,0,0,5">
+                            <DockPanel DockPanel.Dock="Top" Background="#FF120C04" Height="350" >
+                                <!--Height="250"-->
+                                <DockPanel  DockPanel.Dock="Top" Background="#FF291D08" Height="24" >
+                                    <Label Content="Game Info" Margin="0,-5,0,0"/>
+                                </DockPanel>
+                                <ScrollViewer>
+                                    <DockPanel>
+                                        <TextBox DockPanel.Dock="Top" x:Name="BasicsText"  Margin="5,5,5,10" TextWrapping="Wrap" Text="TextBox" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFF3F3F3" SelectionBrush="{x:Null}" SelectionTextBrush="{x:Null}" Focusable="False" IsHitTestVisible="False" />
+                                    </DockPanel>
+                                </ScrollViewer>
+
+                            </DockPanel>
+                        </Border>
+
+                        <Border  DockPanel.Dock="Bottom" Height="220" Background="#FF191919" BorderBrush="Black" BorderThickness="1"  >
+                            <DockPanel >
+                                <TextBox x:Name="TextBoxModName" DockPanel.Dock="Top"  Background="{x:Null}" Foreground="White" Padding="10,10,10,10"  BorderBrush="{x:Null}" SelectionBrush="{x:Null}" SelectionTextBrush="{x:Null}" Focusable="False" IsHitTestVisible="False"/>
+                                <Rectangle  Height="1"  Stroke="White" Margin="10,0,10,0"  DockPanel.Dock="Top"/>
+
+
+                                <TextBox x:Name="TextBoxModPath" DockPanel.Dock="Bottom"  Background="{x:Null}" Foreground="White" Padding="10,10,10,10"  BorderBrush="{x:Null}" SelectionBrush="{x:Null}" SelectionTextBrush="{x:Null}" Focusable="False" IsHitTestVisible="False"/>
+                                <Rectangle  Height="1"  Stroke="White" Margin="10,0,10,0"  DockPanel.Dock="Bottom"/>
+
+                                <TextBox x:Name="TextBoxModDescription" DockPanel.Dock="Top"   TextWrapping="Wrap" Background="{x:Null}" Foreground="White" Padding="10,10,10,10"   BorderBrush="{x:Null}" SelectionTextBrush="{x:Null}" SelectionBrush="{x:Null}" Focusable="False" IsHitTestVisible="False"/>
+                            </DockPanel>
+                        </Border>
+
+                        <Border x:Name="ModsPanelMain" DockPanel.Dock="Top" BorderBrush="#FF003986" BorderThickness="1,1,1,1" Background="#FF070710"  Margin="0,0,0,5">
+                            <DockPanel>
+
+
+
+                                <DockPanel DockPanel.Dock="Top">
+                                    <DockPanel DockPanel.Dock="Top" Background="#FF0C142F" Height="22">
+                                        <Label Content="Mods"  Margin="0,-5,0,0"/>
+                                    </DockPanel>
+                                    <ScrollViewer>
+                                        <DockPanel x:Name="ModsPanel" DockPanel.Dock="Top" LastChildFill="False" Margin="10,5,10,0">
+                                        </DockPanel>
+                                    </ScrollViewer>
+                                </DockPanel>
+                            </DockPanel>
+
+
+
+                        </Border>
+
+
+
+
+
+
+
+
+                    </DockPanel>
+
+                    <DockPanel Grid.Column="3" Grid.Row="1" Background="#FF101010">
+                        <!--<Border DockPanel.Dock="Top" BorderBrush="#FF929292" BorderThickness="2" Margin="0,0,0,15">
+                            <DockPanel Background="#FF424242" LastChildFill="False">
+                                <Label Content="Player :"/>
+                                <ComboBox Name="PlayerComboBox" Width="150" Margin="4" DropDownClosed="PlayerComboboxDropdownClosed">
+
+                                </ComboBox>
+                                <Button Content=" Create New Player " Margin="3" Click="ButtonNewPlayerClick"/>
+                            </DockPanel>
+                        </Border>-->
+                        <Border DockPanel.Dock="Top" BorderBrush="#FF929292" BorderThickness="2">
+                            <DockPanel DockPanel.Dock="Top">
+                                <DockPanel Background="#FF404040" DockPanel.Dock="Top" LastChildFill="False">
+                                    <Label Content="Recommended Quests"/>
+                                    <Label Content="                      Player Skill Lv:"/>
+                                    <Label Name="LabelPlayerLevel" Content="X"/>
+                                    <DockPanel Background="#FF424242" LastChildFill="False" DockPanel.Dock="Right">
+                                        <ComboBox Name="PlayerComboBox" Width="100" Margin="5" DropDownClosed="PlayerComboboxDropdownClosed">
+
+                                        </ComboBox>
+                                        <Button Content=" New Player " Margin="5" Click="ButtonNewPlayerClick"/>
+                                    </DockPanel>
+                                </DockPanel>
+                                    <!--<DockPanel Background="#FF565656" DockPanel.Dock="Top">
+                                        <Label Content="Game"/>
+                                        <Label Content="Goal"/>
+                                        <Label Content="Shot Type"/>
+                                        <Label Content="Notes"/>
+                                    </DockPanel>-->
+                                <DockPanel Name="QuestPanel" DockPanel.Dock="Top">
+
+                                </DockPanel>
+                            </DockPanel>
+                        </Border>
+
+                        <Border DockPanel.Dock="Top" Margin="0,15,0,0" BorderBrush="#FF929292" BorderThickness="2">
+                            <DockPanel >
+                                <DockPanel Background="#FF404040" DockPanel.Dock="Top" LastChildFill="False">
+                                    <Label Content="Master Achievement List"/>
+                                    <Label Name="QuestLevelLabel" Content="0" DockPanel.Dock="Right"/>
+                                    <Label Content="Mouseover'd difficulty Lv:" DockPanel.Dock="Right"/>
+                                </DockPanel>
+                                <ScrollViewer Name="AchievementScrollViewer" PreviewMouseWheel="FastScroll" DockPanel.Dock="Top">
+                                    <DockPanel Name="MasterAchievementPanel" DockPanel.Dock="Top" LastChildFill="False" >
+
+
+                                    </DockPanel>
+                                </ScrollViewer>
+
+
+
+                            </DockPanel>
+                        </Border>
+                        
+                    </DockPanel>
+
+
+
+                </Grid>
+            </TabItem>
+
+
+
+
+
+            <TabItem Header="Debug" Margin="1,0,0,0" Name="Tab2">
+                <Grid>
+                    <Label Content="Debug Info&#x9;" HorizontalAlignment="Left" Margin="411,8,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="DebugTextBox" HorizontalAlignment="Left" Margin="571,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+                    <TextBox x:Name="TextThingy2" HorizontalAlignment="Left" Margin="184,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="410" Height="720"/>
+                    <TextBox x:Name="TextThingy3" HorizontalAlignment="Left" Margin="631,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="320" Height="720"/>
+                    <Label Content="Every mod in the touhou launchers Modlist" HorizontalAlignment="Left" Margin="232,113,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Every mod in touhou crap repos folder" HorizontalAlignment="Left" Margin="649,109,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="TextThingy4" HorizontalAlignment="Left" Margin="968,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="320" Height="720"/>
+                    <Label Content="Repo mods missing from ModList" HorizontalAlignment="Left" Margin="999,113,0,0" VerticalAlignment="Top"/>
+
+                </Grid>
+            </TabItem>
+
+
+
+
+
+
+
+
+
+        </TabControl>
+
+    </Grid>
+
+</Window>

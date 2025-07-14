@@ -1,0 +1,19 @@
+﻿<Window x:Class="WesternLauncherOfEasternOrigins.NewPlayerProfile"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WesternLauncherOfEasternOrigins"
+        mc:Ignorable="d"
+        Title="Player Profile Creation" Height="150" Width="300" 
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="#FF5F5F5F">
+    <Grid >
+        <StackPanel Margin="10,10,10,0"  VerticalAlignment="Top">
+            <TextBlock Text="Please enter a player name:" Margin="0,0,0,10" Foreground="White"/>
+            <TextBox x:Name="nameTextBox" Margin="0,0,0,10"/>
+            <Button x:Name="createButton" Content="Create New Player Profile" Margin="0,0,0,10" Click="CreateButton_Click"/>
+            <Button x:Name="cancelButton" Content="Cancel" Click="CancelButton_Click"/>
+        </StackPanel>
+    </Grid>
+
+</Window>

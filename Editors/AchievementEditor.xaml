@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="WesternLauncherOfEasternOrigins.AchievementEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WesternLauncherOfEasternOrigins"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <DockPanel>
+        <Border Name="AchievementsPanel" DockPanel.Dock="Bottom" MinHeight="100">
+            <DockPanel LastChildFill="False" Background="#FF290F0F">
+                <DockPanel DockPanel.Dock="Top" Background="#FF770000" LastChildFill="False">
+                    <Label Content="Achievements"/>
+                    <Button Content="New Basic Achievement" Margin="4" Click="NewBasicAchievementButton"/>
+                    <Button Content="New Chart Achievement" Margin="4" Click="NewChartAchievementButton"/>
+                </DockPanel>
+                <ScrollViewer DockPanel.Dock="Top">
+                    <DockPanel Name="AchievementListDockPanel"  LastChildFill="False">
+
+                    </DockPanel>
+                </ScrollViewer>
+
+
+            </DockPanel>
+        </Border>
+
+        <!--<Border DockPanel.Dock="Top" MinHeight="100">
+            <DockPanel LastChildFill="False" Background="#FF0C3529">
+                <DockPanel DockPanel.Dock="Top" Background="#FF770000" LastChildFill="False">
+                    <Label Content="Achievement Chart"/>
+                    <Button Content="New Row" Margin="4" />
+                    <Button Content="New Column" Margin="4" />
+                </DockPanel>
+                <ScrollViewer DockPanel.Dock="Top">
+                    <DockPanel Name="AchievementListDockPanel2"  LastChildFill="False">
+
+                    </DockPanel>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>-->
+        
+    </DockPanel>
+</UserControl>

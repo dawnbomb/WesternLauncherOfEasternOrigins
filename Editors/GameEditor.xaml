@@ -1,0 +1,130 @@
+﻿<UserControl x:Class="WesternLauncherOfEasternOrigins.GameEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WesternLauncherOfEasternOrigins"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="900">
+    <DockPanel Background="#FFBBBBBB">
+        <Border DockPanel.Dock="Top" >
+            <DockPanel LastChildFill="False" Background="#FF1E730C">
+                <Label Content="Game Editor"/>
+                <Button Content="New Game" Margin="4" Click="NewGameButton"/>
+                <Button Content="Delete This Game" Margin="4" Click="DeleteGame"/>
+                <Button Content="Save All" Margin="4" Click="SaveAll"/>
+                <ComboBox Width="100" Margin="4">
+                    <ComboBoxItem Content="Touhou"/>
+                    <ComboBoxItem Content="Souls"/>
+                    <ComboBoxItem Content="Megaman"/>
+                </ComboBox>
+            </DockPanel>
+        </Border>
+        <TreeView Width="300" Background="#FF002517" Name="TheTreeView" SelectedItemChanged="TreeViewSelectedItemChanged" Foreground="White"/>
+        <DockPanel DockPanel.Dock="Left" Background="#FF075A3D" >
+            <DockPanel DockPanel.Dock="Top">
+                <Border DockPanel.Dock="Left"  Width="200">
+                    <DockPanel >
+                        <Label Content="Series"/>
+                        <TextBox Name="SeriesNameBox" Text="Variable" TextChanged="SeriesNameBoxTextChanged"/>
+                    </DockPanel>
+                </Border>
+                <Border DockPanel.Dock="Left" Width="250" HorizontalAlignment="Left">
+                    <DockPanel >
+                        <Label Content="Subtitle"/>
+                        <TextBox Name="SubtitleNameBox" Text="Variable" TextChanged="SubtitleBoxTextChanged"/>
+                    </DockPanel>
+                </Border>
+                
+                
+                
+            </DockPanel>
+            <Border DockPanel.Dock="Top" HorizontalAlignment="Left" Width="200">
+                <DockPanel >
+                    <Label Content="Date"/>
+                    <TextBox Name="DateBox" Text="Variable" TextChanged="DateBoxTextChanged"/>
+                </DockPanel>
+            </Border>
+            <DockPanel DockPanel.Dock="Top">
+                <Border DockPanel.Dock="Left" Width="200">
+                    <DockPanel >
+                        <Label Content="CodeName"/>
+                        <TextBox Text="?????" Name="CodeNameBox" TextChanged="CodeNameBoxTextChanged"/>
+                    </DockPanel>
+                </Border>
+                <Border DockPanel.Dock="Left" Width="200">
+                    <DockPanel >
+                        <Label Content="Game Type"/>
+                        <ComboBox Name="GameTypeCombobox" Text="?????" DropDownClosed="GameTypeDropdownClosed"/>
+                    </DockPanel>
+                </Border>
+                <Border DockPanel.Dock="Left" Width="200" HorizontalAlignment="Left">
+                    <DockPanel >
+                        <Label Content="Practise"/>
+                        <CheckBox Name="PractiseCheckbox" Checked="PractiseModeChecked" Unchecked="PractiseModeUnchecked"/>
+                    </DockPanel>
+                </Border>
+            </DockPanel>
+
+            <DockPanel DockPanel.Dock="Top"  HorizontalAlignment="Left">
+                <DockPanel Width="200">
+                    <Label Content="Art"/>
+                    <TextBox Name="ArtBox" Text="?????" TextChanged="ArtBoxTextChanged"/>
+                </DockPanel>
+                <DockPanel >
+                    <Label Content="Border"/>
+                    <Button Name="BorderColorButton" Content=" ????? " Click="SetColorOfBorder" />
+                </DockPanel>
+                <DockPanel >
+                    <Label Content="Back"/>
+                    <Button Name="BackColorButton" Content=" ????? " Click="SetColorOfBack" />
+                </DockPanel>
+                <DockPanel >
+                    <Label Content="Text"/>
+                    <Button Name="TextColorButton" Content=" ????? " Click="SetColorOfText" />
+                </DockPanel>
+                <Border BorderThickness="1" BorderBrush="Black">
+                    <Border Name="ExampleBorder" BorderThickness="4" BorderBrush="#FFFF7777">
+                        <Label Name="ExampleLabel" Content="Example"/>
+                    </Border>
+                </Border>
+                
+            </DockPanel>
+
+            <Border DockPanel.Dock="Top">
+                
+            </Border>
+            <Border DockPanel.Dock="Top">
+                <DockPanel  >
+                    <DockPanel DockPanel.Dock="Top">
+                        <Label Content="Description"/>                        
+                    </DockPanel>
+                    <TextBox Name="DescriptionBox" Text="Text" Height="170" TextChanged="DescriptionBoxTextChanged" AcceptsReturn="True" TextWrapping="Wrap"  VerticalScrollBarVisibility="Auto" Width="570" HorizontalAlignment="Left"/>
+                </DockPanel>
+            </Border>
+
+
+            
+
+            <Border Name="ModsPanel2" DockPanel.Dock="Top">
+                <DockPanel  >
+                    <DockPanel DockPanel.Dock="Top" Background="#FF0D378A" LastChildFill="False">
+                        <Label Content="Mods"/>
+                        <Label Name="ModsNameLabel"  />
+                    </DockPanel>
+                    <ScrollViewer >
+                        <DockPanel Name="ModsPanel" Background="#FF13324E" LastChildFill="False">
+
+                        </DockPanel>
+                    </ScrollViewer>
+                    
+
+
+                </DockPanel>
+            </Border>
+
+            
+
+        </DockPanel>
+    </DockPanel>
+</UserControl>
