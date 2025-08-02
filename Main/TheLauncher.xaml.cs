@@ -1,9 +1,4 @@
-﻿using Microsoft.Web.WebView2.Core;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using OfficeOpenXml;
-using Ookii.Dialogs.Wpf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -32,6 +27,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Xml;
 using System.Xml.Linq;
+using Microsoft.Web.WebView2.Core;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using OfficeOpenXml;
+using Ookii.Dialogs.Wpf;
+using PixelWPF;
 using WesternLauncherOfEasternOrigins.Properties;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
@@ -83,13 +84,12 @@ namespace WesternLauncherOfEasternOrigins
 
             InitializeComponent();
             this.Title = "Western Launcher of Eastern Origins  v" + LibraryTouhou.VersionNumber + "  (" + LibraryTouhou.VersionDate + ")";
-            DataContext = this;
+            Dispatcher.InvokeAsync(async () => await PixelWPF.GithubUpdater.CheckForUpdatesAsync("WesternLauncherOfEasternOrigins", "dawnbomb/WesternLauncherOfEasternOrigins/releases/latest", LibraryTouhou.VersionNumber));
 
-            ResolutionComboBox.Text = Properties.Settings.Default.Resolution;
+            DataContext = this;
+            
 
             string basepath = AppDomain.CurrentDomain.BaseDirectory;
-
-
             #if DEBUG
             LibraryTouhou.TouhouLauncherPath = "D:\\Western Launcher of Eastern Origins"; //Path.GetFullPath(Path.Combine(basepath, @"..\..\..\..\Western Launcher of Eastern Origins"));
             #else
@@ -116,6 +116,7 @@ namespace WesternLauncherOfEasternOrigins
                 if (Properties.Settings.Default.ShowPlayerLv == false) { PlayerLvPanel.Visibility = Visibility.Collapsed; }
 
                 Notepad.Text = Properties.Settings.Default.NotepadText;
+                ResolutionComboBox.Text = Properties.Settings.Default.Resolution;
             }
 
             
@@ -141,6 +142,7 @@ namespace WesternLauncherOfEasternOrigins
             
             this.Loaded += new RoutedEventHandler(SetupDebugTabMods);
             this.Loaded += new RoutedEventHandler(FocusLastLaunchedGame);
+            
         }
                 
 
