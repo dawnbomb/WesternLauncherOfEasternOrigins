@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OfficeOpenXml.Style;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Border = System.Windows.Controls.Border;
 
 namespace WesternLauncherOfEasternOrigins
 {
@@ -36,11 +38,17 @@ namespace WesternLauncherOfEasternOrigins
             if (Window.GetWindow(this) is Editor EditorWindow)
             {
                 TreeViewItem treeViewItem = EditorWindow.TheGameEditor.TheTreeView.SelectedItem as TreeViewItem;
-                TouhouGame touhouGame = treeViewItem.Tag as TouhouGame;
+                GameData touhouGame = treeViewItem.Tag as GameData;
+
+                CreateAchievementChart(touhouGame);
 
                 foreach (Achievement achievement in touhouGame.AchievementList)
                 {
-                    CreateAchievementPanel(achievement);
+                    if (achievement.Type == Achievement.AchievementTypes.Basic) 
+                    {
+                        CreateAchievementPanel(achievement);
+                    }
+                    
                 }
             }
 
@@ -53,10 +61,10 @@ namespace WesternLauncherOfEasternOrigins
             if (Window.GetWindow(this) is Editor EditorWindow)
             {
                 TreeViewItem treeViewItem = EditorWindow.TheGameEditor.TheTreeView.SelectedItem as TreeViewItem;
-                TouhouGame touhouGame = treeViewItem.Tag as TouhouGame;
+                GameData touhouGame = treeViewItem.Tag as GameData;
 
                 Achievement achievement = new();
-                achievement.Key = LibraryMan.GenerateKey();
+                achievement.Key = LibraryTouhou.GenerateKey();
                 achievement.Type = Achievement.AchievementTypes.Basic;
                 touhouGame.AchievementList.Add(achievement);
 
@@ -65,23 +73,257 @@ namespace WesternLauncherOfEasternOrigins
 
             }
         }
+               
 
-        private void NewChartAchievementButton(object sender, RoutedEventArgs e)
+        private void NewChartRowButton(object sender, RoutedEventArgs e)
         {
             if (Window.GetWindow(this) is Editor EditorWindow)
             {
                 TreeViewItem treeViewItem = EditorWindow.TheGameEditor.TheTreeView.SelectedItem as TreeViewItem;
-                TouhouGame touhouGame = treeViewItem.Tag as TouhouGame;
+                GameData game = treeViewItem.Tag as GameData;
 
-                Achievement achievement = new();
-                achievement.Key = LibraryMan.GenerateKey();
-                achievement.Type = Achievement.AchievementTypes.Chart;
-                touhouGame.AchievementList.Add(achievement);
+                var chartAchievements = game.AchievementList.Where(a => a.Type == Achievement.AchievementTypes.Chart).ToList();
+                var difficultyGroups = chartAchievements.GroupBy(a => a.Difficulty).ToDictionary(g => g.Key, g => g.ToList());
+                var shotTypeGroups = chartAchievements.GroupBy(a => a.ShotType).ToDictionary(g => g.Key, g => g.ToList());
 
-                CreateAchievementPanel(achievement);
+                if (chartAchievements.Any(a => a.ShotType == "New"))
+                {
+                    return;
+                }
+
+                List<string> Difficultys = new();
+                List<string> ShotTypes = new();
+
+                foreach (var chartAchievement in game.AchievementList.Where(a => a.Type == Achievement.AchievementTypes.Chart))
+                {
+                    if (!Difficultys.Contains(chartAchievement.Difficulty)) { Difficultys.Add(chartAchievement.Difficulty); }
+                    if (!ShotTypes.Contains(chartAchievement.ShotType)) { ShotTypes.Add(chartAchievement.ShotType); }
+                }                
+
+
+                foreach (string difficulty in Difficultys) 
+                {
+                    Achievement achievement = new();
+                    achievement.Type = Achievement.AchievementTypes.Chart;
+                    achievement.Difficulty = difficulty;
+                    game.AchievementList.Add(achievement);
+                }
+
+                if (chartAchievements.Count == 0) 
+                {
+                    Achievement achievement = new();
+                    achievement.Type = Achievement.AchievementTypes.Chart;
+                    game.AchievementList.Add(achievement);
+                }
+
+
+                treeViewItem.IsSelected = false;
+                treeViewItem.IsSelected = true;
 
 
             }
+        }
+
+        private void NewChartColumnButton(object sender, RoutedEventArgs e)
+        {
+            if (Window.GetWindow(this) is Editor EditorWindow)
+            {
+                TreeViewItem treeViewItem = EditorWindow.TheGameEditor.TheTreeView.SelectedItem as TreeViewItem;
+                GameData game = treeViewItem.Tag as GameData;
+
+                var chartAchievements = game.AchievementList.Where(a => a.Type == Achievement.AchievementTypes.Chart).ToList();
+                var difficultyGroups = chartAchievements.GroupBy(a => a.Difficulty).ToDictionary(g => g.Key, g => g.ToList());
+                var shotTypeGroups = chartAchievements.GroupBy(a => a.ShotType).ToDictionary(g => g.Key, g => g.ToList());
+
+                if (chartAchievements.Any(a => a.Difficulty == "New"))
+                {
+                    return;
+                }
+
+                List<string> Difficultys = new();
+                List<string> ShotTypes = new();
+
+                foreach (var chartAchievement in game.AchievementList.Where(a => a.Type == Achievement.AchievementTypes.Chart))
+                {
+                    if (!Difficultys.Contains(chartAchievement.Difficulty)) { Difficultys.Add(chartAchievement.Difficulty); }
+                    if (!ShotTypes.Contains(chartAchievement.ShotType)) { ShotTypes.Add(chartAchievement.ShotType); }
+                }
+
+
+                foreach (string shottype in ShotTypes)
+                {
+                    Achievement achievement = new();
+                    achievement.Type = Achievement.AchievementTypes.Chart;
+                    achievement.ShotType = shottype;
+                    game.AchievementList.Add(achievement);
+                }
+
+                if (chartAchievements.Count == 0)
+                {
+                    Achievement achievement = new();
+                    achievement.Type = Achievement.AchievementTypes.Chart;
+                    game.AchievementList.Add(achievement);
+                }
+
+
+                treeViewItem.IsSelected = false;
+                treeViewItem.IsSelected = true;
+
+
+            }
+
+        }
+
+        private void CreateAchievementChart(GameData game) 
+        {
+            DockPanel ChartPanel = new();
+            DockPanel.SetDock(ChartPanel, Dock.Top);
+            AchievementListDockPanel.Children.Add(ChartPanel);
+
+
+            var chartAchievements = game.AchievementList.Where(a => a.Type == Achievement.AchievementTypes.Chart).ToList();
+            var difficultyGroups = chartAchievements.GroupBy(a => a.Difficulty).ToDictionary(g => g.Key, g => g.ToList());
+            var shotTypeGroups = chartAchievements.GroupBy(a => a.ShotType).ToDictionary(g => g.Key, g => g.ToList());
+
+            List<string> Difficultys = new();
+            List<string> ShotTypes = new();
+            int LeftColumnWidth = 200;
+            int ColumnWidth = 70;
+
+            foreach (var chartAchievement in game.AchievementList.Where(a => a.Type == Achievement.AchievementTypes.Chart))
+            {
+                if (!Difficultys.Contains(chartAchievement.Difficulty)) { Difficultys.Add(chartAchievement.Difficulty); }
+                if (!ShotTypes.Contains(chartAchievement.ShotType)) { ShotTypes.Add(chartAchievement.ShotType); }
+            }
+
+            //Difficulty Row
+            DockPanel DifficultyPanel = new();
+            DockPanel.SetDock(DifficultyPanel, Dock.Top);
+            AchievementListDockPanel.Children.Add(DifficultyPanel);
+            DifficultyPanel.LastChildFill = false;
+
+            DockPanel BlankPanel = new();
+            BlankPanel.Width = LeftColumnWidth;
+            DockPanel.SetDock(BlankPanel, Dock.Left);
+            DifficultyPanel.Children.Add(BlankPanel);
+
+            foreach (var kvp in difficultyGroups)
+            {
+                string difficultyKey = kvp.Key;
+                List<Achievement> group = kvp.Value;
+
+                TextBox difficultyBox = new();
+                difficultyBox.Width = ColumnWidth;
+                difficultyBox.Text = difficultyKey;
+                DockPanel.SetDock(difficultyBox, Dock.Left);
+                DifficultyPanel.Children.Add(difficultyBox);
+
+                difficultyBox.TextChanged += (sender, e) =>
+                {
+                    var box = (TextBox)sender;
+                    string newValue = box.Text;
+
+                    foreach (var a in group)
+                    {
+                        a.Difficulty = newValue;
+                    }
+                };
+
+                ContextMenu contextMenu = new();
+                difficultyBox.ContextMenu = contextMenu;
+
+                MenuItem delete = new();
+                delete.Header = "Delete Difficulty";
+                contextMenu.Items.Add(delete);
+                delete.Click += (sender, e) => 
+                {
+                    MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this difficulty?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        foreach (Achievement achievement in group) 
+                        {
+                            game.AchievementList.Remove(achievement);
+                            LibraryTouhou.MasterAchievementsList.Remove(achievement);
+
+                            if (Window.GetWindow(this) is Editor EditorWindow)
+                            {
+                                TreeViewItem treeViewItem = EditorWindow.TheGameEditor.TheTreeView.SelectedItem as TreeViewItem;
+                                treeViewItem.IsSelected = false;
+                                treeViewItem.IsSelected = true;
+                            }
+                                
+                        }                        
+                    }
+                };
+
+            }
+
+
+
+            //Shot Type Row
+            foreach (string ShotType in ShotTypes) 
+            {
+                DockPanel ShotTypePanel = new();
+                DockPanel.SetDock(ShotTypePanel, Dock.Top);
+                AchievementListDockPanel.Children.Add(ShotTypePanel);
+                ShotTypePanel.LastChildFill = false;
+
+                List<Achievement> shotGroup = shotTypeGroups[ShotType];
+                TextBox ShotTypeBox = new();
+                ShotTypeBox.Width = LeftColumnWidth;
+                ShotTypeBox.Text = ShotType;
+                DockPanel.SetDock(ShotTypeBox, Dock.Left);
+                ShotTypePanel.Children.Add(ShotTypeBox);
+                ShotTypeBox.TextChanged += (sender, e) =>
+                {
+                    var box = (TextBox)sender;
+                    string newValue = box.Text;
+
+                    foreach (var a in shotGroup)
+                    {
+                        a.ShotType = newValue;
+                    }
+                };
+
+                foreach (string Difficulty in Difficultys)
+                {
+                    var match = chartAchievements.FirstOrDefault(a =>a.ShotType == ShotType && a.Difficulty == Difficulty);
+
+                    TextBox ShotDifficultyBox = new();
+                    ShotDifficultyBox.Width = ColumnWidth;
+                    DockPanel.SetDock(ShotDifficultyBox, Dock.Left);
+                    ShotTypePanel.Children.Add(ShotDifficultyBox);
+
+                    if (match != null)
+                    {
+                        ShotDifficultyBox.Text = match.Level.ToString();
+
+                        ShotDifficultyBox.TextChanged += (sender, e) =>
+                        {
+                            var box = (TextBox)sender;
+                            string newText = box.Text;
+
+                            // Try to parse — only update when valid
+                            if (int.TryParse(newText, out int newLevel))
+                            {
+                                match.Level = newLevel;
+                                box.ClearValue(TextBox.BorderBrushProperty);
+                            }
+                            else
+                            {
+                                box.BorderBrush = Brushes.Red;
+                            }
+                        };
+                    }
+                    else
+                    {
+                        ShotDifficultyBox.Text = "?";
+                    }
+
+                    
+                }
+            }
+            
         }
 
         private void CreateAchievementPanel(Achievement achievement) 
@@ -91,7 +333,7 @@ namespace WesternLauncherOfEasternOrigins
 
             Border border = new Border();
             DockPanel dockPanel = new DockPanel();
-            border.Height = 22;
+            border.Height = 32;
             border.Margin = new Thickness(0,0,0,2);
             border.Child = dockPanel;
             DockPanel.SetDock(border, Dock.Top);
@@ -130,7 +372,7 @@ namespace WesternLauncherOfEasternOrigins
                     Label.Margin = LabelOffset;
                     NamePanel.Children.Add(Label);
                     TextBox textBox = new TextBox();
-                    textBox.Width = 405;
+                    textBox.Width = 500;
                     textBox.Text = achievement.Name;
                     NamePanel.Children.Add(textBox);
                     textBox.TextChanged += TheTextChanged;
@@ -171,7 +413,7 @@ namespace WesternLauncherOfEasternOrigins
                     Label.Content = "Shot Type";
                     ShotTypePanel.Children.Add(Label);
                     TextBox textBox = new TextBox();
-                    textBox.Width = 120;
+                    textBox.Width = 140;
                     textBox.Text = achievement.ShotType;
                     ShotTypePanel.Children.Add(textBox);
                     textBox.TextChanged += TheTextChanged;
@@ -199,14 +441,14 @@ namespace WesternLauncherOfEasternOrigins
                     if (Window.GetWindow(this) is Editor EditorWindow)
                     {
                         TreeViewItem treeViewItem = EditorWindow.TheGameEditor.TheTreeView.SelectedItem as TreeViewItem;
-                        TouhouGame touhouGame = treeViewItem.Tag as TouhouGame;
+                        GameData touhouGame = treeViewItem.Tag as GameData;
 
                         MessageBoxResult result = MessageBox.Show("Are you sure you want to remove this achievement?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
                         if (result == MessageBoxResult.Yes)
                         {
                             // Only perform the following actions if the user confirms
                             touhouGame.AchievementList.Remove(achievement);
-                            LibraryMan.MasterAchievementsList.Remove(achievement);
+                            LibraryTouhou.MasterAchievementsList.Remove(achievement);
                             AchievementListDockPanel.Children.Remove(border);
                         }
 
@@ -224,7 +466,7 @@ namespace WesternLauncherOfEasternOrigins
                     if (Window.GetWindow(this) is Editor EditorWindow)
                     {
                         TreeViewItem treeViewItem = EditorWindow.TheGameEditor.TheTreeView.SelectedItem as TreeViewItem;
-                        TouhouGame touhouGame = treeViewItem.Tag as TouhouGame;
+                        GameData touhouGame = treeViewItem.Tag as GameData;
 
                         //LibraryMan.MasterAchievementsList.Remove(achievement);
 
@@ -250,7 +492,7 @@ namespace WesternLauncherOfEasternOrigins
                     if (Window.GetWindow(this) is Editor EditorWindow)
                     {
                         TreeViewItem treeViewItem = EditorWindow.TheGameEditor.TheTreeView.SelectedItem as TreeViewItem;
-                        TouhouGame touhouGame = treeViewItem.Tag as TouhouGame;
+                        GameData touhouGame = treeViewItem.Tag as GameData;
 
                         int Index1 = touhouGame.AchievementList.IndexOf(achievement);
                         int counta = touhouGame.AchievementList.Count;

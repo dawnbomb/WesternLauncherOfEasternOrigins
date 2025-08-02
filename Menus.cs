@@ -1,14 +1,17 @@
-﻿using Microsoft.Web.WebView2.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Web.WebView2.Core;
+using Windows.UI.Composition;
 using static System.Net.WebRequestMethods;
 
 namespace WesternLauncherOfEasternOrigins
@@ -21,9 +24,21 @@ namespace WesternLauncherOfEasternOrigins
         //////////////////  LOCAL FOLDERS  /////////////
         ////////////////////////////////////////////////
 
+        private void OpenMyFolder(object sender, RoutedEventArgs e)
+        {
+            string TheFolderToOpen = LibraryTouhou.TouhouLauncherPath;
+
+            // Ensure the directory exists before trying to open it
+            if (System.IO.Directory.Exists(TheFolderToOpen))
+            {
+                // Use Process.Start to open the folder in File Explorer
+                System.Diagnostics.Process.Start("explorer.exe", TheFolderToOpen);
+            }
+        }
+
         private void OpenTHCrapFolder(object sender, RoutedEventArgs e)
         {
-            string THCrapFolderPath = System.IO.Path.Combine(LibraryMan.TouhouLauncherPath, "Other", "Extra Programs", "Touhou Crap");
+            string THCrapFolderPath = System.IO.Path.Combine(LibraryTouhou.TouhouLauncherPath, "Other", "Extra Programs", "Touhou Crap");
 
             // Ensure the directory exists before trying to open it
             if (System.IO.Directory.Exists(THCrapFolderPath))
@@ -35,7 +50,7 @@ namespace WesternLauncherOfEasternOrigins
 
         private void OpenModsFolder(object sender, RoutedEventArgs e)
         {
-            string modsFolderPath = System.IO.Path.Combine(LibraryMan.TouhouLauncherPath, "Other","Extra Programs", "Mods");
+            string modsFolderPath = System.IO.Path.Combine(LibraryTouhou.TouhouLauncherPath, "Other","Extra Programs", "Touhou Crap", "repos");
 
             // Ensure the directory exists before trying to open it
             if (System.IO.Directory.Exists(modsFolderPath))
@@ -117,14 +132,14 @@ namespace WesternLauncherOfEasternOrigins
         private void RunTHCrap(object sender, RoutedEventArgs e)
         {
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = "\"" + LibraryMan.TouhouLauncherPath + "\\Other\\Extra Programs\\Touhou Crap\\thcrap.exe" + "\"";
+            startInfo.FileName = "\"" + LibraryTouhou.TouhouLauncherPath + "\\Other\\Extra Programs\\Touhou Crap\\thcrap.exe" + "\"";
             Process.Start(startInfo);
         }
 
         private void Joy2Key(object sender, RoutedEventArgs e)
         {
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = "\"" + LibraryMan.TouhouLauncherPath + "\\Other\\Extra Programs\\JoyToKey\\JoyToKey.exe" + "\"";
+            startInfo.FileName = "\"" + LibraryTouhou.TouhouLauncherPath + "\\Other\\Extra Programs\\JoyToKey\\JoyToKey.exe" + "\"";
             Process.Start(startInfo);
         }
 
@@ -132,7 +147,7 @@ namespace WesternLauncherOfEasternOrigins
         {
 
             //I used to search for the exact exe name. However, updates change the name of the exe. Instead, i search for every program with thcrap prefix, and run the first one i find, avoiding version number problems.
-            string exeDirectory = Path.Combine(LibraryMan.TouhouLauncherPath, "Other", "Extra Programs");
+            string exeDirectory = Path.Combine(LibraryTouhou.TouhouLauncherPath, "Other", "Extra Programs");
             string[] files = Directory.GetFiles(exeDirectory, "thprac*.exe");
 
             if (files.Length > 0)
@@ -143,45 +158,74 @@ namespace WesternLauncherOfEasternOrigins
             }
         }
 
-        private void BorderlessGaming(object sender, RoutedEventArgs e)
+        
+
+        async private void OpenBorderless(object sender, RoutedEventArgs e)
         {
-            Process[] runningProcesses = Process.GetProcessesByName("BorderlessGaming");
-            if (runningProcesses.Length > 0)
+
+            Process[] therunningProcesses = Process.GetProcessesByName("NoMoreBorder");
+            if (therunningProcesses.Length == 0) 
             {
-                // Attempt to bring the first instance to the foreground
-                IntPtr hWnd = runningProcesses[0].MainWindowHandle;
-                if (hWnd != IntPtr.Zero)
+                ProcessStartInfo startInfo = new ProcessStartInfo
                 {
-                    SetForegroundWindow(hWnd);
+                    FileName = Path.Combine(LibraryTouhou.TouhouLauncherPath, "Other", "Extra Programs", "NoMoreBorder", "NoMoreBorder.exe"),
+                    UseShellExecute = true, // Necessary for the 'runas' verb
+                    Verb = "runas" // This verb indicates to run the process as an administrator
+                };
+                try
+                {
+                    Process.Start(startInfo);
+                }
+                catch
+                {
 
                 }
-                else
+                
+            }
+
+            OpenIt();
+
+            void OpenIt() 
+            {
+                Process[] runningProcesses = Process.GetProcessesByName("NoMoreBorder");
+                foreach (var proc in runningProcesses)
                 {
-                    // hWnd is IntPtr.Zero, indicating the window is not visible or minimized to the tray
-                    MessageBox.Show("BorderlessGaming is already running, but is minimized to the tray. It's actually rather complicated to make another program generate it's window :( so you will have to right click it and select show to make it appear.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    EnumWindows((hWnd, lParam) =>
+                    {
+                        GetWindowThreadProcessId(hWnd, out uint pid);
+                        if (pid == proc.Id)
+                        {
+                            StringBuilder sb = new(256);
+                            GetWindowText(hWnd, sb, sb.Capacity);
+                            string title = sb.ToString();
+
+                            if (title == "NoMoreBorder")
+                            {
+                                Console.WriteLine($"Found NoMoreBorder window (Handle: {hWnd})");
+
+                                // Try a variety of things:
+                                ShowWindow(hWnd, SW_SHOW);
+                                ShowWindow(hWnd, SW_RESTORE);
+                                SendMessage(hWnd, WM_SYSCOMMAND, (IntPtr)SC_RESTORE, IntPtr.Zero);
+                                SetForegroundWindow(hWnd);
+                                return false; // done
+                            }
+                        }
+                        return true;
+                    }, IntPtr.Zero);
                 }
-                return; // Exit the method as the application is already running
+
+                string GetWindowTitle(IntPtr hWnd)
+                {
+                    StringBuilder sb = new StringBuilder(256);
+                    GetWindowText(hWnd, sb, sb.Capacity);
+                    return sb.ToString();
+                }
             }
 
-            ProcessStartInfo startInfo = new ProcessStartInfo
-            {
-                FileName = Path.Combine(LibraryMan.TouhouLauncherPath, "Other", "Extra Programs", "Borderless Gaming", "BorderlessGaming.exe"),
-                UseShellExecute = true, // Necessary for the 'runas' verb
-                Verb = "runas" // This verb indicates to run the process as an administrator
-            };
 
-            try
-            {
-                Process.Start(startInfo);
-            }
-            catch
-            {
 
-            }
         }
-
-
-
 
 
 
@@ -195,6 +239,8 @@ namespace WesternLauncherOfEasternOrigins
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
         public bool AutoMinimize
         {
             get { return Properties.Settings.Default.AutoMinimize; }
@@ -236,20 +282,7 @@ namespace WesternLauncherOfEasternOrigins
                 }
             }
         }
-
-        public bool SkipPractisePopups
-        {
-            get { return Properties.Settings.Default.SkipPractisePopups; }
-            set
-            {
-                if (Properties.Settings.Default.SkipPractisePopups != value)
-                {
-                    Properties.Settings.Default.SkipPractisePopups = value;
-                    Properties.Settings.Default.Save();
-                    OnPropertyChanged();
-                }
-            }
-        }
+        
 
         public bool VolumeMixerAtLauncher
         {
@@ -275,20 +308,6 @@ namespace WesternLauncherOfEasternOrigins
                 if (Properties.Settings.Default.ControllerCheck != value)
                 {
                     Properties.Settings.Default.ControllerCheck = value;
-                    Properties.Settings.Default.Save();
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public bool ShowChallengePanel
-        {
-            get { return Properties.Settings.Default.ShowChallengePanel; }
-            set
-            {
-                if (Properties.Settings.Default.ShowChallengePanel != value)
-                {
-                    Properties.Settings.Default.ShowChallengePanel = value;
                     Properties.Settings.Default.Save();
                     OnPropertyChanged();
                 }
@@ -341,30 +360,159 @@ namespace WesternLauncherOfEasternOrigins
                     OnPropertyChanged();
                 }
             }
-        }
+        }       
 
-        public bool ShowEasyMode
+        
+        public bool ShowQuestBoard
         {
-            get { return Properties.Settings.Default.ShowEasyMode; }
+            get { return Properties.Settings.Default.ShowQuestBoard; }
             set
             {
-                if (Properties.Settings.Default.ShowEasyMode != value)
+                if (Properties.Settings.Default.ShowQuestBoard != value)
                 {
-                    Properties.Settings.Default.ShowEasyMode = value;
+                    Properties.Settings.Default.ShowQuestBoard = value;
                     Properties.Settings.Default.Save();
                     OnPropertyChanged();
                 }
             }
         }
 
-        public bool ShowNormalMode
+        public bool OpenVolumeMixerAt100Volume
         {
-            get { return Properties.Settings.Default.ShowNormalMode; }
+            get { return Properties.Settings.Default.OpenVolumeMixerAt100Volume; }
             set
             {
-                if (Properties.Settings.Default.ShowNormalMode != value)
+                if (Properties.Settings.Default.OpenVolumeMixerAt100Volume != value)
                 {
-                    Properties.Settings.Default.ShowNormalMode = value;
+                    Properties.Settings.Default.OpenVolumeMixerAt100Volume = value;
+                    Properties.Settings.Default.Save();
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool ColorAchievements
+        {
+            get { return Properties.Settings.Default.ColorAchievements; }
+            set
+            {
+                if (Properties.Settings.Default.ColorAchievements != value)
+                {
+                    Properties.Settings.Default.ColorAchievements = value;
+                    Properties.Settings.Default.Save();
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool ShowTouhou075
+        {
+            get { return Properties.Settings.Default.ShowTouhou075; }
+            set
+            {
+                if (Properties.Settings.Default.ShowTouhou075 != value)
+                {
+                    Properties.Settings.Default.ShowTouhou075 = value;
+                    Properties.Settings.Default.Save();
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool ShowFanBulletHell
+        {
+            get { return Properties.Settings.Default.ShowFanBulletHell; }
+            set
+            {
+                if (Properties.Settings.Default.ShowFanBulletHell != value)
+                {
+                    Properties.Settings.Default.ShowFanBulletHell = value;
+                    Properties.Settings.Default.Save();
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool ShowLenenGames
+        {
+            get { return Properties.Settings.Default.ShowLenenGames; }
+            set
+            {
+                if (Properties.Settings.Default.ShowLenenGames != value)
+                {
+                    Properties.Settings.Default.ShowLenenGames = value;
+                    Properties.Settings.Default.Save();
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool ShowKaisendouGames
+        {
+            get { return Properties.Settings.Default.ShowKaisendouGames; }
+            set
+            {
+                if (Properties.Settings.Default.ShowKaisendouGames != value)
+                {
+                    Properties.Settings.Default.ShowKaisendouGames = value;
+                    Properties.Settings.Default.Save();
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool ColorGameCards
+        {
+            get { return Properties.Settings.Default.ColorGameCards; }
+            set
+            {
+                if (Properties.Settings.Default.ColorGameCards != value)
+                {
+                    Properties.Settings.Default.ColorGameCards = value;
+                    Properties.Settings.Default.Save();
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool ShowNotepad
+        {
+            get { return Properties.Settings.Default.ShowNotepad; }
+            set
+            {
+                if (Properties.Settings.Default.ShowNotepad != value)
+                {
+                    Properties.Settings.Default.ShowNotepad = value;
+                    Properties.Settings.Default.Save();
+                    if (Properties.Settings.Default.ShowNotepad == true) { NotepadBorder.Visibility = Visibility.Visible; }
+                    if (Properties.Settings.Default.ShowNotepad == false) { NotepadBorder.Visibility = Visibility.Collapsed; }
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool ShowOtherFanTouhouBulletHell
+        {
+            get { return Properties.Settings.Default.ShowOtherFanTouhouBulletHell; }
+            set
+            {
+                if (Properties.Settings.Default.ShowOtherFanTouhouBulletHell != value)
+                {
+                    Properties.Settings.Default.ShowOtherFanTouhouBulletHell = value;
+                    Properties.Settings.Default.Save();
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool ShowEx2
+        {
+            get { return Properties.Settings.Default.ShowEx2; }
+            set
+            {
+                if (Properties.Settings.Default.ShowEx2 != value)
+                {
+                    Properties.Settings.Default.ShowEx2 = value;
                     Properties.Settings.Default.Save();
                     OnPropertyChanged();
                 }
@@ -372,7 +520,54 @@ namespace WesternLauncherOfEasternOrigins
         }
         
 
-        
+        public bool ShowEx3
+        {
+            get { return Properties.Settings.Default.ShowEx3; }
+            set
+            {
+                if (Properties.Settings.Default.ShowEx3 != value)
+                {
+                    Properties.Settings.Default.ShowEx3 = value;
+                    Properties.Settings.Default.Save();
+                    OnPropertyChanged();
+                }
+            }
+        }
 
+        public bool ShowNewPlayerButton
+        {
+            get { return Properties.Settings.Default.ShowNewPlayerButton; }
+            set
+            {
+                if (Properties.Settings.Default.ShowNewPlayerButton != value)
+                {
+                    Properties.Settings.Default.ShowNewPlayerButton = value;
+                    Properties.Settings.Default.Save();
+                    OnPropertyChanged();
+
+                    if (Properties.Settings.Default.ShowNewPlayerButton == true) { NewPlayerButton.Visibility = Visibility.Visible; }
+                    if (Properties.Settings.Default.ShowNewPlayerButton == false) { NewPlayerButton.Visibility = Visibility.Collapsed; }
+                }
+            }
+        }
+
+        public bool ShowPlayerLv
+        {
+            get { return Properties.Settings.Default.ShowPlayerLv; }
+            set
+            {
+                if (Properties.Settings.Default.ShowPlayerLv != value)
+                {
+                    Properties.Settings.Default.ShowPlayerLv = value;
+                    Properties.Settings.Default.Save();
+                    OnPropertyChanged();
+
+                    if (Properties.Settings.Default.ShowPlayerLv == true) { PlayerLvPanel.Visibility = Visibility.Visible; }
+                    if (Properties.Settings.Default.ShowPlayerLv == false) { PlayerLvPanel.Visibility = Visibility.Collapsed; }
+                }
+            }
+        }
+
+        
     }
 }

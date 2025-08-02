@@ -22,7 +22,7 @@ namespace WesternLauncherOfEasternOrigins
             List<string> PlayerList = new();
 
             {
-                string directoryPath = LibraryMan.TouhouLauncherPath + "\\Player Profiles\\";
+                string directoryPath = LibraryTouhou.TouhouLauncherPath + "\\Player Profiles\\";
                 if (Directory.Exists(directoryPath))
                 {
                     // Get all XML files in the directory
@@ -51,7 +51,7 @@ namespace WesternLauncherOfEasternOrigins
                 if (Player == Properties.Settings.Default.LastPlayer)
                 {
                     comboBoxItem.IsSelected = true;
-                    LibraryMan.PlayerName = Player;
+                    LibraryTouhou.PlayerName = Player;
                 }
             }
 
@@ -64,8 +64,8 @@ namespace WesternLauncherOfEasternOrigins
 
                 ComboBoxItem comboBoxItem = GameLauncher.PlayerComboBox.Items[0] as ComboBoxItem;
                 comboBoxItem.IsSelected = true;
-                LibraryMan.PlayerName = comboBoxItem.Content as string;
-                Properties.Settings.Default.LastPlayer = LibraryMan.PlayerName;
+                LibraryTouhou.PlayerName = comboBoxItem.Content as string;
+                Properties.Settings.Default.LastPlayer = LibraryTouhou.PlayerName;
                 Properties.Settings.Default.Save();
             }
         }
@@ -78,10 +78,10 @@ namespace WesternLauncherOfEasternOrigins
 
             //Step 2: Load the selected players XML achievement data.
 
-            XElement xml = XElement.Load(LibraryMan.TouhouLauncherPath + "\\Player Profiles\\" + LibraryMan.PlayerName + ".xml");
+            XElement xml = XElement.Load(LibraryTouhou.TouhouLauncherPath + "\\Player Profiles\\" + LibraryTouhou.PlayerName + ".xml");
 
 
-            foreach (Achievement achievement in LibraryMan.MasterAchievementsList)
+            foreach (Achievement achievement in LibraryTouhou.MasterAchievementsList)
             {
                 bool isMatchFound = false;  // Flag to check if a match is found
 
@@ -121,7 +121,7 @@ namespace WesternLauncherOfEasternOrigins
             List<int> Levels = new();
 
             //All 1CCs above Lv0 goto the Levels List. 
-            foreach (Achievement achievement in LibraryMan.MasterAchievementsList)
+            foreach (Achievement achievement in LibraryTouhou.MasterAchievementsList)
             {                
                 if (achievement.PlayerText == "1CC" && achievement.Level != 0)
                 {
@@ -167,16 +167,16 @@ namespace WesternLauncherOfEasternOrigins
             
             
             List<Achievement> ToDoAchievements = new();
-            foreach (Achievement achievement in LibraryMan.MasterAchievementsList) 
+            foreach (Achievement achievement in LibraryTouhou.MasterAchievementsList) 
             {   
                 if (achievement.PlayerText != "1CC" && achievement.Level != 0)
                 {
                     if (achievement.Difficulty == "Extra") //If its an extra stage, check if it's even fucking unlocked first xd
                     {
                         bool cleared = false;
-                        foreach (Achievement AB in LibraryMan.MasterAchievementsList) 
+                        foreach (Achievement AB in LibraryTouhou.MasterAchievementsList) 
                         {
-                            if (AB.TouhouGame == achievement.TouhouGame && AB.ShotType == achievement.ShotType && AB.Difficulty != "Easy") 
+                            if (AB.TheGame == achievement.TheGame && AB.ShotType == achievement.ShotType && AB.Difficulty != "Easy") 
                             {
                                 if ((AB.PlayerText.Contains("1CC") || AB.PlayerText.Contains("1cc") || AB.PlayerText.Contains("NB") || AB.PlayerText.Contains("Clear") || AB.PlayerText.Contains("✓") || AB.PlayerText.Contains("✔") || AB.PlayerText.Contains("ND") || AB.PlayerText.Contains("NM") || AB.PlayerText.Contains("!"))) 
                                 {
@@ -202,14 +202,14 @@ namespace WesternLauncherOfEasternOrigins
 
             bool CheckDifficulty(Achievement achievement) //checks to ignore 
             {
-                if (Properties.Settings.Default.ShowEasyMode == false && achievement.Difficulty == "Easy")
-                {
-                    return true;
-                }
-                if (Properties.Settings.Default.ShowNormalMode == false && achievement.Difficulty == "Normal")
-                {
-                    return true;
-                }
+                //if (Properties.Settings.Default.ShowEasyMode == false && achievement.Difficulty == "Easy")
+                //{
+                //    return true;
+                //}
+                //if (Properties.Settings.Default.ShowNormalMode == false && achievement.Difficulty == "Normal")
+                //{
+                //    return true;
+                //}
                 return false;
                 //if (Properties.Settings.Default.ShowEasyMode == false && Difficulty == "Easy")
                 //{
@@ -235,7 +235,7 @@ namespace WesternLauncherOfEasternOrigins
                 {
                     List<Achievement> TheListA = new();
 
-                    foreach (TouhouGame Game in LibraryMan.MasterGameList)
+                    foreach (GameData Game in LibraryTouhou.MasterGameList)
                     {
                         if (Game.CodeName == Properties.Settings.Default.LastTouhouGame)
                         {
@@ -309,11 +309,11 @@ namespace WesternLauncherOfEasternOrigins
                 if (i == 1 && asdf == 1) //NewGame or NewExtra. 50% chance to recommend. Recommend Lv-1 or lower.
                 {
 
-                    List<TouhouGame> LowMainClears = new();  //NewGame: Player has 2 or less achievements
-                    List<TouhouGame> NoExtraClears = new(); //NewExtra: 0 EX-Clears, atleast 1 main clear.
-                    List<TouhouGame> SomeExtraClears = new();
+                    List<GameData> LowMainClears = new();  //NewGame: Player has 2 or less achievements
+                    List<GameData> NoExtraClears = new(); //NewExtra: 0 EX-Clears, atleast 1 main clear.
+                    List<GameData> SomeExtraClears = new();
 
-                    foreach (TouhouGame Game in LibraryMan.MasterGameList)
+                    foreach (GameData Game in LibraryTouhou.MasterGameList)
                     {
                         int MainClears = 0;
                         int EXclears = 0;
@@ -349,7 +349,7 @@ namespace WesternLauncherOfEasternOrigins
                     if (LowMainClears.Count != 0 && randomIndex == 1) //Low Main
                     {
                         List<Achievement> TheList = new();
-                        foreach (TouhouGame Game in LowMainClears)
+                        foreach (GameData Game in LowMainClears)
                         {
                             foreach (Achievement achievement in Game.AchievementList)
                             {
@@ -381,7 +381,7 @@ namespace WesternLauncherOfEasternOrigins
                     if (NoExtraClears.Count != 0 && randomIndex == 2) //No Extra
                     {
                         List<Achievement> TheList = new();
-                        foreach (TouhouGame Game in NoExtraClears)
+                        foreach (GameData Game in NoExtraClears)
                         {
                             foreach (Achievement achievement in Game.AchievementList)
                             {
@@ -415,7 +415,7 @@ namespace WesternLauncherOfEasternOrigins
                     if (SomeExtraClears.Count != 0 && randomIndex == 3) //Extra
                     {
                         List<Achievement> TheList = new();
-                        foreach (TouhouGame Game in SomeExtraClears)
+                        foreach (GameData Game in SomeExtraClears)
                         {
                             foreach (Achievement achievement in Game.AchievementList)
                             {
@@ -611,9 +611,9 @@ namespace WesternLauncherOfEasternOrigins
                 ToDoAchievements.Remove(achievement);
 
 
-                Brush TheBorderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(achievement.TouhouGame.ColorBorder));
-                Brush TheBackColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(achievement.TouhouGame.ColorBack));
-                Brush TheTextColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(achievement.TouhouGame.ColorText));
+                Brush TheBorderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(achievement.TheGame.ColorBorder));
+                Brush TheBackColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(achievement.TheGame.ColorBack));
+                Brush TheTextColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(achievement.TheGame.ColorText));
                 Brush TheGrayGrid = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#50191919"));
 
                 Border AchievementBorder = new();
@@ -634,12 +634,12 @@ namespace WesternLauncherOfEasternOrigins
                 QuestPanel.Background = TheBackColor;
                 BlackBorder.Child = QuestPanel;
 
-                Label QuestValueLabel = new Label();
-                QuestValueLabel.Foreground = TheTextColor;
-                QuestValueLabel.Width = 45;
-                DockPanel.SetDock(QuestValueLabel, Dock.Left);
-                QuestPanel.Children.Add(QuestValueLabel);
-                QuestValueLabel.Content = "Lv " + achievement.Level;
+                Label QuestLevelLabel = new Label();
+                QuestLevelLabel.Foreground = TheTextColor;
+                QuestLevelLabel.Width = 59;
+                DockPanel.SetDock(QuestLevelLabel, Dock.Left);
+                QuestPanel.Children.Add(QuestLevelLabel);
+                QuestLevelLabel.Content = "Lv " + achievement.Level;
 
 
                 //TextBox goalBox = new();
@@ -659,10 +659,10 @@ namespace WesternLauncherOfEasternOrigins
 
                 Label gameLabel = new Label();
                 gameLabel.Foreground = TheTextColor;
-                gameLabel.Width = 270;
+                gameLabel.Width = 330;
                 DockPanel.SetDock(gameLabel, Dock.Left);
                 QuestPanel.Children.Add(gameLabel);
-                gameLabel.Content = achievement.TouhouGame.SubtitleName;
+                gameLabel.Content = achievement.TheGame.SubtitleName;
 
 
                 Border verticalLine = new Border();
@@ -681,11 +681,11 @@ namespace WesternLauncherOfEasternOrigins
                     QuestPanel.Children.Add(QuestNameLabel);
                     QuestNameLabel.Content = achievement.Name + achievement.Difficulty;
                 }
-                else
+                if (achievement.Type == Achievement.AchievementTypes.Chart)
                 {
                     Label QuestDifficultyLabel = new Label();
                     QuestDifficultyLabel.Foreground = TheTextColor;
-                    QuestDifficultyLabel.Width = 70;
+                    QuestDifficultyLabel.Width = 78;
                     DockPanel.SetDock(QuestDifficultyLabel, Dock.Left);
                     QuestPanel.Children.Add(QuestDifficultyLabel);
                     QuestDifficultyLabel.Content = achievement.Difficulty;
@@ -710,7 +710,7 @@ namespace WesternLauncherOfEasternOrigins
                 {   //Debug Text
                     Label QuestTypeLabel = new Label();
                     QuestTypeLabel.Foreground = TheTextColor;
-                    QuestTypeLabel.Width = 50;
+                    QuestTypeLabel.Width = 56;
                     DockPanel.SetDock(QuestTypeLabel, Dock.Right);
                     QuestPanel.Children.Add(QuestTypeLabel);
                     QuestTypeLabel.Content = ExtraText;
@@ -738,9 +738,29 @@ namespace WesternLauncherOfEasternOrigins
         {
             GameLauncher.MasterAchievementPanel.Children.Clear();
 
-            foreach (TouhouGame Game in LibraryMan.MasterGameList)
+            foreach (GameData Game in LibraryTouhou.MasterGameList)
             {
                 if (Properties.Settings.Default.ShowTouhouPC98 == false && Game.Type == GameType.PC98) 
+                {
+                    continue;
+                }
+                if (Properties.Settings.Default.ShowTouhou075 == false && Game.CodeName == "th075")
+                {
+                    continue;
+                }
+                if (Properties.Settings.Default.ShowLenenGames == false && Game.Type == GameType.Lenen)
+                {
+                    continue;
+                }
+                if (Properties.Settings.Default.ShowKaisendouGames == false && Game.Type == GameType.Kaisendou)
+                {
+                    continue;
+                }
+                if (Properties.Settings.Default.ShowFanBulletHell == false && Game.Type == GameType.MajorTouhouFanGames)
+                {
+                    continue;
+                }
+                if (Properties.Settings.Default.ShowOtherFanTouhouBulletHell == false && Game.Type == GameType.OtherTouhouFanGames)
                 {
                     continue;
                 }
@@ -748,8 +768,10 @@ namespace WesternLauncherOfEasternOrigins
             }
         }
 
-        private void CreateMasterAchievementPanel(GameLauncher GameLauncher, TouhouGame Game)
+        private void CreateMasterAchievementPanel(GameLauncher GameLauncher, GameData Game)
         {
+            if (Game.Type == GameType.Hidden) { return; }
+
             List<string> DifficultyList = new();
             List<string> ShotTypeList = new();
 
@@ -761,6 +783,10 @@ namespace WesternLauncherOfEasternOrigins
                 }
                 foreach (Achievement achievement in Game.AchievementList)
                 {
+                    if (achievement.Type == Achievement.AchievementTypes.Basic)
+                    {
+                        continue;
+                    }
                     if (achievement.Difficulty == "")
                     {
                         continue;
@@ -786,6 +812,14 @@ namespace WesternLauncherOfEasternOrigins
             Brush TheTextColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Game.ColorText));
             Brush TheGrayGrid = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#50191919"));
 
+            if (Properties.Settings.Default.ColorAchievements == false) 
+            {
+                TheBorderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#444444"));
+                TheBackColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#222222"));
+                TheTextColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#BBBBBB"));
+                TheGrayGrid = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#50191919"));
+            }
+
             Border border = new Border();
             border.BorderThickness = new System.Windows.Thickness(15, 0, 15, 15);
             border.BorderBrush = TheBorderColor;
@@ -801,13 +835,13 @@ namespace WesternLauncherOfEasternOrigins
 
             ///////////////////////////////////////////
 
-            DockPanel NamePanel = new();
-            NamePanel.Height = 23;
+            DockPanel NamePanel = new(); //This is the game name and it's label
+            NamePanel.Height = 26;
             DockPanel.SetDock(NamePanel, Dock.Top);
             NamePanel.Background = TheBorderColor;
             GamePanel.Children.Add(NamePanel);
 
-            Label gameNameLabel = new Label();
+            Label gameNameLabel = new Label(); //The game name
             gameNameLabel.Margin = new Thickness(0,-5,0,-4);
             gameNameLabel.Content = Game.SeriesName + ": " + Game.SubtitleName + " (" + Game.Date + ")";
             gameNameLabel.FontWeight = FontWeights.Bold;
@@ -815,174 +849,197 @@ namespace WesternLauncherOfEasternOrigins
             NamePanel.Children.Add(gameNameLabel);
 
 
-            int NameWidth = 135;
-            int GoalWidth = 85;
+            int NameWidth = 164;
+            int GoalWidth = 105;
 
+            //////////////////////////////////////////////////////////////////////
+            ////////////////// TOP ROW OF DIFFICULTY NAMES ///////////////////////
+            //////////////////////////////////////////////////////////////////////
+            if (DifficultyList.Count != 0 && ShotTypeList.Count != 0)
             {
-                //Header Line for Achievement Chart 
-                if (DifficultyList.Count != 0 && ShotTypeList.Count != 0)
+                bool Thin = true;
+
+                DockPanel DifficultysRow = new();
+                DockPanel.SetDock(DifficultysRow, Dock.Top);
+                DifficultysRow.LastChildFill = false;
+                DifficultysRow.Background = TheBorderColor;
+                if (Thin == true) { DifficultysRow.Height = 28; }
+                GamePanel.Children.Add(DifficultysRow);
+
+                Label goalsLabel = new Label();
+                DockPanel.SetDock(goalsLabel, Dock.Left);
+                //goalsLabel.Content = "?? %"; //////////////////////////Date thing
+                goalsLabel.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#202020"));
+                goalsLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#909090"));
+                goalsLabel.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center;
+                goalsLabel.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
+                if (Thin == true) { goalsLabel.Margin = new Thickness(0, 0, 0, 0); }
+                goalsLabel.Width = NameWidth;
+                DifficultysRow.Children.Add(goalsLabel);
+
+                foreach (string Difficulty in DifficultyList)
+                {
+                    if (Properties.Settings.Default.ShowEx2 == true && DifficultyList.Count >= 6 && Difficulty == "Easy")
+                    {
+                        continue;
+                    }
+                    if (Properties.Settings.Default.ShowEx3 == true && DifficultyList.Count >= 7 && Difficulty == "Normal")
+                    {
+                        continue;
+                    }
+
+                    Border DifficultyLabelBorder = new();
+                    DifficultyLabelBorder.Height = 28;
+                    DifficultyLabelBorder.BorderThickness = new Thickness(0);
+                    DifficultysRow.Children.Add(DifficultyLabelBorder);
+
+                    Label DifficultyLabel = new Label();
+                    DockPanel.SetDock(DifficultyLabel, Dock.Left);
+                    DifficultyLabel.Content = Difficulty;
+                    DifficultyLabel.Width = GoalWidth;
+                    //GoalLabel.Height = 26;
+                    if (Thin == true) { DifficultyLabel.Margin = new Thickness(0, -4, 0, -15); }
+                    DifficultyLabel.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center;
+                    //GoalLabel.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
+                    //DifficultysRow.Children.Add(DifficultyLabel);
+                    DifficultyLabelBorder.Child = DifficultyLabel;
+
+                    if (Difficulty == "Easy")
+                    {
+                        DifficultyLabelBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0F3F4A"));
+                        DifficultyLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#839BC3"));
+                    }
+                    if (Difficulty == "Normal")
+                    {
+                        DifficultyLabelBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1F3E0F"));
+                        DifficultyLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#87AC87"));
+                    }
+                    if (Difficulty == "Hard")
+                    {
+                        DifficultyLabelBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#603203"));
+                        DifficultyLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C78D31"));
+                    }
+                    if (Difficulty == "Lunatic" || Difficulty == "Unreal" || Difficulty == "Overdrive" || Difficulty == "URA")
+                    {
+                        DifficultyLabelBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#520d00")); //520000
+                        DifficultyLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B47B6B")); 
+                    }
+                    if (Difficulty == "Extra" || Difficulty == "Labyrinth")
+                    {
+                        DifficultyLabelBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#242563")); //1A0E3E  
+                        DifficultyLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7973d4")); //725681
+                    }
+                    if (Difficulty == "Phantasm" || Difficulty == "A-Extra" || Difficulty == "Carrefour" || Difficulty == "Sequal" || Difficulty == "E-Extra")
+                    {
+                        DifficultyLabelBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#471759")); //2c0e3e
+                        DifficultyLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b66eba")); //81567d
+                    }
+                    if (Difficulty == "Luna NB")
+                    {
+                        DifficultyLabelBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1A0E3E"));
+                        DifficultyLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#725681"));
+                    }
+                    if (Difficulty == "Extra NB")
+                    {
+                        DifficultyLabelBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1A0E3E"));
+                        DifficultyLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#725681"));
+                    }
+                    if (Difficulty == "Phan NB")
+                    {
+                        DifficultyLabelBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2c0e3e"));
+                        DifficultyLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#81567d"));
+                    }
+                }
+
+            }           
+            //////////////////////////////////////////////////////////////////////
+            ////////////////// TOP ROW OF DIFFICULTY NAMES ///////////////////////
+            //////////////////////////////////////////////////////////////////////
+
+            //////////////////////////////////////////////////////////////////////
+            ////////////////// LEFT COLUMN OF SHOT TYPE NAMES //////////////////// 
+            //////////////////////////////////////////////////////////////////////
+            if (DifficultyList.Count != 0 && ShotTypeList.Count != 0)  
+            {
+                foreach (string ShotType in ShotTypeList)
                 {
                     bool Thin = true;
 
-                    DockPanel GoalsPanel = new();
-                    DockPanel.SetDock(GoalsPanel, Dock.Top);
-                    GoalsPanel.LastChildFill = false;
-                    GoalsPanel.Background = TheBorderColor;
-                    if (Thin == true) { GoalsPanel.Height = 26; }
-                    GamePanel.Children.Add(GoalsPanel);
+                    DockPanel AchievementRowPanel = new();
+                    DockPanel.SetDock(AchievementRowPanel, Dock.Top);
+                    AchievementRowPanel.LastChildFill = false;
+                    AchievementRowPanel.Background = TheBackColor;
+                    if (Thin == true) { AchievementRowPanel.Height = 26; }
+                    AchievementRowPanel.Height = 26;
+                    GamePanel.Children.Add(AchievementRowPanel);
 
-                    Label goalsLabel = new Label();
-                    DockPanel.SetDock(goalsLabel, Dock.Left);
-                    //goalsLabel.Content = "?? %"; //////////////////////////Date thing
-                    goalsLabel.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#202020"));
-                    goalsLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#909090"));
-                    goalsLabel.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center;
-                    goalsLabel.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
-                    if (Thin == true) { goalsLabel.Margin = new Thickness(0, 0, 0, 0); }
-                    goalsLabel.Width = NameWidth;
-                    GoalsPanel.Children.Add(goalsLabel);
+                    Border NameContainer = new();
+                    NameContainer.Height = 26;
+                    NameContainer.BorderBrush = TheGrayGrid;
+                    NameContainer.BorderThickness = new Thickness(0, 1, 0, 0);
+                    AchievementRowPanel.Children.Add(NameContainer);
+
+                    Label ShotLabel = new Label();
+                    ShotLabel.Width = NameWidth;
+                    ShotLabel.Content = ShotType;
+                    ShotLabel.Foreground = TheTextColor; 
+                    if (Thin == true) { ShotLabel.Margin = new Thickness(0, -5, 0, -15); }
+                    //NameContainer.Children.Add(ShotLabel);
+                    NameContainer.Child = ShotLabel;
 
                     foreach (string Difficulty in DifficultyList)
                     {
-                        if (Properties.Settings.Default.ShowEasyMode == false && Difficulty == "Easy")
+                        if (Properties.Settings.Default.ShowEx2 == true && DifficultyList.Count >= 6 && Difficulty == "Easy")
                         {
                             continue;
                         }
-                        if (Properties.Settings.Default.ShowNormalMode == false && Difficulty == "Normal")
+                        if (Properties.Settings.Default.ShowEx3 == true && DifficultyList.Count >= 7 && Difficulty == "Normal")
                         {
                             continue;
                         }
 
-                        Label GoalLabel = new Label();
-                        DockPanel.SetDock(GoalLabel, Dock.Left);
-                        GoalLabel.Content = Difficulty;
-                        GoalLabel.Width = GoalWidth;
-                        //GoalLabel.Height = 26;
-                        if (Thin == true) { GoalLabel.Margin = new Thickness(0, 0, 0, -10); }
-                        GoalLabel.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center;
-                        //GoalLabel.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
-                        GoalsPanel.Children.Add(GoalLabel);
+                        foreach (Achievement achievement in Game.AchievementList) //Assign achievement as tag
+                        {
+                            if (achievement.Difficulty == Difficulty && achievement.ShotType == ShotType)
+                            {
+                                
+                                //if (Game.SeriesName == "Touhou 7" && Properties.Settings.Default.ShowPhantasmMode == false && Difficulty == "Phantasm")
+                                //{
+                                //    continue;
+                                //}
 
-                        if (Difficulty == "Easy")
-                        {
-                            GoalLabel.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0F3F4A"));
-                            GoalLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#839BC3"));
+                                MakeAGoalBox(achievement, AchievementRowPanel, GoalWidth);
+
+                            }
                         }
-                        if (Difficulty == "Normal")
-                        {
-                            GoalLabel.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1F3E0F"));
-                            GoalLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#87AC87"));
-                        }
-                        if (Difficulty == "Hard")
-                        {
-                            GoalLabel.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#603203"));
-                            GoalLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C78D31"));
-                        }
-                        if (Difficulty == "Lunatic")
-                        {
-                            GoalLabel.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#520000"));
-                            GoalLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B47B6B"));
-                        }
-                        if (Difficulty == "Extra")
-                        {
-                            GoalLabel.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1A0E3E"));
-                            GoalLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#725681"));
-                        }
-                        if (Difficulty == "Phantasm")
-                        {
-                            GoalLabel.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2c0e3e"));
-                            GoalLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#81567d"));
-                        }
-                        if (Difficulty == "Luna NB")
-                        {
-                            GoalLabel.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1A0E3E"));
-                            GoalLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#725681"));
-                        }
-                        if (Difficulty == "Extra NB")
-                        {
-                            GoalLabel.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1A0E3E"));
-                            GoalLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#725681"));
-                        }
-                        if (Difficulty == "Phan NB")
-                        {
-                            GoalLabel.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2c0e3e"));
-                            GoalLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#81567d"));
-                        }
+
+
                     }
 
-
                 }
-
             }
+            //////////////////////////////////////////////////////////////////////
+            ////////////////// LEFT COLUMN OF SHOT TYPE NAMES //////////////////// 
+            //////////////////////////////////////////////////////////////////////
 
-
-            {
-                //Chart Achievement Lines
-                if (DifficultyList.Count != 0 && ShotTypeList.Count != 0)
-                {
-                    foreach (string ShotType in ShotTypeList)
-                    {
-                        bool Thin = true;
-
-                        DockPanel AchievementPanel = new();
-                        DockPanel.SetDock(AchievementPanel, Dock.Top);
-                        AchievementPanel.LastChildFill = false;
-                        AchievementPanel.Background = TheBackColor;
-                        if (Thin == true) { AchievementPanel.Height = 26; }
-                        GamePanel.Children.Add(AchievementPanel);
-
-                        Label nameLabel = new Label();
-                        nameLabel.Width = NameWidth;
-                        nameLabel.Content = ShotType;
-                        nameLabel.Foreground = TheTextColor;
-                        if (Thin == true) { nameLabel.Margin = new Thickness(0, -1, 0, -15); }
-                        nameLabel.BorderThickness = new Thickness(0, 1, 0, 0);
-                        nameLabel.BorderBrush = TheGrayGrid;
-                        AchievementPanel.Children.Add(nameLabel);
-
-                        foreach (string Difficulty in DifficultyList)
-                        {
-                            if (Properties.Settings.Default.ShowEasyMode == false && Difficulty == "Easy")
-                            {
-                                continue;
-                            }
-                            if (Properties.Settings.Default.ShowNormalMode == false && Difficulty == "Normal")
-                            {
-                                continue;
-                            }
-
-                            foreach (Achievement achievement in Game.AchievementList) //Assign achievement as tag
-                            {
-                                if (achievement.Difficulty == Difficulty && achievement.ShotType == ShotType)
-                                {
-                                    MakeAGoalBox(achievement, AchievementPanel, GoalWidth);
-                                    
-                                }
-                            }
-                            
-
-                        }
-
-                    }
-                }
-
-            }
-
+            //////////////////////////////////////////////////////////////////////
+            ///////// UNIQUE ACHIEVEMENT ROWS UNDER THE ACHIEVEMENT GRID ///////// 
+            //////////////////////////////////////////////////////////////////////
             {
                 //Unique Achievement Lines
 
-                if (Game.CodeName == "th08" || Game.CodeName == "th13") 
-                {
-                    if (Properties.Settings.Default.ShowTouhouSpecialAchievements == false) 
-                    {
-                        return;
-                    }
-                }
+                
+
 
                 if (Game.AchievementList.Any(achievement => achievement.Type == Achievement.AchievementTypes.Basic)) 
                 {
                     if (Game.AchievementList.Any(achievement => achievement.Type == Achievement.AchievementTypes.Chart)) 
                     {
+                        if (Properties.Settings.Default.ShowTouhouSpecialAchievements == false)
+                        {
+                            return;
+                        }
+
                         //Make some kind of seperator line
                         DockPanel SeperatorLinePanel = new();
                         DockPanel.SetDock(SeperatorLinePanel, Dock.Top);
@@ -998,6 +1055,7 @@ namespace WesternLauncherOfEasternOrigins
                 {
                     if (achievement.Type == Achievement.AchievementTypes.Basic)
                     {
+                        
                         DockPanel AchievementPanel = new();
                         DockPanel.SetDock(AchievementPanel, Dock.Top);
                         AchievementPanel.Background = TheBackColor;
@@ -1011,7 +1069,7 @@ namespace WesternLauncherOfEasternOrigins
 
                         Label nameLabel = new Label();
                         nameLabel.Content = achievement.Name;
-                        nameLabel.FontSize = 15;
+                        nameLabel.FontSize = 20;
                         nameLabel.Foreground = TheTextColor;
                         AchievementPanel.Children.Add(nameLabel);
                     }
@@ -1019,19 +1077,34 @@ namespace WesternLauncherOfEasternOrigins
                 }
 
             }
+            //////////////////////////////////////////////////////////////////////
+            ///////// UNIQUE ACHIEVEMENT ROWS UNDER THE ACHIEVEMENT GRID ///////// 
+            //////////////////////////////////////////////////////////////////////
+            
 
-
+            //////////////////////////////////////////////////////////////////////
+            ///////////// THE ACTUAL ACHIEVEMENT BOXES IN THIS GRID ////////////// 
+            //////////////////////////////////////////////////////////////////////
             void MakeAGoalBox(Achievement achievement, DockPanel AchievementPanel, int TheGoalWidth)
             {
+                Brush TheGrayGrid = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#A0191919")); //From 50 to A0 transparency
+
                 TextBox GoalBox = new();
                 GoalBox.Tag = achievement;
 
                 Achievement MyAchievement = GoalBox.Tag as Achievement;
 
                 GoalBox.Width = TheGoalWidth;
-                GoalBox.Style = (Style)Application.Current.FindResource("NoMouseOverTextBoxStyle");
+                {
+                    //GoalBox.Style = (Style)Application.Current.FindResource("LabelBox"); 
+                    //GoalBox.Style = (Style)Application.Current.FindResource("NoMouseOverTextBoxStyle");
+                    GoalBox.BorderThickness = new Thickness(1,1,1,1);
+                    GoalBox.BorderBrush = TheGrayGrid;
+                    
+                }
+                
                 GoalBox.Text = MyAchievement.PlayerText;
-                GoalBox.FontSize = 18;
+                //GoalBox.FontSize = 20; //Font size is overwritten in method SetTextboxColor();
                 GoalBox.HorizontalContentAlignment = HorizontalAlignment.Center;
                 GoalBox.VerticalContentAlignment = VerticalAlignment.Center;
                 GoalBox.Background = TheBackColor;
@@ -1040,7 +1113,7 @@ namespace WesternLauncherOfEasternOrigins
                 {
                     //GoalBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4D4E4F"));
                     //GoalBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF"));
-                    GoalBox.BorderBrush = TheBorderColor;
+                    GoalBox.BorderBrush = TheGrayGrid; //TheBorderColor
                     GoalBox.BorderThickness = new Thickness(2);
                 }
                 AchievementPanel.Children.Add(GoalBox);
@@ -1102,18 +1175,21 @@ namespace WesternLauncherOfEasternOrigins
                     GameLauncher.QuestLevelLabel.Content = MyAchievement.Level.ToString();
                 };
             }
+            //////////////////////////////////////////////////////////////////////
+            ///////////// THE ACTUAL ACHIEVEMENT BOXES IN THIS GRID ////////////// 
+            //////////////////////////////////////////////////////////////////////
 
         }
 
 
-        
+
 
         private void SetTextboxColor(TextBox GoalBox) 
         {
             Achievement achievement = GoalBox.Tag as Achievement;
             string Difficulty = achievement.Difficulty;
 
-            if (GoalBox.Text.Contains("1CC") || GoalBox.Text.Contains("1cc") || GoalBox.Text.Contains("NB") || GoalBox.Text.Contains("Clear") || GoalBox.Text.Contains("✓") || GoalBox.Text.Contains("✔") || GoalBox.Text.Contains("ND") || GoalBox.Text.Contains("NM") || GoalBox.Text.Contains("!"))
+            if (GoalBox.Text.Contains("1CC") || GoalBox.Text.Contains("1cc") || GoalBox.Text.Contains("NB") || GoalBox.Text.Contains("Clear") || GoalBox.Text.Contains("✓") || GoalBox.Text.Contains("✔") || GoalBox.Text.Contains("ND") || GoalBox.Text.Contains("NM") || GoalBox.Text.Contains("!") || GoalBox.Text.Contains("Hidden") || GoalBox.Text.Contains("HIDDEN"))
             {
                 if (Difficulty == "")
                 {
@@ -1139,16 +1215,22 @@ namespace WesternLauncherOfEasternOrigins
                     GoalBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C78D31"));
                     //GoalBox.FontWeight = FontWeights.Bold;
                 }
-                if (Difficulty == "Lunatic")
+                if (Difficulty == "Lunatic" || Difficulty == "Unreal" || Difficulty == "Overdrive" || Difficulty == "URA")
                 {
                     GoalBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#520000"));
                     GoalBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B47B6B"));
                     //GoalBox.FontWeight = FontWeights.Bold;
                 }
-                if (Difficulty == "Extra")
+                if (Difficulty == "Extra" || Difficulty == "Labyrinth")
                 {
-                    GoalBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1A0E3E"));
-                    GoalBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#725681"));
+                    GoalBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#242563"));
+                    GoalBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7973d4"));
+                    //GoalBox.FontWeight = FontWeights.Bold;
+                }
+                if (Difficulty == "Phantasm" || Difficulty == "A-Extra" || Difficulty == "Carrefour" || Difficulty == "Sequal" || Difficulty == "E-Extra")
+                {
+                    GoalBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#471759"));
+                    GoalBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b66eba"));
                     //GoalBox.FontWeight = FontWeights.Bold;
                 }
                 if (Difficulty == "Luna NB")
@@ -1166,41 +1248,61 @@ namespace WesternLauncherOfEasternOrigins
             }
             else
             {
-                GoalBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(achievement.TouhouGame.ColorBack));
-                GoalBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(achievement.TouhouGame.ColorText));
+                GoalBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(achievement.TheGame.ColorBack));
+                GoalBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(achievement.TheGame.ColorText));
             }
-
-            if (GoalBox.Text.Length >= 16)
+            if (GoalBox.Text.Length >= 19)
             {
-                GoalBox.FontSize = 8;
+                GoalBox.FontSize = 10;
+                GoalBox.FontFamily = new FontFamily("Segoe UI");
+            }
+            if (GoalBox.Text.Length >= 18)
+            {
+                GoalBox.FontSize = 11;
+                GoalBox.FontFamily = new FontFamily("Segoe UI");
+            }
+            if (GoalBox.Text.Length >= 17)
+            {
+                GoalBox.FontSize = 12;
+                GoalBox.FontFamily = new FontFamily("Segoe UI");
+            }
+            else if (GoalBox.Text.Length >= 16)
+            {
+                GoalBox.FontSize = 13;
+                GoalBox.FontFamily = new FontFamily("Segoe UI");
+            }
+            else if (GoalBox.Text.Length >= 15)
+            {
+                GoalBox.FontSize = 14;
+                GoalBox.FontFamily = new FontFamily("Segoe UI");
             }
             else if (GoalBox.Text.Length >= 14)
             {
-                GoalBox.FontSize = 9;
+                GoalBox.FontSize = 15;
+                GoalBox.FontFamily = new FontFamily("Segoe UI");
+            }
+            else if (GoalBox.Text.Length >= 13)
+            {
+                GoalBox.FontSize = 16;
+                GoalBox.FontFamily = new FontFamily("Segoe UI");
             }
             else if (GoalBox.Text.Length >= 12)
             {
-                GoalBox.FontSize = 11;
-            }
+                GoalBox.FontSize = 18;
+                GoalBox.FontFamily = new FontFamily("Segoe UI");
+            }            
             else if (GoalBox.Text.Length >= 10)
             {
-                GoalBox.FontSize = 13;
-            }
-            else if (GoalBox.Text.Length >= 8)
-            {
-                GoalBox.FontSize = 15;
+                GoalBox.FontSize = 20;
+                GoalBox.FontFamily = new FontFamily("Segoe UI");
             }
             else
             {
-                GoalBox.FontSize = 18;
+                GoalBox.FontSize = 20;
+                GoalBox.FontFamily = (FontFamily)GoalBox.FindResource("AppFont"); //new FontFamily("Dawns 10px ArkPixel");
             }
 
 
-        }
-
-        private void SetGoalBoxSize() 
-        {
-        
         }
 
 
@@ -1212,12 +1314,12 @@ namespace WesternLauncherOfEasternOrigins
             settings.IndentChars = ("    ");
             settings.CloseOutput = true;
             settings.OmitXmlDeclaration = true;
-            using (XmlWriter writer = XmlWriter.Create(LibraryMan.TouhouLauncherPath + "\\Player Profiles\\" + LibraryMan.PlayerName + ".xml", settings))
+            using (XmlWriter writer = XmlWriter.Create(LibraryTouhou.TouhouLauncherPath + "\\Player Profiles\\" + LibraryTouhou.PlayerName + ".xml", settings))
             {
                 writer.WriteStartElement("Root");
                 writer.WriteStartElement("AchievementList");
 
-                foreach (Achievement achievement in LibraryMan.MasterAchievementsList)
+                foreach (Achievement achievement in LibraryTouhou.MasterAchievementsList)
                 {
                     writer.WriteStartElement("Achievement");
                     writer.WriteElementString("Type", "Basic");

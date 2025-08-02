@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WesternLauncherOfEasternOrigins"
         mc:Ignorable="d"
-        Title="Player Profile Creation" Height="150" Width="300" 
+        Title="Player Profile Creation" Height="200" Width="300" 
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="#FF5F5F5F">
     <Grid >
         <StackPanel Margin="10,10,10,0"  VerticalAlignment="Top">
             <TextBlock Text="Please enter a player name:" Margin="0,0,0,10" Foreground="White"/>
             <TextBox x:Name="nameTextBox" Margin="0,0,0,10"/>
-            <Button x:Name="createButton" Content="Create New Player Profile" Margin="0,0,0,10" Click="CreateButton_Click"/>
-            <Button x:Name="cancelButton" Content="Cancel" Click="CancelButton_Click"/>
+            <Button x:Name="createButton" Content="Create New Player Profile" Margin="0,0,0,10" Click="CreateButton_Click" Height="34"/>
+            <Button x:Name="cancelButton" Content="Cancel" Click="CancelButton_Click" Height="34"/>
         </StackPanel>
     </Grid>
 

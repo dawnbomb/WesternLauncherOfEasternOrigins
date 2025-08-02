@@ -11,8 +11,9 @@
             <DockPanel LastChildFill="False" Background="#FF290F0F">
                 <DockPanel DockPanel.Dock="Top" Background="#FF770000" LastChildFill="False">
                     <Label Content="Achievements"/>
-                    <Button Content="New Basic Achievement" Margin="4" Click="NewBasicAchievementButton"/>
-                    <Button Content="New Chart Achievement" Margin="4" Click="NewChartAchievementButton"/>
+                    <Button Content="New Basic Achievement" Margin="3" Click="NewBasicAchievementButton" Width="241"/>
+                    <Button Content="New Chart Row" Margin="3" Click="NewChartRowButton" Width="160"/>
+                    <Button Content="New Chart Column" Margin="3" Click="NewChartColumnButton" Width="180"/>
                 </DockPanel>
                 <ScrollViewer DockPanel.Dock="Top">
                     <DockPanel Name="AchievementListDockPanel"  LastChildFill="False">

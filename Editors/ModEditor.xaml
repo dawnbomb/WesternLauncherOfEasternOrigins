@@ -5,52 +5,55 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WesternLauncherOfEasternOrigins"
              mc:Ignorable="d" 
-             d:DesignHeight="750" d:DesignWidth="550">
+             d:DesignHeight="850" d:DesignWidth="710">
     <Grid Background="#FF031325">
         <Border Name="ModsPanel" DockPanel.Dock="Right">
             <DockPanel  Background="#FF255790">
                 <DockPanel DockPanel.Dock="Top" Background="#FF233A69" LastChildFill="False">
                     <Label Content="Mods"/>
-                    <Button Content="New Mod" Margin="4" Click="NewModButton"/>
-                    <Button Content="Delete Mod" Margin="4" Click="DeleteModButton"/>
-                    <Button Content="Add mod to game" Margin="4" Click="AddModToGame"/>
-                    <Button Content="UP" Margin="4" Click="MoveUP"/>
-                    <Button Content="DOWN" Margin="4" Click="MoveDOWN"/>
+                    <Button Content="New Mod" Margin="4" Click="NewModButton" Width="97"/>
+                    <Button Content="Delete Mod" Margin="4" Click="DeleteModButton" Width="127"/>
+                    <Button Content="Add mod to game" Margin="4" Click="AddModToGame" Width="178"/>
+                    <Button Content="UP" Margin="4" Click="MoveUP" Width="46"/>
+                    <Button Content="DOWN" Margin="4" Click="MoveDOWN" Width="78"/>
                 </DockPanel>
                 <Border DockPanel.Dock="Top">
                     <DockPanel>
-                        <Border DockPanel.Dock="Bottom" Height="200">
-                            <DockPanel>
-                                <DockPanel DockPanel.Dock="Top">
-                                    <Label Content="Description"/>
+                        <DockPanel DockPanel.Dock="Bottom" Background="#FF0C0C0C" >
+                            <Border  Height="200" Width="650">
+                                <DockPanel>
+                                    <DockPanel DockPanel.Dock="Top">
+                                        <Label Content="Description"/>
+                                    </DockPanel>
+                                    <TextBox Name="DescriptionBox"  Background="#FF03202F" Margin="5" TextWrapping="Wrap" TextChanged="DescriptionTextChanged" AcceptsReturn="True"/>
                                 </DockPanel>
-                                <TextBox Name="DescriptionBox"  Background="#FF9FD5F1" Margin="5" TextWrapping="Wrap" TextChanged="DescriptionTextChanged" AcceptsReturn="True"/>
-                            </DockPanel>
 
-                        </Border>
+                            </Border>
+                        </DockPanel>
+                        
 
                         <DockPanel DockPanel.Dock="Top">
-                            <TreeView Name="TheTreeView" Width="270" Background="#FF000A3E" DockPanel.Dock="Left" SelectedItemChanged="TreeViewSelectedItemChanged"/>
+                            <TreeView Name="TheTreeView" Width="365" Background="#FF000A3E" DockPanel.Dock="Left" SelectedItemChanged="TreeViewSelectedItemChanged" FontSize="20"/>
                             <DockPanel  DockPanel.Dock="Right" LastChildFill="False">
 
 
                                 <Border DockPanel.Dock="Top">
                                     <DockPanel  >
-                                        <Label Content="Name: " MinWidth="110"/>
+                                        <Label Content="Name: " MinWidth="110" DockPanel.Dock="Top"/>
                                         <TextBox Text="Name..." Name="NameBox" TextChanged="NameboxTextChanged"/>
                                     </DockPanel>
                                 </Border>                                
 
                                 <Border DockPanel.Dock="Top">
                                     <DockPanel  >
-                                        <Label Content="Key: " MinWidth="110"/>
+                                        <Label Content="Key: " MinWidth="110" DockPanel.Dock="Top"/>
                                         <TextBox Name="KeyBox" Text="Key..." TextChanged="KeyTextChanged" />
                                     </DockPanel>
                                 </Border>
 
                                 <Border DockPanel.Dock="Top">
                                     <DockPanel  >
-                                        <Label Content="THCrap Text: " MinWidth="110"/>
+                                        <Label Content="THCrap Text: " MinWidth="110" DockPanel.Dock="Top"/>
                                         <TextBox Name="THCrapBox" Text="Crap..." TextChanged="THCrapTextChanged" />
                                     </DockPanel>
                                 </Border>
@@ -62,15 +65,31 @@
                                     </DockPanel>
                                 </Border>
 
-                                <Border DockPanel.Dock="Bottom">
+                                <Border DockPanel.Dock="Top">
                                     <DockPanel>
                                         <DockPanel DockPanel.Dock="Top">
-                                            <Label Content="Games"/>
+                                            <Label Content="Mod Note"/>
                                         </DockPanel>
-                                        <TextBox Name="GamesBox" Text="Text..."  Background="#FF9FD5F1" Margin="5" Height="50"/>
+                                        <TextBox Name="NoteBox" TextChanged="NoteBoxTextChanged"  Background="#FF061E2B" Margin="5" Height="150" TextWrapping="Wrap" AcceptsReturn="True"/>
                                     </DockPanel>
 
                                 </Border>
+
+
+
+                                <Border DockPanel.Dock="Top">
+                                    <DockPanel>
+                                        <DockPanel DockPanel.Dock="Top">
+                                            <Label Content="Games using this mod"/>
+                                        </DockPanel>
+                                        <ScrollViewer>
+                                            <TextBox Name="GamesBox" Text="Text..."  Background="#FF061E2B" Margin="5" MinHeight="100"/>
+                                        </ScrollViewer>
+                                        
+                                    </DockPanel>
+                                </Border>
+                                
+                                
 
                                 
                             </DockPanel>

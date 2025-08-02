@@ -65,7 +65,7 @@ namespace WesternLauncherOfEasternOrigins
             settings.IndentChars = ("    ");
             settings.CloseOutput = true;
             settings.OmitXmlDeclaration = true;
-            using (XmlWriter writer = XmlWriter.Create(LibraryMan.TouhouLauncherPath + "\\Player Profiles\\" + NewPlayerName + ".xml", settings))
+            using (XmlWriter writer = XmlWriter.Create(LibraryTouhou.TouhouLauncherPath + "\\Player Profiles\\" + NewPlayerName + ".xml", settings))
             {
                 writer.WriteStartElement("Root");
                 writer.WriteStartElement("AchievementList");
