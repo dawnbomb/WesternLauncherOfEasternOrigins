@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace WesternLauncherOfEasternOrigins
 {
-    public static class LibraryMan
+    public static class LibraryTouhou
     {
+        public static string VersionDate { get; set; } = "Augest 1 2025";
+        public static Version VersionNumber { get; set; } = new Version(1, 0, 0); //Version Numbers (in order) are Major.Minor.Build.Revision
+
         public static string TouhouLauncherPath { get; set; } = ""; //where this exe is. If in debug mode (coding / developer mode), its set to use the release folder on my local PC. 
         public static string ModsXMLLocation { get; set; } = "";
         public static string GamesXMLLocation { get; set; } = "";
-        public static List<TouhouGame> MasterGameList { get; set; } = new();
+        public static List<GameData> MasterGameList { get; set; } = new();
         public static List<TouhouMod> MasterModsList { get; set; } = new();
         public static List<Achievement> MasterAchievementsList { get; set; } = new();
         public static string PlayerName { get; set; } = "";

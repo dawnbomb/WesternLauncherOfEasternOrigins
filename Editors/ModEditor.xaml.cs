@@ -23,13 +23,13 @@ namespace WesternLauncherOfEasternOrigins
     public partial class ModEditor : UserControl
     {
         TreeViewItem TreeItem { get; set; }
-        TouhouMod Mod { get; set; }
+        TouhouMod ThisMod { get; set; }
 
         public ModEditor()
         {
             InitializeComponent();
 
-            foreach (TouhouMod touhouMod in LibraryMan.MasterModsList)
+            foreach (TouhouMod touhouMod in LibraryTouhou.MasterModsList)
             {
                 LoadMod(touhouMod);
             }
@@ -38,7 +38,7 @@ namespace WesternLauncherOfEasternOrigins
         private void NewModButton(object sender, RoutedEventArgs e)
         {
             TouhouMod touhouMod = new();
-            LibraryMan.MasterModsList.Add(touhouMod);
+            LibraryTouhou.MasterModsList.Add(touhouMod);
             LoadMod(touhouMod);
         }
 
@@ -47,14 +47,14 @@ namespace WesternLauncherOfEasternOrigins
             TreeViewItem treeViewItem = TheTreeView.SelectedItem as TreeViewItem;
             TouhouMod touhouMod = treeViewItem.Tag as TouhouMod;
 
-            LibraryMan.MasterModsList.Remove(touhouMod);
+            LibraryTouhou.MasterModsList.Remove(touhouMod);
             TheTreeView.Items.Remove(treeViewItem);
         }
 
         public void LoadMod(TouhouMod Mod)
         {
             TreeViewItem treeViewItem = new TreeViewItem();
-            treeViewItem.Header = Mod.Key;
+            treeViewItem.Header = Mod.Name;
             treeViewItem.Tag = Mod;
             TheTreeView.Items.Add(treeViewItem);
 
@@ -68,15 +68,16 @@ namespace WesternLauncherOfEasternOrigins
         {
             TreeItem = TheTreeView.SelectedItem as TreeViewItem;
             if (TreeItem == null) { return; }
-            Mod = TreeItem.Tag as TouhouMod;
+            ThisMod = TreeItem.Tag as TouhouMod;
 
 
+            NameBox.Text = ThisMod.Name;
+            KeyBox.Text = ThisMod.Key;
+            DescriptionBox.Text = ThisMod.Description;
+            THCrapBox.Text = ThisMod.THCrapText;
+            NoteBox.Text = ThisMod.Note;
 
-            KeyBox.Text = Mod.Key;
-            DescriptionBox.Text = Mod.Description;
-            THCrapBox.Text = Mod.THCrapText;
-
-            if (Mod.Recommend == true)
+            if (ThisMod.Recommend == true)
             {
                 RecommendCheckbox.IsChecked = true;
             }
@@ -84,67 +85,19 @@ namespace WesternLauncherOfEasternOrigins
             {
                 RecommendCheckbox.IsChecked = false;
             }
-        }
 
-        private void KeyTextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (TheTreeView.SelectedItem == null)
+            GamesBox.Clear();
+
+            foreach (GameData game in LibraryTouhou.MasterGameList) 
             {
-                return;
+                foreach (TouhouMod mod in game.ModList) 
+                {
+                    if (ThisMod == mod) 
+                    {
+                        GamesBox.AppendText(game.CodeName + ": " + game.SubtitleName + Environment.NewLine);
+                    }
+                }
             }
-            Mod.Key = KeyBox.Text;
-            TreeItem.Header = Mod.Key;
-        }
-
-        private void THCrapTextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (TheTreeView.SelectedItem == null)
-            {
-                return;
-            }
-            Mod.THCrapText = THCrapBox.Text;
-        }
-
-        private void DescriptionTextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (TheTreeView.SelectedItem == null)
-            {
-                return;
-            }
-            Mod.Description = DescriptionBox.Text;
-        }
-
-        private void RecommendedChecked(object sender, RoutedEventArgs e)
-        {
-            if (TheTreeView.SelectedItem == null)
-            {
-                return;
-            }
-            Mod.Recommend = true;
-        }
-
-        private void RecommendedUnchecked(object sender, RoutedEventArgs e)
-        {
-            if (TheTreeView.SelectedItem == null)
-            {
-                return;
-            }
-            Mod.Recommend = false;
-        }
-
-        private void AddModToGame(object sender, RoutedEventArgs e)
-        {
-            var parentWindow = Window.GetWindow(this); //load achievements
-            if (parentWindow is Editor EditorWindow)
-            {
-                TreeViewItem GameItem = EditorWindow.TheGameEditor.TheTreeView.SelectedItem as TreeViewItem;
-                TouhouGame touhouGame = GameItem.Tag as TouhouGame;
-                touhouGame.ModList.Add(Mod);
-                EditorWindow.TheGameEditor.LoadMod(Mod);
-            }
-
-
-
         }
 
         private void NameboxTextChanged(object sender, TextChangedEventArgs e)
@@ -153,8 +106,81 @@ namespace WesternLauncherOfEasternOrigins
             {
                 return;
             }
-            Mod.Name = NameBox.Text;
+            ThisMod.Name = NameBox.Text;
+            TreeItem.Header = ThisMod.Name;
         }
+
+        private void KeyTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (TheTreeView.SelectedItem == null)
+            {
+                return;
+            }
+            ThisMod.Key = KeyBox.Text;
+            
+        }
+
+        private void THCrapTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (TheTreeView.SelectedItem == null)
+            {
+                return;
+            }
+            ThisMod.THCrapText = THCrapBox.Text;
+        }
+
+        private void DescriptionTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (TheTreeView.SelectedItem == null)
+            {
+                return;
+            }
+            ThisMod.Description = DescriptionBox.Text;
+        }
+
+        private void NoteBoxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (TheTreeView.SelectedItem == null)
+            {
+                return;
+            }
+            ThisMod.Note = NoteBox.Text;
+        }
+
+        private void RecommendedChecked(object sender, RoutedEventArgs e)
+        {
+            if (TheTreeView.SelectedItem == null)
+            {
+                return;
+            }
+            ThisMod.Recommend = true;
+        }
+
+        private void RecommendedUnchecked(object sender, RoutedEventArgs e)
+        {
+            if (TheTreeView.SelectedItem == null)
+            {
+                return;
+            }
+            ThisMod.Recommend = false;
+        }
+
+        private void AddModToGame(object sender, RoutedEventArgs e)
+        {
+            var parentWindow = Window.GetWindow(this); //load achievements
+            if (parentWindow is Editor EditorWindow)
+            {
+                TreeViewItem GameItem = EditorWindow.TheGameEditor.TheTreeView.SelectedItem as TreeViewItem;
+                GameData touhouGame = GameItem.Tag as GameData;
+                touhouGame.ModList.Add(ThisMod);
+                EditorWindow.TheGameEditor.LoadMod(ThisMod);
+            }
+
+
+
+        }
+
+        
 
         private void MoveUP(object sender, RoutedEventArgs e)
         {
@@ -231,5 +257,7 @@ namespace WesternLauncherOfEasternOrigins
                 }
             }
         }
+
+        
     }
 }

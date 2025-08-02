@@ -26,7 +26,7 @@ namespace WesternLauncherOfEasternOrigins.Editors
             settings.IndentChars = ("    ");
             settings.CloseOutput = true;
             settings.OmitXmlDeclaration = true;
-            using (XmlWriter writer = XmlWriter.Create(LibraryMan.ModsXMLLocation, settings))
+            using (XmlWriter writer = XmlWriter.Create(LibraryTouhou.ModsXMLLocation, settings))
             {
                 writer.WriteStartElement("Root");
                 writer.WriteStartElement("ModsList");
@@ -40,6 +40,7 @@ namespace WesternLauncherOfEasternOrigins.Editors
                     writer.WriteElementString("THCrapText", Mod.THCrapText); 
                     writer.WriteElementString("Recommend", Mod.Recommend.ToString());
                     writer.WriteElementString("Description", Mod.Description);
+                    writer.WriteElementString("Note", Mod.Note);
 
 
                     writer.WriteEndElement(); //End Mod   
@@ -53,8 +54,8 @@ namespace WesternLauncherOfEasternOrigins.Editors
         public void SaveTheGames(GameEditor Editor, string SaveType) 
         {            
             string SaveLocation = "";
-            if (SaveType == "Games")  { SaveLocation = LibraryMan.GamesXMLLocation; }
-            if (SaveType == "Player") { SaveLocation = LibraryMan.TouhouLauncherPath + "\\Player Profiles\\" + LibraryMan.PlayerName + ".xml"; }
+            if (SaveType == "Games")  { SaveLocation = LibraryTouhou.GamesXMLLocation; }
+            if (SaveType == "Player") { SaveLocation = LibraryTouhou.TouhouLauncherPath + "\\Player Profiles\\" + LibraryTouhou.PlayerName + ".xml"; }
 
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
@@ -68,7 +69,7 @@ namespace WesternLauncherOfEasternOrigins.Editors
 
                 foreach (TreeViewItem Item in Editor.TheTreeView.Items)
                 {
-                    TouhouGame Game = Item.Tag as TouhouGame;
+                    GameData Game = Item.Tag as GameData;
 
                     writer.WriteStartElement("Game"); //This is the root of the XML   
                     writer.WriteElementString("SeriesName", Game.SeriesName); //This is all misc editor data.
@@ -82,6 +83,22 @@ namespace WesternLauncherOfEasternOrigins.Editors
                     writer.WriteElementString("ColorBack", Game.ColorBack);
                     writer.WriteElementString("ColorText", Game.ColorText);
 
+                    writer.WriteStartElement("LinksList");
+                    foreach (GameLink link in Game.LinkList)
+                    {
+                        //if (link.Name == "" || link.Name == null)
+                        //{
+                        //    continue; 
+                        //}
+
+                        writer.WriteStartElement("Link");
+                        writer.WriteElementString("Name", link.Name);
+                        writer.WriteElementString("URL", link.URL);
+                        writer.WriteElementString("Tooltip", link.Tooltip);
+                        writer.WriteEndElement(); //End Mod 
+                    }
+                    writer.WriteEndElement(); //End AchievementList
+
                     writer.WriteStartElement("ModsList");
                     foreach (TouhouMod touhouMod in Game.ModList)
                     {
@@ -92,12 +109,44 @@ namespace WesternLauncherOfEasternOrigins.Editors
                     }
                     writer.WriteEndElement(); //End AchievementList
 
+                    writer.WriteStartElement("AchievementTable");
+                    foreach (Achievement achievement in Game.AchievementList)
+                    {
+                        if (achievement.Type == Achievement.AchievementTypes.Basic) { continue; }
+
+                        writer.WriteStartElement("Achievement");
+
+
+                        if (achievement.Type == Achievement.AchievementTypes.Basic)
+                        {
+                            writer.WriteElementString("Type", "Basic");
+                            writer.WriteElementString("Name", achievement.Name);
+                        }
+                        if (achievement.Type == Achievement.AchievementTypes.Chart)
+                        {
+                            writer.WriteElementString("Type", "Chart");
+                            writer.WriteElementString("Column", achievement.Difficulty);
+                            writer.WriteElementString("Row", achievement.ShotType);
+                        }
+                        writer.WriteElementString("Tooltip", achievement.Level.ToString());
+
+                        if (SaveType == "Player") { writer.WriteElementString("PlayerText", achievement.PlayerText); }
+                        if (SaveType == "Games") { writer.WriteElementString("Note", achievement.Note); }
+                        
+                        writer.WriteElementString("Key", achievement.Key);
+                        writer.WriteEndElement(); //End Achievement 
+                    }
+                    writer.WriteEndElement(); //End AchievementList
+
+
                     writer.WriteStartElement("AchievementList");
                     foreach (Achievement achievement in Game.AchievementList)
                     {
+                        if (achievement.Type == Achievement.AchievementTypes.Chart) { continue; }
+
                         writer.WriteStartElement("Achievement");
 
-                        writer.WriteElementString("Level", achievement.Level.ToString());
+                        
                         if (achievement.Type == Achievement.AchievementTypes.Basic) 
                         {
                             writer.WriteElementString("Type", "Basic");
@@ -106,12 +155,14 @@ namespace WesternLauncherOfEasternOrigins.Editors
                         if (achievement.Type == Achievement.AchievementTypes.Chart) 
                         {
                             writer.WriteElementString("Type", "Chart");
-                            writer.WriteElementString("Difficulty", achievement.Difficulty);
-                            writer.WriteElementString("ShotType", achievement.ShotType);
+                            writer.WriteElementString("Column", achievement.Difficulty);
+                            writer.WriteElementString("Row", achievement.ShotType);
                         }
+                        writer.WriteElementString("Tooltip", achievement.Level.ToString());
 
-                        writer.WriteElementString("PlayerText", achievement.PlayerText);
-                        writer.WriteElementString("Note", achievement.Note);
+                        if (SaveType == "Player") { writer.WriteElementString("PlayerText", achievement.PlayerText); }
+                        if (SaveType == "Games") { writer.WriteElementString("Note", achievement.Note); }
+
                         writer.WriteElementString("Key", achievement.Key);
                         writer.WriteEndElement(); //End Achievement 
                     }

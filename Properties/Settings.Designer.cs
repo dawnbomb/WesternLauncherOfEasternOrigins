@@ -98,18 +98,6 @@ namespace WesternLauncherOfEasternOrigins.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool SkipPractisePopups {
-            get {
-                return ((bool)(this["SkipPractisePopups"]));
-            }
-            set {
-                this["SkipPractisePopups"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool VolumeMixerAtLauncher {
             get {
                 return ((bool)(this["VolumeMixerAtLauncher"]));
@@ -301,18 +289,6 @@ namespace WesternLauncherOfEasternOrigins.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ShowChallengePanel {
-            get {
-                return ((bool)(this["ShowChallengePanel"]));
-            }
-            set {
-                this["ShowChallengePanel"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string NotepadText {
             get {
@@ -349,7 +325,7 @@ namespace WesternLauncherOfEasternOrigins.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool ShowTouhouSpecialAchievements {
             get {
                 return ((bool)(this["ShowTouhouSpecialAchievements"]));
@@ -374,24 +350,168 @@ namespace WesternLauncherOfEasternOrigins.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ShowEasyMode {
+        public bool ShowQuestBoard {
             get {
-                return ((bool)(this["ShowEasyMode"]));
+                return ((bool)(this["ShowQuestBoard"]));
             }
             set {
-                this["ShowEasyMode"] = value;
+                this["ShowQuestBoard"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ShowNormalMode {
+        public bool OpenVolumeMixerAt100Volume {
             get {
-                return ((bool)(this["ShowNormalMode"]));
+                return ((bool)(this["OpenVolumeMixerAt100Volume"]));
             }
             set {
-                this["ShowNormalMode"] = value;
+                this["OpenVolumeMixerAt100Volume"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ColorAchievements {
+            get {
+                return ((bool)(this["ColorAchievements"]));
+            }
+            set {
+                this["ColorAchievements"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowTouhou075 {
+            get {
+                return ((bool)(this["ShowTouhou075"]));
+            }
+            set {
+                this["ShowTouhou075"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowFanBulletHell {
+            get {
+                return ((bool)(this["ShowFanBulletHell"]));
+            }
+            set {
+                this["ShowFanBulletHell"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowLenenGames {
+            get {
+                return ((bool)(this["ShowLenenGames"]));
+            }
+            set {
+                this["ShowLenenGames"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowKaisendouGames {
+            get {
+                return ((bool)(this["ShowKaisendouGames"]));
+            }
+            set {
+                this["ShowKaisendouGames"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ColorGameCards {
+            get {
+                return ((bool)(this["ColorGameCards"]));
+            }
+            set {
+                this["ColorGameCards"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowNotepad {
+            get {
+                return ((bool)(this["ShowNotepad"]));
+            }
+            set {
+                this["ShowNotepad"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowOtherFanTouhouBulletHell {
+            get {
+                return ((bool)(this["ShowOtherFanTouhouBulletHell"]));
+            }
+            set {
+                this["ShowOtherFanTouhouBulletHell"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowEx2 {
+            get {
+                return ((bool)(this["ShowEx2"]));
+            }
+            set {
+                this["ShowEx2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowEx3 {
+            get {
+                return ((bool)(this["ShowEx3"]));
+            }
+            set {
+                this["ShowEx3"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowNewPlayerButton {
+            get {
+                return ((bool)(this["ShowNewPlayerButton"]));
+            }
+            set {
+                this["ShowNewPlayerButton"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowPlayerLv {
+            get {
+                return ((bool)(this["ShowPlayerLv"]));
+            }
+            set {
+                this["ShowPlayerLv"] = value;
             }
         }
     }

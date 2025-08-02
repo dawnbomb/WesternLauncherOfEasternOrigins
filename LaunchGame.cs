@@ -14,6 +14,8 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Controls;
+using PixelWPF;
+using NAudio.CoreAudioApi;
 
 namespace WesternLauncherOfEasternOrigins
 {
@@ -24,34 +26,48 @@ namespace WesternLauncherOfEasternOrigins
         {   
             if (!File.Exists(GameLocationTextbox.Text))
             {
-                MessageBox.Show("The game doesn't seem to exist at that location.\n\nLocation: " + GameLocationTextbox.Text, "Game Not Found", MessageBoxButton.OK, MessageBoxImage.Warning);
+                string ErrorMessage = "The game exe was not found at the expected location.\n\nLocation: " + GameLocationTextbox.Text;
+                PixelWPF.LibraryMan.NotificationNegative("Game Not Found", ErrorMessage);
+                
                 return;
             }
             //FirstGameLaunch
             if (Properties.Settings.Default.FirstGameLaunch == false) 
             {
-                MessageBox.Show("I see your launching a game for the very first time. Here are some things to keep in mind." +
-                    "\n\n- Use volume mixer before windows blows your ears out :(" +    
-                    "\n- Touhou games sometimes update before launching." +
-                    "\n- Old bullet hells sometimes hide their fullscreen setting behind a config file or exe." +
-                    "\n- You can change various launcher settings on the top bar's settings menu." +
-                    "\n" +
-                    "\nPS: You can type in the achievement chart! A game is 'cleared' if the text '1CC' appears (but it remembers ANY text you put it!). Recommended quests are randomly selected for a players skill level, estimated from their achievements (1CCs). " + GameLocationTextbox.Text, "Message to first time players :)", MessageBoxButton.OK, MessageBoxImage.Warning);
+                PixelWPF.LibraryMan.Notification("First time game launch tips!",
+                "- Use volume mixer before windows blows your ears out :(" +
+                "\n- Games sometimes update before launching." +
+                "\n- Some old games hide the fullscreen toggle inside a config file or the exe." +
+                "\n- Launcher settings exist. Look at them." +
+                "\n" +
+                "\nAchievement System:" +
+                "\n- You can type in the achievement chart! " +
+                "\n- A game is 'cleared' if the text \"1CC\" is in a achievement box (but it remembers ANY text you put it!)." +
+                "\n- Right clicking toggles 1CC text." +
+                "\n- The player gets a Skill Lv based on 1CCs." +
+                "\n- Mousing over an achievement shows it's difficulty lv in the top right." +
+                "\n- Quests appear above the achievement list." +
+                "\n- Quests are semi-random, influenced by skill lv, recent game launches, and variety.");
 
                 Properties.Settings.Default.FirstGameLaunch = true;
                 Properties.Settings.Default.Save();
             }
 
+            
+
 
             if (SettingController()) { return; }
             SettingAutoMinimize();
 
-            if (TheGame.Type == GameType.None) { LaunchNone(); }
-            if (TheGame.Type == GameType.PC98) { LaunchPC98(); }
-            if (TheGame.Type == GameType.Touhou) { LaunchTouhou(); }
-
             Properties.Settings.Default.LastTouhouGame = TheGame.CodeName;
             Properties.Settings.Default.Save();
+
+            
+            if (TheGame.Type == GameType.PC98) { LaunchPC98(); return; }
+            if (TheGame.Type == GameType.Touhou) { LaunchTouhou(); return; }
+
+            LaunchNone();
+
         }
 
         ////////LAUNCHES///////////
@@ -77,18 +93,23 @@ namespace WesternLauncherOfEasternOrigins
             SettingJoy2Key();
 
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = "\"" + LibraryMan.TouhouLauncherPath + "\\Other\\Extra Programs\\Neko Project II\\np21x64w.exe" + "\"";
+            startInfo.FileName = "\"" + LibraryTouhou.TouhouLauncherPath + "\\Other\\Extra Programs\\Neko Project II\\np21x64w.exe" + "\"";
             Process.Start(startInfo);
         }
 
-        public void LaunchTouhou()
+
+
+        public async Task LaunchTouhou()
         {
             
             SetupMods(TheGame);
             SetupResolution(); //for vpatch only    
+            //VolumeMonitor.StartVolumeMonitoring();
+            //SettingOpenVolumeMixerIfGameIsAt100Volume();
+            //await Task.Delay(300);
 
-            var gameDir = System.IO.Path.GetDirectoryName(LibraryMan.TouhouLauncherPath + "\\Other\\Extra Programs\\Touhou Crap\\bin\\thcrap_loader.exe");
-            var startInfo = new System.Diagnostics.ProcessStartInfo(LibraryMan.TouhouLauncherPath + "\\Other\\Extra Programs\\Touhou Crap\\bin\\thcrap_loader.exe")
+            var gameDir = System.IO.Path.GetDirectoryName(LibraryTouhou.TouhouLauncherPath + "\\Other\\Extra Programs\\Touhou Crap\\bin\\thcrap_loader.exe");
+            var startInfo = new System.Diagnostics.ProcessStartInfo(LibraryTouhou.TouhouLauncherPath + "\\Other\\Extra Programs\\Touhou Crap\\bin\\thcrap_loader.exe")
             {
                 UseShellExecute = false, //If true, similar to double-clicking the executable. 
                 WorkingDirectory = gameDir, //I personally confirmed some games (exes) require this, or they launch "strangely" or not at all.                    
@@ -105,8 +126,10 @@ namespace WesternLauncherOfEasternOrigins
             
 
 
-            SettingCloseTCRAP();
+            //SettingCloseTCRAP();
             SettingPractiseTool();
+            
+
         }
 
 
@@ -123,6 +146,16 @@ namespace WesternLauncherOfEasternOrigins
                 this.WindowState = WindowState.Minimized;
             }
         }
+
+        public async Task SettingOpenVolumeMixerIfGameIsAt100Volume()
+        {
+            if (!Properties.Settings.Default.OpenVolumeMixerAt100Volume)
+                return;
+
+            //VolumeMonitor vm = new VolumeMonitor();
+            //await vm.MonitorNewAppsFor100PercentVolume();
+        }
+
 
 
         public bool SettingController()
@@ -146,7 +179,14 @@ namespace WesternLauncherOfEasternOrigins
             }
             else
             {
-                MessageBox.Show("You forgot to plug in a controller! Most touhou games do NOT support hotplugging (controllers plugged in only after a game is launched). \n\nIf you inteded to play without a controller, you can toggle [requires a controller] from the settings menu at the top left.", "Controller Check", MessageBoxButton.OK, MessageBoxImage.Warning);
+                PixelWPF.LibraryMan.NotificationNegative("Controller Not Connected!",
+                    "Most touhou games do NOT support Hotplugging (Controllers plugged after a game is launched). " +
+                    "\n" +
+                    "\nIf you want to play without a controller, toggle the [requires a controller] setting from the settings menu." +
+                    "\n" +
+                    "\nThis error message is *not* incorrect. Check your battery / wireless settings / etc." +
+                    "");
+                
                 return true;
             }
         }
@@ -156,12 +196,12 @@ namespace WesternLauncherOfEasternOrigins
             if (Properties.Settings.Default.AutoJoy2Key == true)
             {
                 ProcessStartInfo Joy2Key = new ProcessStartInfo();
-                Joy2Key.FileName = "\"" + LibraryMan.TouhouLauncherPath + "\\Other\\Extra Programs\\JoyToKey\\JoyToKey.exe" + "\"";
+                Joy2Key.FileName = "\"" + LibraryTouhou.TouhouLauncherPath + "\\Other\\Extra Programs\\JoyToKey\\JoyToKey.exe" + "\"";
                 Process.Start(Joy2Key);
             }
         }
 
-        public void SettingCloseTCRAP() 
+        public async Task SettingCloseTCRAP() 
         {
             var startTime = DateTime.Now;
             while ((DateTime.Now - startTime).TotalMinutes < 2)  // Continue looping for 2 minutes
@@ -220,7 +260,7 @@ namespace WesternLauncherOfEasternOrigins
                 Task.Delay(2000).Wait(); //really long incase of updates, lag, etc?
 
                 //Becuase updates change the name of the exe, i search for every program with thprac prefix, and run the first one i find.
-                string exeDirectory = Path.Combine(LibraryMan.TouhouLauncherPath, "Other\\Extra Programs");
+                string exeDirectory = Path.Combine(LibraryTouhou.TouhouLauncherPath, "Other\\Extra Programs");
                 string[] files = Directory.GetFiles(exeDirectory, "thprac*.exe");
 
                 if (files.Length > 0)
@@ -228,59 +268,62 @@ namespace WesternLauncherOfEasternOrigins
                     string TouhouPracticeToolexe = files[0];
                     ProcessStartInfo startInfo2 = new ProcessStartInfo 
                     {
-                        FileName = TouhouPracticeToolexe 
+                        FileName = TouhouPracticeToolexe,
+                        Arguments = "--attach"
                     };
                     Process.Start(startInfo2);
                 }
 
+                //I'm keeping this incase i later need it. Like if attaching to a incompatable game causes a popup.
+                //Also maybe i should just move this code into PixelWPF as a AcceptPopup command?
 
-                if (Properties.Settings.Default.SkipPractisePopups = false) { return; }
+                //if (Properties.Settings.Default.SkipPractisePopups == false) { return; }
                 
 
-                Task.Run(() =>
-                {
-                    var startTime = DateTime.Now;
-                    while ((DateTime.Now - startTime).TotalMinutes < 2)  // Continue looping for 5 minutes
-                    {
-                        var applyWindows = AutomationElement.RootElement.FindAll(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, "Apply thprac?"));
-                        foreach (AutomationElement window in applyWindows)
-                        {
-                            var btnCondition = new PropertyCondition(AutomationElement.NameProperty, "Yes");
-                            var button = window.FindFirst(TreeScope.Descendants, btnCondition);
+                //Task.Run(() =>
+                //{
+                //    var startTime = DateTime.Now;
+                //    while ((DateTime.Now - startTime).TotalMinutes < 2)  // Continue looping for 5 minutes
+                //    {
+                //        var applyWindows = AutomationElement.RootElement.FindAll(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, "Apply thprac?"));
+                //        foreach (AutomationElement window in applyWindows)
+                //        {
+                //            var btnCondition = new PropertyCondition(AutomationElement.NameProperty, "Yes");
+                //            var button = window.FindFirst(TreeScope.Descendants, btnCondition);
 
-                            if (button != null)
-                            {
-                                var invokePattern = button.GetCurrentPattern(InvokePattern.Pattern) as InvokePattern;
-                                invokePattern?.Invoke();
-                                return;  // Exit the Task after pressing "Yes"
-                            }
-                        }
-                        Thread.Sleep(10); // Sleep for 0.01 second
-                    }
-                });
+                //            if (button != null)
+                //            {
+                //                var invokePattern = button.GetCurrentPattern(InvokePattern.Pattern) as InvokePattern;
+                //                invokePattern?.Invoke();
+                //                return;  // Exit the Task after pressing "Yes"
+                //            }
+                //        }
+                //        Thread.Sleep(10); // Sleep for 0.01 second
+                //    }
+                //});
 
 
-                Task.Run(() =>
-                {
-                    var startTime = DateTime.Now;
-                    while ((DateTime.Now - startTime).TotalMinutes < 2)  // Continue looping for 5 minutes
-                    {
-                        var completeWindows = AutomationElement.RootElement.FindAll(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, "Complete"));
-                        foreach (AutomationElement completeWindow in completeWindows)
-                        {
-                            var okButtonCondition = new PropertyCondition(AutomationElement.NameProperty, "OK");
-                            var okButton = completeWindow.FindFirst(TreeScope.Descendants, okButtonCondition);
+                //Task.Run(() =>
+                //{
+                //    var startTime = DateTime.Now;
+                //    while ((DateTime.Now - startTime).TotalMinutes < 2)  // Continue looping for 5 minutes
+                //    {
+                //        var completeWindows = AutomationElement.RootElement.FindAll(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, "Complete"));
+                //        foreach (AutomationElement completeWindow in completeWindows)
+                //        {
+                //            var okButtonCondition = new PropertyCondition(AutomationElement.NameProperty, "OK");
+                //            var okButton = completeWindow.FindFirst(TreeScope.Descendants, okButtonCondition);
 
-                            if (okButton != null)
-                            {
-                                var invokePatternOk = okButton.GetCurrentPattern(InvokePattern.Pattern) as InvokePattern;
-                                invokePatternOk?.Invoke();
-                                return;  // Exit the Task after pressing "OK"
-                            }
-                        }
-                        Thread.Sleep(10); // Sleep for 0.01 second
-                    }
-                });
+                //            if (okButton != null)
+                //            {
+                //                var invokePatternOk = okButton.GetCurrentPattern(InvokePattern.Pattern) as InvokePattern;
+                //                invokePatternOk?.Invoke();
+                //                return;  // Exit the Task after pressing "OK"
+                //            }
+                //        }
+                //        Thread.Sleep(10); // Sleep for 0.01 second
+                //    }
+                //});
 
 
 
@@ -299,7 +342,7 @@ namespace WesternLauncherOfEasternOrigins
         ////////Misc Functions for launcers///////////
 
 
-        public void SetupMods(TouhouGame Game)
+        public void SetupMods(GameData Game)
         {
             string json = @"{
                 ""dat_dump"": false,
@@ -365,7 +408,7 @@ namespace WesternLauncherOfEasternOrigins
 
 
 
-            File.WriteAllText(LibraryMan.TouhouLauncherPath + "\\Other\\Extra Programs\\Touhou Crap\\config\\WesternLauncherOfEasternOrigins.js", updatedJson);  // Write the modified JSON string to a file
+            File.WriteAllText(LibraryTouhou.TouhouLauncherPath + "\\Other\\Extra Programs\\Touhou Crap\\config\\WesternLauncherOfEasternOrigins.js", updatedJson);  // Write the modified JSON string to a file
 
 
 

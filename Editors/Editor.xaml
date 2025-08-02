@@ -5,17 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WesternLauncherOfEasternOrigins"
         mc:Ignorable="d"
-        Title="Editor" Height="1100" Width="1700">
+        Title="Editor" Height="1100" Width="1810">
     <Grid Background="Black">        
-        <DockPanel>
-            <DockPanel Width="1100">
+        <DockPanel LastChildFill="True">
+            <DockPanel Width="1100" DockPanel.Dock="Left">
                 <local:GameEditor x:Name="TheGameEditor" DockPanel.Dock="Top" Height="700" />
 
                 <local:AchievementEditor x:Name="TheAchievementEditor" DockPanel.Dock="Top" />
             </DockPanel>
-            
 
-            <local:ModEditor x:Name="TheModEditor" />
+
+            <local:ModEditor x:Name="TheModEditor" DockPanel.Dock="Left"/>
         </DockPanel>
         
     </Grid>

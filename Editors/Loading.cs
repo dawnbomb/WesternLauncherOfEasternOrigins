@@ -24,7 +24,7 @@ namespace WesternLauncherOfEasternOrigins
 
         public void LoadTheMods() 
         {            
-            XElement xml = XElement.Load(LibraryMan.ModsXMLLocation);
+            XElement xml = XElement.Load(LibraryTouhou.ModsXMLLocation);
 
             
             foreach (XElement modElement in xml.Element("ModsList").Elements("Mod"))
@@ -35,11 +35,12 @@ namespace WesternLauncherOfEasternOrigins
                     Key = modElement.Element("Key")?.Value,
                     Description = modElement.Element("Description")?.Value,
                     THCrapText = modElement.Element("THCrapText")?.Value,
+                    Note = modElement.Element("Note")?.Value,
                     Recommend = Convert.ToBoolean(modElement.Element("Recommend")?.Value)
                 };
 
                 // Append each new Mod to the existing NewModsList
-                LibraryMan.MasterModsList.Add(mod);
+                LibraryTouhou.MasterModsList.Add(mod);
             }
 
 
@@ -53,11 +54,14 @@ namespace WesternLauncherOfEasternOrigins
             //if (SaveType == "Player") { SaveLocation = LibraryMan.TouhouLauncherPath + "\\Player Profiles\\" + LibraryMan.PlayerName + ".xml"; }
 
 
-            XElement xml = XElement.Load(LibraryMan.GamesXMLLocation);
+            XElement xml = XElement.Load(LibraryTouhou.GamesXMLLocation);
 
             foreach (XElement gameElement in xml.Element("GamesList").Elements("Game"))
             {
-                TouhouGame game = new TouhouGame
+                string GameName = gameElement.Element("SeriesName")?.Value;
+                int i = 1;
+
+                GameData game = new GameData
                 {
                     SeriesName = gameElement.Element("SeriesName")?.Value,
                     SubtitleName = gameElement.Element("Subtitle")?.Value,                    
@@ -71,11 +75,24 @@ namespace WesternLauncherOfEasternOrigins
                     ColorText = gameElement.Element("ColorText")?.Value,
                 };
 
+                foreach (XElement modElement in gameElement.Descendants("Link"))
+                {
+                    //if (modElement.Element("Name")?.Value == "") { continue; }
+
+                    GameLink GameLink = new();
+                    game.LinkList.Add(GameLink);
+                    GameLink.Name = modElement.Element("Name")?.Value;
+                    GameLink.URL = modElement.Element("URL")?.Value;
+                    GameLink.Tooltip = modElement.Element("Tooltip")?.Value;
+
+
+                }
+
                 foreach (XElement modElement in gameElement.Descendants("Mod"))
                 {
                     string TheKey = modElement.Element("Key")?.Value;
 
-                    foreach (TouhouMod TMod in LibraryMan.MasterModsList) 
+                    foreach (TouhouMod TMod in LibraryTouhou.MasterModsList) 
                     {
                         if (TMod.Key == TheKey) 
                         {
@@ -88,34 +105,37 @@ namespace WesternLauncherOfEasternOrigins
 
                 foreach (XElement achievementElement in gameElement.Descendants("Achievement"))
                 {
-                    string TheKey = achievementElement.Element("Key")?.Value;
+                    GameName = gameElement.Element("SeriesName")?.Value;
+                    i = 1;
 
                     Achievement achievement = new();
                     if (achievementElement.Element("Type")?.Value == "Basic") 
                     { 
                         achievement.Type = Achievement.AchievementTypes.Basic;
                         achievement.Name = achievementElement.Element("Name")?.Value;
+                        achievement.ShotType = "";
+                        achievement.Difficulty = "";
                     }
                     if (achievementElement.Element("Type")?.Value == "Chart") 
                     {
                         achievement.Type = Achievement.AchievementTypes.Chart;
-                        achievement.ShotType = achievementElement.Element("ShotType")?.Value;
-                        achievement.Difficulty = achievementElement.Element("Difficulty")?.Value;
+                        achievement.ShotType = achievementElement.Element("Row")?.Value;
+                        achievement.Difficulty = achievementElement.Element("Column")?.Value;
                     }
-                    achievement.Level = Int32.Parse(achievementElement.Element("Level")?.Value);
+                    achievement.Level = Int32.Parse(achievementElement.Element("Tooltip")?.Value);
                     //achievement.PlayerText = achievementElement.Element("PlayerText")?.Value;
                     achievement.Key = achievementElement.Element("Key")?.Value;    
                     achievement.Note = achievementElement.Element("Note")?.Value;
-                    achievement.TouhouGame = game;
+                    achievement.TheGame = game;
 
                     game.AchievementList.Add(achievement);
-                    LibraryMan.MasterAchievementsList.Add(achievement);
+                    LibraryTouhou.MasterAchievementsList.Add(achievement);
 
                 }
 
 
                 // Append each new Mod to the existing NewModsList
-                LibraryMan.MasterGameList.Add(game);
+                LibraryTouhou.MasterGameList.Add(game);
             }
         }
 
