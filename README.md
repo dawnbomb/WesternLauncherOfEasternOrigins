@@ -3,6 +3,8 @@
 
 # Touhou Western Launcher of Eastern Origins
 
+### [CLICK HERE TO DOWNLOAD THE LATEST BUILD](https://github.com/dawnbomb/WesternLauncherOfEasternOrigins/releases/latest)
+
 [![Discord Server](https://discordapp.com/api/guilds/324979738533822464/embed.png)](https://discord.gg/mhrZqjRyKx)
 
 An extremely high quality touhou game launcher that completely crushes all the others.
@@ -21,10 +23,9 @@ An extremely high quality touhou game launcher that completely crushes all the o
 HAVE FUUUUUN!!!!  
 PS: If someone could make v-sync patches for all the latest games that would be great >_>
 
-### [CLICK HERE TO DOWNLOAD THE LATEST BUILD](https://github.com/dawnbomb/WesternLauncherOfEasternOrigins/releases/latest)
 
 
-### Angry nerd rant on modding and the touhou community:
+## Angry nerd rant on modding and the touhou community:
 My mod support is fantastic, and i'm quite proud of that. But.....like....oh my god.... i can see why no other game launcher has mod support, and why mods aren't even popular despite there being a ton of them and being a community with over 500 fangames. 
 
 The only other modding tool (THCrap) is completely awful to mod games with. They aren't even allowed to give mods an actual description. They have to describe it as part of the name because THCrap will only show users the name of a mod and nothing else. Hell it even forces mods to apply to ALL of your games at the same time! It's ridiculous! (and yes, some mods do actually affect more then 1 game at the same time, and in different ways).  
