@@ -514,5 +514,17 @@ namespace WesternLauncherOfEasternOrigins.Properties {
                 this["ShowPlayerLv"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowHiddenGames {
+            get {
+                return ((bool)(this["ShowHiddenGames"]));
+            }
+            set {
+                this["ShowHiddenGames"] = value;
+            }
+        }
     }
 }

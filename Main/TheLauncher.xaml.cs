@@ -36,6 +36,7 @@ using PixelWPF;
 using WesternLauncherOfEasternOrigins.Properties;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
+using static OfficeOpenXml.ExcelErrorValue;
 
 //USES THE FOLLOWING NUGET PACKAGES:
 //OOkii.Dialogs.WPF
@@ -87,7 +88,9 @@ namespace WesternLauncherOfEasternOrigins
             Dispatcher.InvokeAsync(async () => await PixelWPF.GithubUpdater.CheckForUpdatesAsync("WesternLauncherOfEasternOrigins", "dawnbomb/WesternLauncherOfEasternOrigins/releases/latest", LibraryTouhou.VersionNumber));
 
             DataContext = this;
+
             
+
 
             string basepath = AppDomain.CurrentDomain.BaseDirectory;
             #if DEBUG
@@ -95,7 +98,7 @@ namespace WesternLauncherOfEasternOrigins
             #else
             LibraryTouhou.TouhouLauncherPath = basepath;
             DevMenu.Visibility = Visibility.Collapsed;
-            //DevMenu.IsEnabled = false;
+            HiddenGameMenu.Visibility = Visibility.Collapsed;
             #endif
 
             LibraryTouhou.ModsXMLLocation = LibraryTouhou.TouhouLauncherPath + "\\Other\\Touhou Mods.xml";
@@ -114,6 +117,8 @@ namespace WesternLauncherOfEasternOrigins
                 if (Properties.Settings.Default.ShowNotepad == false) { NotepadBorder.Visibility = Visibility.Collapsed; }
                 if (Properties.Settings.Default.ShowNewPlayerButton == false) { NewPlayerButton.Visibility = Visibility.Collapsed; }
                 if (Properties.Settings.Default.ShowPlayerLv == false) { PlayerLvPanel.Visibility = Visibility.Collapsed; }
+                if (PixelWPF.Properties.Settings.Default.AppFontArkPixel == false) { Application.Current.Resources["AppFont"] = new FontFamily("Segoe UI"); }
+                
 
                 Notepad.Text = Properties.Settings.Default.NotepadText;
                 ResolutionComboBox.Text = Properties.Settings.Default.Resolution;
@@ -279,8 +284,10 @@ namespace WesternLauncherOfEasternOrigins
                 if (Properties.Settings.Default.LastTouhouGame == TheGame.CodeName)
                 {
                     // This Scrolls the ScrollViewer so X is scrolled to the top.
-                    GeneralTransform transform = theborder.TransformToAncestor(AchievementScrollViewer);
+                    GeneralTransform transform = theborder.TransformToVisual(AchievementScrollViewer.Content as Visual);
                     Point relativeLocation = transform.Transform(new Point(0, 0));
+
+                    // Scroll so the top of the border aligns with the top of the viewable area
                     AchievementScrollViewer.ScrollToVerticalOffset(relativeLocation.Y);
                     //theborder.BringIntoView();
                     break;
@@ -297,7 +304,7 @@ namespace WesternLauncherOfEasternOrigins
 
             foreach (GameData GameData in LibraryTouhou.MasterGameList)
             {
-                if (GameData.Type == GameType.Hidden) { continue; }
+                if (GameData.Type == GameType.Hidden && Properties.Settings.Default.ShowHiddenGames == false) { continue; }
 
                 var Game = GameData;
 
@@ -322,7 +329,7 @@ namespace WesternLauncherOfEasternOrigins
                     NewLinkItem.Click += OpenLink;//ButtonCreateWorkshop2; 
                     void OpenLink(object sender, RoutedEventArgs e)
                     {
-                        PixelWPF.LibraryMan.OpenWebsiteURL(gamelink.URL);
+                        PixelWPF.LibraryPixel.OpenWebsiteURL(gamelink.URL);
                     }
                 }
 
@@ -425,10 +432,11 @@ namespace WesternLauncherOfEasternOrigins
                     if (Game == TheGame)
                     {
                         // This Scrolls the ScrollViewer so X is scrolled to the top.
-                        GeneralTransform transform = theborder.TransformToAncestor(AchievementScrollViewer);
+                        GeneralTransform transform = theborder.TransformToVisual(AchievementScrollViewer.Content as Visual);
                         Point relativeLocation = transform.Transform(new Point(0, 0));
+
+                        // Scroll so the top of the border aligns with the top of the viewable area
                         AchievementScrollViewer.ScrollToVerticalOffset(relativeLocation.Y);
-                        theborder.BringIntoView();
                         break;
                     }
                 }
@@ -498,7 +506,7 @@ namespace WesternLauncherOfEasternOrigins
                         void OpenWFolder(object sender, RoutedEventArgs e)
                         {
                             
-                            PixelWPF.LibraryMan.OpenFolder(THCrapFolderPath2);
+                            PixelWPF.LibraryPixel.OpenFolder(THCrapFolderPath2);
 
                         }
 
@@ -961,6 +969,10 @@ namespace WesternLauncherOfEasternOrigins
                 {
                     button.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#30141C"));
                 }
+                if (touhouGame.Type == GameType.Hidden)
+                {
+                    button.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#601040"));
+                }
 
 
             }
@@ -998,7 +1010,7 @@ namespace WesternLauncherOfEasternOrigins
         }
         private void DebugCallNotification(object sender, RoutedEventArgs e)
         {
-            PixelWPF.LibraryMan.Notification("Test Title","Test Test");
+            PixelWPF.LibraryPixel.Notification("Test Title","Test Test");
         }
 
         private void OpenPatchnotes(object sender, RoutedEventArgs e)
@@ -1006,6 +1018,62 @@ namespace WesternLauncherOfEasternOrigins
             PixelWPF.Patchnotes patchnotes = new();
             patchnotes.LoadPatchnotes(LibraryTouhou.TouhouLauncherPath + "\\Other\\Patchnotes.txt");
             patchnotes.Show();
+        }
+
+        private void JoinDiscordServer(object sender, RoutedEventArgs e)
+        {
+            PixelWPF.LibraryPixel.OpenWebsiteURL("https://discord.gg/mhrZqjRyKx");
+        }
+
+        private void OpenGithubPageLink(object sender, RoutedEventArgs e)
+        {
+            PixelWPF.LibraryPixel.OpenWebsiteURL("https://github.com/dawnbomb/WesternLauncherOfEasternOrigins");
+        }
+
+        private void OpenReadme(object sender, RoutedEventArgs e)
+        {
+            string thefile = LibraryTouhou.TouhouLauncherPath + "\\Read Me.txt";
+
+            if (System.IO.File.Exists(thefile))
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = thefile,
+                    UseShellExecute = true // required for opening with default app
+                });
+            }
+            else
+            {
+                PixelWPF.LibraryPixel.NotificationNegative("Readme not found?", "You must have moved it, or i fucked up and forgot to update this function. :p");
+            }
+        }
+
+        private void LinkMoriyaShrine(object sender, RoutedEventArgs e)
+        {
+            PixelWPF.LibraryPixel.OpenWebsiteURL("https://moriyashrine.org/");
+        }
+
+        private void LinkTouhouReddit(object sender, RoutedEventArgs e)
+        {
+            PixelWPF.LibraryPixel.OpenWebsiteURL("https://www.reddit.com/r/touhou/");
+        
+        }
+
+        private void LinkShrineMaiden(object sender, RoutedEventArgs e)
+        {
+            PixelWPF.LibraryPixel.OpenWebsiteURL("https://www.shrinemaiden.com/");
+        
+        }
+
+        private void LinkTouhouProjectLovers(object sender, RoutedEventArgs e)
+        {
+            PixelWPF.LibraryPixel.OpenWebsiteURL("https://touhouprojectlovers.blogspot.com/p/touhou-fanmade-games.html");
+        
+        }
+
+        private void LinkTouhouFangameSheet(object sender, RoutedEventArgs e)
+        {
+            PixelWPF.LibraryPixel.OpenWebsiteURL("https://docs.google.com/spreadsheets/d/1fM-goZFQCg3cZyCbHMipD7xWgHme2tOQCENflIoe6YI/edit?gid=1182438005#gid=1182438005");
         }
     }
 }

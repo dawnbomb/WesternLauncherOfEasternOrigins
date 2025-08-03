@@ -25,38 +25,59 @@
                     <MenuItem Header="Folder: Mods" Click="OpenModsFolder" />
                     <MenuItem Header="Folder: Game Info" Click="OpenGameInfoFolder" />
                 </MenuItem>
-                <MenuItem Header="📶 Links">                    
-                    <MenuItem Header="Link: Difficulty Tierlist Touhou " Click="LinkTouhouDifficultyChart"/>
-                    <MenuItem Header="Link: Difficulty Tierlist JP Shump " Click="LinkSTGDifficultyChart"/>
-                    <Separator/>
+                <MenuItem Header="📶 Websites">
+                    
+                    <MenuItem Header="Forumns: ShrineMaiden.com (Old Forumns)" Click="LinkShrineMaiden" ToolTip="This used to be THE place for touhou discussions on the internet. &#xD;Now it's mostly dead, but it's still a useful resource for fangame stuff. &#xD;I wish it was still as active as it was back in 2015 :("/>
+                    <MenuItem Header="Forumns: Reddit.com/r/touhou (Art Forumn)" Click="LinkTouhouReddit" ToolTip="An okay place to see touhou art. &#xD;Due to agressive moderation, discussions happen mostly on discord servers now."/>
+                    <Separator Style="{DynamicResource DashLineForMenu}"/>                 
+                    <MenuItem Header="Games: Huge Google Sheet of Fangames" Click="LinkTouhouFangameSheet" ToolTip="An extremely useful site for touhou fans.  &#xD;Currently restructuring (AGAIN...)"/>
+                    <!--<MenuItem Header="Games: Touhouprojectlovers.blogspot.com (Fangames)" Click="LinkTouhouProjectLovers" ToolTip="Used to be great, but it's been abandoned and most links are dead. &#xD;It's fangame section has a good list of fangames you can't get anywhere else, like Suwako-chan Cubic."/>
+                    <MenuItem Header="Games: MoriyaShrine.com" Click="LinkMoriyaShrine" ToolTip="An extremely useful site for touhou fans.  &#xD;Currently restructuring (AGAIN...)"/>-->
+
+
+
+
+
+
+                    <Separator Style="{DynamicResource DashLineForMenu}"/>
                     <MenuItem Header="Link: Touhou Wiki" Click="LinkTouhouWiki"/>
                     <MenuItem Header="Link: Touhou Wiki Tools List"  Click="LinkTouhouWikiTools" />
                     <MenuItem Header="Link: Touhou Wiki Mods List" Click="LinkTouhouWikiMods"/>
-                    <Separator Style="{DynamicResource SeparatorSolid}"/>
+                    <Separator Style="{DynamicResource DashLineForMenu}"/>
+                    <MenuItem Header="Link: Difficulty Tierlist Touhou " Click="LinkTouhouDifficultyChart"/>
+                    <MenuItem Header="Link: Difficulty Tierlist JP Shump " Click="LinkSTGDifficultyChart"/>
+                    <Separator Style="{DynamicResource DashLineForMenu}"/>
                     <MenuItem Header="Link: Touhou Ultra Patches" Click="LinkTouhouUltraPatches"/>
 
                 </MenuItem>
                 <MenuItem Header="🛠 Tools">
                     <MenuItem Header="Run: TouhouCrap (Modding Tool)" Click="RunTHCrap"/>
-                    <MenuItem Header="Run: Touhou Practise Tool"  Click="PractiseModePlus"/>
-                    <MenuItem Header="Run: Joy2Key"  Click="Joy2Key"/>
-                    <MenuItem Header="Run: NoMoreBorders (Forces game to borderless windowed mode)"  Click="OpenBorderless"/>
+                    <MenuItem Header="Run: Touhou Practise Tool"  Click="PractiseModePlus" ToolTip="Note that it silently applys itself to a launched game."/>                    
+                    <MenuItem Header="Run: NoMoreBorders (Forces borderless fullscreen)"  Click="OpenBorderless" ToolTip="This program is much better then the old Borderless Gaming one."/>
+                    <MenuItem Header="Run: Joy2Key"  Click="Joy2Key" ToolTip="Yes i know Joy2Key sucks. BUT... 
+                              &#xD;- Pinnacle Game Profiler is known to have viruses. 
+                              &#xD;- AntiMicroX forces users to manually select files to save and load. &#xD;- Xpadder is extremely ugly. 
+                              &#xD;- DS4/DS5 windows is mega confusing, many required installs, MANY computer restarts.
+                              &#xD;- reWASD is EXTREMELY confusing, and also a paid program.
+                              &#xD;- ControllerMate requires visual scripting from users (and is for Mac).
+                              &#xD;
+                              &#xD;I PROMISE I KNOW JOY2KEY SUCKS, I LOOKED FAR AND WIDE, BUT THE OTHER OPTIONS SUCK EVEN MORE! D:"/>
 
                 </MenuItem>
 
                 <MenuItem Header="⚙️ Settings">
                     <!--REMINDER: ALL SETTINGS NEED A BOOL EVENT IN THE MENU FILE UNDER THE SETTING PART, OR THEY WON'T SAVE!!!-->
                     <MenuItem Header="On Startup: Focus on the last launched game."     IsCheckable="True" IsChecked="{Binding Path=ScrollToLastGame,        Mode=TwoWay}" ToolTip="Makes it easy to relaunch the game you were last playing. &#xD;The quest board is influenced by your last game even if this is turned off."/>
-                    
-                    <Separator />
+
+                    <Separator Style="{DynamicResource DashLineForMenu}"/>
                     <MenuItem Header="On Game Launch: Minimize this launcher."              IsCheckable="True"    IsChecked="{Binding Path=AutoMinimize,       Mode=TwoWay}" ToolTip="Lets you focus on the game. &#xD;Sometimes annoying when you want to read game info or check off achievements." />
                     <MenuItem Header="On Game Launch: Run Touhou Practise Tool for supported games." IsCheckable="True"    IsChecked="{Binding Path=AutoPractise,       Mode=TwoWay}" ToolTip="It will silent attach, without popups."/>
                     <MenuItem Header="On Game Launch: Check if controller is connected."     IsCheckable="True" IsChecked="{Binding Path=ControllerCheck,        Mode=TwoWay}" ToolTip="With this enabled, a popup will happen if you try and launch without a controller.&#xD;Most touhou games do NOT support hotplugging,&#xD;if you connect a controller after launching it will just be ignored." />
                     <MenuItem Header="On Game Launch: If PC98 Era - Launch Joy2Key."     IsCheckable="True"    IsChecked="{Binding Path=AutoJoy2Key,        Mode=TwoWay}" ToolTip="The PC98 emulator controller support is terrible. :(" />
                     <MenuItem Header="On Game Launch: If game volume is 100% - Open Volume Mixer."     IsCheckable="True"    IsChecked="{Binding Path=OpenVolumeMixerAt100Volume,     Mode=TwoWay}" ToolTip="Helps you lower the game volume before it blasts your ears out. >:(" />
-                    
 
-                    <Separator />
+
+                    <Separator Style="{DynamicResource DashLineForMenu}"/>
                     <MenuItem Header="Games: Touhou 7.5. (Borderline Unplayable)"     IsCheckable="True" IsChecked="{Binding Path=ShowTouhou075,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="Usually won't launch, often crashing, and noone cares to make a fix.   &#xD;Basically unplayable, like oh my god dude even touhou 1 runs better! x.x   &#xD;Even THCrap refuses to reconize the exe! LOL~" />
                     <MenuItem Header="Games: PC98 Games."     IsCheckable="True" IsChecked="{Binding Path=ShowTouhouPC98,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="Touhou 4 and 5 are actually good.   &#xD;But if your a boring uncultured nobody then I guess you could hide them...   &#xD;   &#xD;PS: This launcher includes a PC98 emulator, just set the game file location and click launch. " />
                     <MenuItem Header="Games: Lenen Project Games."     IsCheckable="True" IsChecked="{Binding Path=ShowLenenGames,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="Lenen Project is a series of bullet hell spinoff games based on touhou! &#xD;Check them out!" />
@@ -64,23 +85,27 @@
                     <MenuItem Header="Games: Major Touhou Bullet Hell Fangames."     IsCheckable="True" IsChecked="{Binding Path=ShowFanBulletHell,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="There are some pretty great fangames out there!   &#xD;Check them out!" />
                     <MenuItem Header="Games: Other Touhou Bullet Hell Fangames."     IsCheckable="True" IsChecked="{Binding Path=ShowOtherFanTouhouBulletHell,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="This is for the medium and low quality fangames.   &#xD;Topics about the best 2hu games can happen in my discord server. :P " />
                     <MenuItem Header="Games: Colors for each game series (Touhou / Lenen / Kaisendou / Fangames)."     IsCheckable="True" IsChecked="{Binding Path=ColorGameCards,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="This makes each game series have it's own color to stand out more.   &#xD;Fangames not made as a series are get the same color." />
+                    <MenuItem Name="HiddenGameMenu" Header="Games: Show HIDDEN games."     IsCheckable="True" IsChecked="{Binding Path=ShowHiddenGames,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="Shows my hidden upcoming games." />
 
-                    
-                    <Separator />
+
+                    <Separator Style="{DynamicResource DashLineForMenu}"/>
                     <MenuItem Header="Achievements: Quest Board."    IsCheckable="True"  IsChecked="{Binding Path=ShowQuestBoard,    Mode=TwoWay}" Click="RefreshAchievements" ToolTip="The quest board recommends achievements for your skill level. &#xD;It's recommended, but you can disable it if your super good and don't need help :p &#xD;&#xD;PS: For challenge runners doing NoBomb runs, typing NB in a achievement box counts as a clear."/>
                     <MenuItem Header="Achievements: Game Special Achievements (Like in th08, th13, and th17)."           IsCheckable="True"  IsChecked="{Binding Path=ShowTouhouSpecialAchievements,    Mode=TwoWay}" Click="RefreshAchievements" ToolTip="This is for the achievements for games with an achievement system. &#xD;If this is ON, you can track these special achievements just like all the others. &#xD;If this is OFF they are hidden but the standard achievement chart still appears.&#xD;  &#xD;Note that games that ONLY have special achievements, such as the photography games, &#xD;will always show those achievements even if this is set to OFF. "/>
                     <MenuItem Header="Achievements: Extra Stage 2 replaces Easy Mode. (th07 and some fangames)."    IsCheckable="True"  IsChecked="{Binding Path=ShowEx2,    Mode=TwoWay}" Click="RefreshAchievements" ToolTip="The quest board doesn't require Extra to ask for Phantasm. &#xD;This was decided because they are the same difficulty level, and needing extra is implied."/>
                     <MenuItem Header="Achievements: Extra Stage 3 replaces Normal Mode. (Only fangames have an EX3)."    IsCheckable="True"  IsChecked="{Binding Path=ShowEx3,    Mode=TwoWay}" Click="RefreshAchievements" ToolTip="The only games i know using EX3 are the fangames Treasure Castle Labyrinth and Dream Logical World. &#xD;That said i'd love to see more games have an EX3! "/>
-                    <MenuItem Header="Achievements: Game colors for achievements."    IsCheckable="True"  IsChecked="{Binding Path=ColorAchievements,    Mode=TwoWay}" Click="RefreshAchievements" ToolTip="Use game specific colors for the achievement chart. &#xD;If this is OFF the border is a standard dark mode but the chart still uses 1 of the colors.."/>
-                    
-                    <Separator />
+                    <MenuItem Header="Achievements: Game specific colors for achievements."    IsCheckable="True"  IsChecked="{Binding Path=ColorAchievements,    Mode=TwoWay}" Click="RefreshAchievements" ToolTip="Use game specific colors for the achievement chart. &#xD;If this is OFF the border is a standard dark mode but the chart still uses 1 of the colors.."/>
+
+                    <Separator Style="{DynamicResource DashLineForMenu}"/>
+
+
+                    <MenuItem Header="Show: Pixel Font."     IsCheckable="True" IsChecked="{Binding Path=UseArkPixelFont,        Mode=TwoWay}" ToolTip="I'm a HUGE retro fan! I had to include pixel art font x3.  &#xD;PS: Youtuber 40Nix makes TONS of ripping chiptune music. He even makes lots of touhou chiptunes!"/>
                     <MenuItem Header="Show: Volume Mixer button."     IsCheckable="True" IsChecked="{Binding Path=VolumeMixerAtLauncher,        Mode=TwoWay}" ToolTip="A subtle reminder a 100% volume game will blow your ears out."/>
                     <MenuItem Header="Show: Notepad."     IsCheckable="True" IsChecked="{Binding Path=ShowNotepad,        Mode=TwoWay}" ToolTip="Literally just a normal notepad. Write whatever notes you want.   &#xD;If this is off, you get more space for the games list."/>
                     <MenuItem Header="Show: New Player Button."     IsCheckable="True" IsChecked="{Binding Path=ShowNewPlayerButton,        Mode=TwoWay}" ToolTip="Show / Hide the new player button. &#xD;I made the player profiles system because my friends are also into touhou. &#xD;I wanted to be able to quickly track both my progress, and my friends progress.  &#xD;I'm very pleased with how it turned out! :D"/>
                     <MenuItem Header="Show: Player Lv Info."     IsCheckable="True" IsChecked="{Binding Path=ShowPlayerLv,        Mode=TwoWay}" ToolTip="Show / Hide your current skill LV. &#xD;I REALLY like the player LV system (used for quest board recommendations). &#xD;Creating it I wanted to be able to quickly track both my progress, and my friends progress.  &#xD;I'm very pleased with how it turned out! :D &#xD;  &#xD;Your player lv is your 6th highest level 1CC. &#xD;The highest difficulty level that exists has 6 diffrent shot types, so it's still possible to get to that lv.  &#xD;I decided not to use your highest lv clear to focus on 1CC consistency over a single lucky clear.  &#xD;However if your 1st~5th bests are a signifigantly higher lv, it will use them instead with a small Lv penalty applied."/>
 
                     
-
+                    
 
 
                     <!--<MenuItem Header="  Standard Mode (IE not portable, Hover for explanation)"      IsCheckable="True" IsChecked="{Binding Path=PortableMode,                 Mode=TwoWay}" ToolTip="In standard mode, game exe locations are saved to my documents. In portable mode, their saved to this programs folder / Extra Programs / Game Info. Standard" />-->
@@ -106,14 +131,16 @@
                     <MenuItem Header="  Show Touhou Era Windows 3."  IsCheckable="True"  IsChecked="{Binding Path=ShowTouhouW3,       Mode=TwoWay}" />-->
                 </MenuItem>
                 <MenuItem Header="? Help" >
-                    <MenuItem Header="Patchnotes." Click="OpenPatchnotes"/>
-                    <MenuItem Header="CrystalMods.com (my website~)." Click="LinkMyWebsite"/>
-                    <MenuItem Header="Join the Discord Server!" Click="OpenEditorWindow" />                    
+                    <MenuItem Header="Patchnotes" Click="OpenPatchnotes"/>
+                    <MenuItem Header="Read Me" Click="OpenReadme"/>
+                    <MenuItem Header="Discord Server!" Click="JoinDiscordServer" />
+                    <MenuItem Header="CrystalMods.com" Click="LinkMyWebsite"/>
+                    <MenuItem Header="Github" Click="OpenGithubPageLink" />
                 </MenuItem>
                 <MenuItem Header="🛠 DEV" Name="DevMenu">
                     <MenuItem Header="Editor" Click="OpenEditorWindow" Name="MenuEditor" />
                     <MenuItem Header="Debug Tab" Click="GotoDebugTab"/>
-                    <Separator/>
+                    <Separator Style="{DynamicResource DashLineForMenu}"/>
                     <MenuItem Header="Call Notification" Click="DebugCallNotification"/>
                     <MenuItem Header="Empty Test Sub">
                         <MenuItem Header="Empty Test"/>
@@ -261,6 +288,7 @@
                             <DockPanel Background="Transparent">
                                 <TextBox x:Name="TextBoxModName" DockPanel.Dock="Top"  Background="{x:Null}" Foreground="White" Padding="10,8,10,8"  BorderBrush="{x:Null}" SelectionBrush="{x:Null}" SelectionTextBrush="{x:Null}" Focusable="False" IsHitTestVisible="False"/>
                                 <Rectangle  Height="1"  Stroke="White" Margin="10,0,10,0"  DockPanel.Dock="Top"/>
+                                <!--<Separator DockPanel.Dock="Top"/>-->
 
 
                                 <TextBox x:Name="TextBoxModPath" DockPanel.Dock="Bottom"  Background="{x:Null}" Foreground="White" Padding="10,8,10,8"  BorderBrush="{x:Null}" SelectionBrush="{x:Null}" SelectionTextBrush="{x:Null}" Focusable="False" IsHitTestVisible="False"/>
@@ -336,8 +364,7 @@
                             <DockPanel >
                                 <DockPanel Background="#FF404040" DockPanel.Dock="Top" LastChildFill="False">
                                     <Label Content="Master Achievement List"/>
-                                    <Label Name="QuestLevelLabel" Content="0" DockPanel.Dock="Right"/>
-                                    <Label Content="Mouseover'd difficulty Lv:" DockPanel.Dock="Right"/>
+                                    <Label Name="QuestLevelLabel" Content="" DockPanel.Dock="Right"/>
                                 </DockPanel>
                                 <ScrollViewer Name="AchievementScrollViewer" PreviewMouseWheel="FastScroll" DockPanel.Dock="Top">
                                     <DockPanel Name="MasterAchievementPanel" DockPanel.Dock="Top" LastChildFill="False" >

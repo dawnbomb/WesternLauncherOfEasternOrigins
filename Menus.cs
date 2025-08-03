@@ -13,6 +13,7 @@ using System.Windows;
 using Microsoft.Web.WebView2.Core;
 using Windows.UI.Composition;
 using static System.Net.WebRequestMethods;
+using System.Windows.Media; // for swapping font family.
 
 namespace WesternLauncherOfEasternOrigins
 {
@@ -568,6 +569,41 @@ namespace WesternLauncherOfEasternOrigins
             }
         }
 
+        public bool UseArkPixelFont
+        {
+            get { return PixelWPF.Properties.Settings.Default.AppFontArkPixel; }
+            set
+            {
+                if (PixelWPF.Properties.Settings.Default.AppFontArkPixel != value)
+                {
+                    PixelWPF.Properties.Settings.Default.AppFontArkPixel = value;
+                    PixelWPF.Properties.Settings.Default.Save();
+                    OnPropertyChanged();
+
+                    if (PixelWPF.Properties.Settings.Default.AppFontArkPixel == true) { Application.Current.Resources["AppFont"] = new FontFamily("Dawns 10px ArkPixel");  }
+                    if (PixelWPF.Properties.Settings.Default.AppFontArkPixel == false) { Application.Current.Resources["AppFont"] = new FontFamily("Segoe UI"); } //Verdana
+
+                }
+            }
+        }
+
+        public bool ShowHiddenGames
+        {
+            get { return Properties.Settings.Default.ShowHiddenGames; }
+            set
+            {
+                if (Properties.Settings.Default.ShowHiddenGames != value)
+                {
+                    Properties.Settings.Default.ShowHiddenGames = value;
+                    Properties.Settings.Default.Save();
+                    OnPropertyChanged();
+                    
+
+                }
+            }
+        }
+
         
+
     }
 }

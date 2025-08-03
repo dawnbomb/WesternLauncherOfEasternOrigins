@@ -69,4 +69,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Graphics\Examples\" />
+  </ItemGroup>
+
 </Project>
