@@ -1172,7 +1172,17 @@ namespace WesternLauncherOfEasternOrigins
 
                 GoalBox.MouseEnter += (sender, e) =>
                 {
-                    GameLauncher.QuestLevelLabel.Content = MyAchievement.Level.ToString();
+                    GameLauncher.QuestLevelLabel.Content = MyAchievement.ShotType + " " + MyAchievement.Difficulty + " Lv: ";
+
+                    if (MyAchievement.Level != 0)
+                    {
+                        GameLauncher.QuestLevelLabel.Content = GameLauncher.QuestLevelLabel.Content + MyAchievement.Level.ToString();
+                    }
+                    else 
+                    {
+                        GameLauncher.QuestLevelLabel.Content = GameLauncher.QuestLevelLabel.Content + "--";
+                    }
+                    
                 };
             }
             //////////////////////////////////////////////////////////////////////

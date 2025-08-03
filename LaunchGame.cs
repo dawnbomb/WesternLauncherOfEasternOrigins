@@ -27,14 +27,14 @@ namespace WesternLauncherOfEasternOrigins
             if (!File.Exists(GameLocationTextbox.Text))
             {
                 string ErrorMessage = "The game exe was not found at the expected location.\n\nLocation: " + GameLocationTextbox.Text;
-                PixelWPF.LibraryMan.NotificationNegative("Game Not Found", ErrorMessage);
+                PixelWPF.LibraryPixel.NotificationNegative("Game Not Found", ErrorMessage);
                 
                 return;
             }
             //FirstGameLaunch
             if (Properties.Settings.Default.FirstGameLaunch == false) 
             {
-                PixelWPF.LibraryMan.Notification("First time game launch tips!",
+                PixelWPF.LibraryPixel.Notification("First time game launch tips!",
                 "- Use volume mixer before windows blows your ears out :(" +
                 "\n- Games sometimes update before launching." +
                 "\n- Some old games hide the fullscreen toggle inside a config file or the exe." +
@@ -179,7 +179,7 @@ namespace WesternLauncherOfEasternOrigins
             }
             else
             {
-                PixelWPF.LibraryMan.NotificationNegative("Controller Not Connected!",
+                PixelWPF.LibraryPixel.NotificationNegative("Controller Not Connected!",
                     "Most touhou games do NOT support Hotplugging (Controllers plugged after a game is launched). " +
                     "\n" +
                     "\nIf you want to play without a controller, toggle the [requires a controller] setting from the settings menu." +

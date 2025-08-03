@@ -86,7 +86,7 @@ namespace WesternLauncherOfEasternOrigins
     public class TouhouMod
     {
         public string? Name { get; set; } = "Name"; // The name that appears to end users   
-        public string? Key { get; set; } = PixelWPF.LibraryMan.GenerateKey(); //Used to track what mods users have enabled. 
+        public string? Key { get; set; } = PixelWPF.LibraryPixel.GenerateKey(); //Used to track what mods users have enabled. 
         public string? Description { get; set; } = "";
         public string? THCrapText { get; set; } = "repos/Example/Example/";
         public string? Note { get; set; } = ""; //Notes about a mod for ME. End users dont see these.
