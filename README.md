@@ -24,8 +24,12 @@ PS: If someone could make v-sync patches for all the latest games that would be 
 ### [CLICK HERE TO DOWNLOAD THE LATEST BUILD](https://github.com/dawnbomb/WesternLauncherOfEasternOrigins/releases/latest)
 
 
-#### Small nerd rant:
-My mod support IS the best. No other launcher has any mod support, and the only other modding tool THCrap is completely awful to mod games with. It even forces mods to apply to ALL games of your games at the same time! It's ridiculous! (and yes, some mods do actually affect more then 1 game at the same time, and in different ways). I actually feel mad that the THCrap mod support is as terrible as it is. I have never seen a community with a worse navigation of mods. How is it that they don't even have a way to tag a mod with games to tell people what game or games the mod is even for? It's completely ridiculous. I can't decide if i'm more mad AT the touhou community, or mad FOR the touhou community. X.X Well anyway my launcher should fix a lot of that, but i do hope THCrap seriously improves in the future. D:<
+### Angry nerd rant on modding and the touhou community:
+My mod support is fantastic, and i'm quite proud of that. But.....like....oh my god.... i can see why no other game launcher has mod support, and why mods aren't even popular despite there being a ton of them and being a community with over 500 fangames. 
+
+The only other modding tool (THCrap) is completely awful to mod games with. They aren't even allowed to give mods an actual description. They have to describe it as part of the name because THCrap will only show users the name of a mod and nothing else. Hell it even forces mods to apply to ALL of your games at the same time! It's ridiculous! (and yes, some mods do actually affect more then 1 game at the same time, and in different ways).  
+
+I feel mad that THCrap mod support is as terrible as it is. I have never seen a community with a worse navigation of mods. How is it that they don't even have a way for mod makers to tag a mod with what games it's even for? It's completely ridiculous. I can't decide if i'm more mad AT the touhou community, or mad FOR the touhou community. X.X Well anyway my launcher should fix a lot of that, but i do hope THCrap seriously improves in the future. D:<
 
 
 
