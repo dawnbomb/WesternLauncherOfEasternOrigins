@@ -21,9 +21,14 @@ namespace WesternLauncherOfEasternOrigins
         public string? CardArt { get; set; } = "";
         public string? CodeName { get; set; } = "";
         public string? Description { get; set; } = "???";
+        public string? Note { get; set; } = ""; //Notes about a game for ME. End users dont see these.
         public string? PrologueText { get; set; } = "";
         public string? WikiLink { get; set; } = "";
         public bool Practise { get; set; } = false;
+
+        public bool ph012 { get; set; } = false;
+        public bool ph3 { get; set; } = false;
+        public bool Untranslated { get; set; } = false;
 
         public string ColorBorder { get; set; } = "#606060";
         public string ColorBack { get; set; } = "#202020";
@@ -66,7 +71,8 @@ namespace WesternLauncherOfEasternOrigins
         Touhou,
         TouhouFangame,
         Megaman,
-        Indie
+        Indie,
+        
 
     }
 
@@ -80,7 +86,8 @@ namespace WesternLauncherOfEasternOrigins
         Lenen,
         Kaisendou,
         Hidden,
-        
+        GARBAGE,
+
     }
 
     public class TouhouMod

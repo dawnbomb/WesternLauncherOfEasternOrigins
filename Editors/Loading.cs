@@ -70,6 +70,7 @@ namespace WesternLauncherOfEasternOrigins
                     Date = gameElement.Element("Date")?.Value,
                     Type = Enum.TryParse<GameType>(gameElement.Element("Type")?.Value, out GameType type) ? type : GameType.None,
                     Description = gameElement.Element("Description")?.Value,
+                    Note = gameElement.Element("Note")?.Value,
                     ColorBack = gameElement.Element("ColorBack")?.Value, 
                     ColorBorder = gameElement.Element("ColorBorder")?.Value,
                     ColorText = gameElement.Element("ColorText")?.Value,

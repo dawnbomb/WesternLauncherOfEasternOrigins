@@ -34,6 +34,7 @@ using OfficeOpenXml;
 using Ookii.Dialogs.Wpf;
 using PixelWPF;
 using WesternLauncherOfEasternOrigins.Properties;
+using Windows.Gaming.Preview.GamesEnumeration;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 using static OfficeOpenXml.ExcelErrorValue;
@@ -97,7 +98,7 @@ namespace WesternLauncherOfEasternOrigins
             LibraryTouhou.TouhouLauncherPath = "D:\\Western Launcher of Eastern Origins"; //Path.GetFullPath(Path.Combine(basepath, @"..\..\..\..\Western Launcher of Eastern Origins"));
             #else
             LibraryTouhou.TouhouLauncherPath = basepath;
-            DevMenu.Visibility = Visibility.Collapsed;
+            //DevMenu.Visibility = Visibility.Collapsed;
             HiddenGameMenu.Visibility = Visibility.Collapsed;
             #endif
 
@@ -317,10 +318,20 @@ namespace WesternLauncherOfEasternOrigins
                 TheButton.Height = 80;
                 DockPanel.SetDock(TheButton, Dock.Top);
                 TheButton.Click += (sender, e) => GameLoad(Game, TheButton);
+                TheButton.MouseRightButtonDown += (sender, e) => GameLoad(Game, TheButton);
+                
 
                 ContextMenu contextMenu = new();
                 TheButton.ContextMenu = contextMenu;
-                
+
+                MenuItem OpenGameFolder = new MenuItem { Header = "Open Game Folder" };
+                contextMenu.Items.Add(OpenGameFolder);
+                OpenGameFolder.Click += OpenMyFolder;//ButtonCreateWorkshop2; 
+                void OpenMyFolder(object sender, RoutedEventArgs e)
+                {
+                    PixelWPF.LibraryPixel.OpenFileFolder(GameLocationTextbox.Text);
+                }
+
 
                 foreach (GameLink gamelink in GameData.LinkList) 
                 {
@@ -417,10 +428,11 @@ namespace WesternLauncherOfEasternOrigins
             TheGame = Game;
             LabelGameName2.Content = /*Game.SeriesName + " " +*/ Game.SubtitleName;
             BasicsText.Text = Game.Description;
-            
-           
+            if (Game.Note != "") { NotesText.Text = Game.Note; NotesText.Visibility = Visibility.Visible; } else { NotesText.Visibility = Visibility.Collapsed; }
 
-            ModsPanel.Children.Clear();
+
+
+                ModsPanel.Children.Clear();
             EnabledMods.Clear();
             List<string> loadedMods = LoadGameInfoFromXml(Game.CodeName);
 
@@ -597,6 +609,15 @@ namespace WesternLauncherOfEasternOrigins
                     GameLocationTextbox.Text = gameExePathElement.Value;
                 }
 
+                if (File.Exists(GameLocationTextbox.Text))
+                {
+                    GameLocationTextbox.ClearValue(TextBox.ForegroundProperty);
+                }
+                else 
+                {
+                    GameLocationTextbox.Foreground = Brushes.Gray;
+                }
+
                 var mods = xmlDoc.Descendants("Mod");
                 foreach (var mod in mods)
                 {
@@ -649,6 +670,7 @@ namespace WesternLauncherOfEasternOrigins
             if ((bool)FileSelect.ShowDialog(this))
             {
                 GameLocationTextbox.Text = FileSelect.FileName;
+                GameLocationTextbox.ClearValue(TextBox.ForegroundProperty);
 
                 SaveUserGameInfo();
 
@@ -930,6 +952,10 @@ namespace WesternLauncherOfEasternOrigins
                 {
                     button.Visibility = Visibility.Collapsed;
                 }
+                if (touhouGame.Type == GameType.GARBAGE)
+                {
+                    button.Visibility = Visibility.Collapsed;
+                }
                 if (touhouGame.CodeName == "th075" && Properties.Settings.Default.ShowTouhou075 == false)
                 {
                     button.Visibility = Visibility.Collapsed;
@@ -1074,6 +1100,21 @@ namespace WesternLauncherOfEasternOrigins
         private void LinkTouhouFangameSheet(object sender, RoutedEventArgs e)
         {
             PixelWPF.LibraryPixel.OpenWebsiteURL("https://docs.google.com/spreadsheets/d/1fM-goZFQCg3cZyCbHMipD7xWgHme2tOQCENflIoe6YI/edit?gid=1182438005#gid=1182438005");
+        }
+
+        private void OpenSecretMenu(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+
+            if (sender is MenuItem menuItem)
+            {
+                // Get context menu from resources
+                var context = (ContextMenu)FindResource("SecretMenu");
+
+                context.PlacementTarget = menuItem;
+                context.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+                context.IsOpen = true;
+            }
         }
     }
 }

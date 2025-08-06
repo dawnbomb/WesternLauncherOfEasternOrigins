@@ -103,10 +103,11 @@
             </Border>
             <Border DockPanel.Dock="Top">
                 <DockPanel  >
-                    <DockPanel DockPanel.Dock="Top">
-                        <Label Content="Description"/>                        
+                    <DockPanel DockPanel.Dock="Left">
+                        <Label Content="Desc"/>                        
                     </DockPanel>
-                    <TextBox Name="DescriptionBox" Text="Text" Height="170" TextChanged="DescriptionBoxTextChanged" AcceptsReturn="True" TextWrapping="Wrap"  VerticalScrollBarVisibility="Auto" Width="600" HorizontalAlignment="Left"/>
+                    <TextBox Name="DescriptionBox" DockPanel.Dock="Top" Text="Text" Height="140" TextChanged="DescriptionBoxTextChanged" AcceptsReturn="True" TextWrapping="Wrap"  VerticalScrollBarVisibility="Auto" Width="600" HorizontalAlignment="Left"/>
+                    <TextBox Name="GameNoteBox" Text="Text" Height="75" TextChanged="GameNoteBoxTextChanged" AcceptsReturn="True" TextWrapping="Wrap"  VerticalScrollBarVisibility="Auto" Width="600" HorizontalAlignment="Left"/>
                 </DockPanel>
             </Border>
 

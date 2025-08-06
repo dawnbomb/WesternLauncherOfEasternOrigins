@@ -9,7 +9,17 @@
         mc:Ignorable="d"
         Title="Western Launcher of Eastern Origins  v1.xx" Height="1000" Width="1820">
     <Window.Resources>
-
+        <ContextMenu x:Key="SecretMenu">
+            <MenuItem Header="Editor" Click="OpenEditorWindow" Name="MenuEditor" />
+            <MenuItem Header="Debug Tab" Click="GotoDebugTab"/>
+            <Separator Style="{DynamicResource DashLineForMenu}"/>
+            <MenuItem Header="Call Notification" Click="DebugCallNotification"/>
+            <MenuItem Header="Child Items Test">
+                <MenuItem Header="Empty Test"/>
+                <MenuItem Header="Empty Test"/>
+                <MenuItem Header="Empty Test"/>
+            </MenuItem>
+        </ContextMenu>
     </Window.Resources>
 
     <Grid  Background="#FF101010">
@@ -74,17 +84,17 @@
                     <MenuItem Header="On Game Launch: Run Touhou Practise Tool for supported games." IsCheckable="True"    IsChecked="{Binding Path=AutoPractise,       Mode=TwoWay}" ToolTip="It will silent attach, without popups."/>
                     <MenuItem Header="On Game Launch: Check if controller is connected."     IsCheckable="True" IsChecked="{Binding Path=ControllerCheck,        Mode=TwoWay}" ToolTip="With this enabled, a popup will happen if you try and launch without a controller.&#xD;Most touhou games do NOT support hotplugging,&#xD;if you connect a controller after launching it will just be ignored." />
                     <MenuItem Header="On Game Launch: If PC98 Era - Launch Joy2Key."     IsCheckable="True"    IsChecked="{Binding Path=AutoJoy2Key,        Mode=TwoWay}" ToolTip="The PC98 emulator controller support is terrible. :(" />
-                    <MenuItem Header="On Game Launch: If game volume is 100% - Open Volume Mixer."     IsCheckable="True"    IsChecked="{Binding Path=OpenVolumeMixerAt100Volume,     Mode=TwoWay}" ToolTip="Helps you lower the game volume before it blasts your ears out. >:(" />
+                    <MenuItem Visibility="Collapsed" Header="On Game Launch: If game volume is 100% - Open Volume Mixer."     IsCheckable="True"    IsChecked="{Binding Path=OpenVolumeMixerAt100Volume,     Mode=TwoWay}" ToolTip="Helps you lower the game volume before it blasts your ears out. >:(" />
 
 
                     <Separator Style="{DynamicResource DashLineForMenu}"/>
                     <MenuItem Header="Games: Touhou 7.5. (Borderline Unplayable)"     IsCheckable="True" IsChecked="{Binding Path=ShowTouhou075,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="Usually won't launch, often crashing, and noone cares to make a fix.   &#xD;Basically unplayable, like oh my god dude even touhou 1 runs better! x.x   &#xD;Even THCrap refuses to reconize the exe! LOL~" />
                     <MenuItem Header="Games: PC98 Games."     IsCheckable="True" IsChecked="{Binding Path=ShowTouhouPC98,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="Touhou 4 and 5 are actually good.   &#xD;But if your a boring uncultured nobody then I guess you could hide them...   &#xD;   &#xD;PS: This launcher includes a PC98 emulator, just set the game file location and click launch. " />
                     <MenuItem Header="Games: Lenen Project Games."     IsCheckable="True" IsChecked="{Binding Path=ShowLenenGames,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="Lenen Project is a series of bullet hell spinoff games based on touhou! &#xD;Check them out!" />
-                    <MenuItem Header="Games: Kaisendou Group Games."     IsCheckable="True" IsChecked="{Binding Path=ShowKaisendouGames,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="Kaisendou is a semi-formal touhou fangame group &#xD;that creates MANY touhou fangame bullet hells.    &#xD; &#xD;They even put together a nintendo-like 'Kaisendou Direct', &#xD;complete with an announcement barrage of updates and new releases." />
-                    <MenuItem Header="Games: Major Touhou Bullet Hell Fangames."     IsCheckable="True" IsChecked="{Binding Path=ShowFanBulletHell,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="There are some pretty great fangames out there!   &#xD;Check them out!" />
-                    <MenuItem Header="Games: Other Touhou Bullet Hell Fangames."     IsCheckable="True" IsChecked="{Binding Path=ShowOtherFanTouhouBulletHell,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="This is for the medium and low quality fangames.   &#xD;Topics about the best 2hu games can happen in my discord server. :P " />
-                    <MenuItem Header="Games: Colors for each game series (Touhou / Lenen / Kaisendou / Fangames)."     IsCheckable="True" IsChecked="{Binding Path=ColorGameCards,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="This makes each game series have it's own color to stand out more.   &#xD;Fangames not made as a series are get the same color." />
+                    <MenuItem Visibility="Collapsed" Header="Games: Kaisendou Group Games."     IsCheckable="True" IsChecked="{Binding Path=ShowKaisendouGames,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="Kaisendou is a semi-formal touhou fangame group &#xD;that creates MANY touhou fangame bullet hells.    &#xD; &#xD;They even put together a nintendo-like 'Kaisendou Direct', &#xD;complete with an announcement barrage of updates and new releases." />
+                    <MenuItem Visibility="Collapsed" Header="Games: Major Touhou Bullet Hell Fangames."     IsCheckable="True" IsChecked="{Binding Path=ShowFanBulletHell,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="There are some pretty great fangames out there!   &#xD;Check them out!" />
+                    <MenuItem Visibility="Collapsed" Header="Games: Other Touhou Bullet Hell Fangames."     IsCheckable="True" IsChecked="{Binding Path=ShowOtherFanTouhouBulletHell,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="This is for the medium and low quality fangames.   &#xD;Topics about the best 2hu games can happen in my discord server. :P " />
+                    <MenuItem Header="Games: Colors for each game series (Touhou / Lenen / etc)."     IsCheckable="True" IsChecked="{Binding Path=ColorGameCards,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="This makes each game series have it's own color to stand out more.   &#xD;Fangames not made as a series are get the same color." />
                     <MenuItem Name="HiddenGameMenu" Header="Games: Show HIDDEN games."     IsCheckable="True" IsChecked="{Binding Path=ShowHiddenGames,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="Shows my hidden upcoming games." />
 
 
@@ -130,24 +140,12 @@
                     <MenuItem Header="  Show Touhou Era Windows 2."  IsCheckable="True"  IsChecked="{Binding Path=ShowTouhouW2,       Mode=TwoWay}" />
                     <MenuItem Header="  Show Touhou Era Windows 3."  IsCheckable="True"  IsChecked="{Binding Path=ShowTouhouW3,       Mode=TwoWay}" />-->
                 </MenuItem>
-                <MenuItem Header="? Help" >
+                <MenuItem Header="? Help" PreviewMouseRightButtonDown="OpenSecretMenu">
                     <MenuItem Header="Patchnotes" Click="OpenPatchnotes"/>
                     <MenuItem Header="Read Me" Click="OpenReadme"/>
                     <MenuItem Header="Discord Server!" Click="JoinDiscordServer" />
                     <MenuItem Header="CrystalMods.com" Click="LinkMyWebsite"/>
                     <MenuItem Header="Github" Click="OpenGithubPageLink" />
-                </MenuItem>
-                <MenuItem Header="🛠 DEV" Name="DevMenu">
-                    <MenuItem Header="Editor" Click="OpenEditorWindow" Name="MenuEditor" />
-                    <MenuItem Header="Debug Tab" Click="GotoDebugTab"/>
-                    <Separator Style="{DynamicResource DashLineForMenu}"/>
-                    <MenuItem Header="Call Notification" Click="DebugCallNotification"/>
-                    <MenuItem Header="Empty Test Sub">
-                        <MenuItem Header="Empty Test"/>
-                        <MenuItem Header="Empty Test"/>
-                        <MenuItem Header="Empty Test"/>
-                    </MenuItem>
-                    <MenuItem Header="Empty Test"/>
                 </MenuItem>
             </Menu>
 
@@ -320,6 +318,7 @@
                                 <ScrollViewer>
                                     <DockPanel Background="Transparent">
                                         <TextBox DockPanel.Dock="Top" x:Name="BasicsText"  Margin="5,5,5,10" TextWrapping="Wrap" Text="TextBox" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFF3F3F3" SelectionBrush="{x:Null}" SelectionTextBrush="{x:Null}" Focusable="False" IsHitTestVisible="False" />
+                                        <TextBox DockPanel.Dock="Top" x:Name="NotesText"  Margin="5,0,5,5" TextWrapping="Wrap" Text="TextBox" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Orange" SelectionBrush="{x:Null}" SelectionTextBrush="{x:Null}" Focusable="False" IsHitTestVisible="False" />
                                     </DockPanel>
                                 </ScrollViewer>
 
