@@ -54,14 +54,29 @@ namespace WesternLauncherOfEasternOrigins
         public void LoadMod(TouhouMod Mod)
         {
             TreeViewItem treeViewItem = new TreeViewItem();
-            treeViewItem.Header = Mod.Name;
             treeViewItem.Tag = Mod;
             TheTreeView.Items.Add(treeViewItem);
 
-            treeViewItem.Foreground = Brushes.White;
+            ModNameBuilder(Mod);
 
 
 
+        }
+
+        public void ModNameBuilder(TouhouMod Mod) 
+        {
+            foreach(TreeViewItem item in TheTreeView.Items)
+            {
+                if (item.Tag == Mod)
+                {
+                    // If the mod already exists, update its header
+                    item.Header = Mod.Name;
+                    if (Mod.Recommend == true) { item.Header = "👍 " + Mod.Name; }
+                    item.Foreground = Brushes.White;
+                    return;
+                }
+            }
+            
         }
 
         private void TreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -107,7 +122,7 @@ namespace WesternLauncherOfEasternOrigins
                 return;
             }
             ThisMod.Name = NameBox.Text;
-            TreeItem.Header = ThisMod.Name;
+            ModNameBuilder(ThisMod);
         }
 
         private void KeyTextChanged(object sender, TextChangedEventArgs e)
@@ -154,6 +169,7 @@ namespace WesternLauncherOfEasternOrigins
                 return;
             }
             ThisMod.Recommend = true;
+            ModNameBuilder(ThisMod);
         }
 
         private void RecommendedUnchecked(object sender, RoutedEventArgs e)
@@ -163,6 +179,7 @@ namespace WesternLauncherOfEasternOrigins
                 return;
             }
             ThisMod.Recommend = false;
+            ModNameBuilder(ThisMod);
         }
 
         private void AddModToGame(object sender, RoutedEventArgs e)

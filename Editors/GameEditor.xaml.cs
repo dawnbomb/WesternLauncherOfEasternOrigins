@@ -101,6 +101,7 @@ namespace WesternLauncherOfEasternOrigins
             DescriptionBox.Text = touhouGame.Description;
             CodeNameBox.Text = touhouGame.CodeName;
             ArtBox.Text = touhouGame.CardArt;
+            GameNoteBox.Text = touhouGame.Note;
 
             BackColorButton.Content = touhouGame.ColorBack;            
             BorderColorButton.Content = touhouGame.ColorBorder;            
@@ -182,6 +183,7 @@ namespace WesternLauncherOfEasternOrigins
             Item.Foreground = Brushes.White;
 
             if (TheGame.Type == GameType.Hidden) { Item.Foreground = Brushes.MediumVioletRed; }
+            if (TheGame.Type == GameType.GARBAGE) { Item.Foreground = Brushes.DarkRed; }
             if (TheGame.Type == GameType.Kaisendou) { Item.Foreground = Brushes.GreenYellow; }
             if (TheGame.Type == GameType.Lenen) { Item.Foreground = Brushes.Gray; }
             if (TheGame.Type == GameType.MajorTouhouFanGames) { Item.Foreground = Brushes.Orange; }
@@ -214,7 +216,16 @@ namespace WesternLauncherOfEasternOrigins
             }
             touhouGame.Description = DescriptionBox.Text;   
         }
-        
+
+        private void GameNoteBoxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (TreeItem == null || touhouGame == null)
+            {
+                return;
+            }
+            touhouGame.Note = GameNoteBox.Text;
+        }
+
 
         private void PractiseModeChecked(object sender, RoutedEventArgs e)
         {
@@ -528,5 +539,7 @@ namespace WesternLauncherOfEasternOrigins
                 GameLink.Tooltip = ToolTipBox.Text;
             }
         }
+
+        
     }
 }

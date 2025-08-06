@@ -8,8 +8,8 @@ namespace WesternLauncherOfEasternOrigins
 {
     public static class LibraryTouhou
     {
-        public static string VersionDate { get; set; } = "Augest 1 2025";
-        public static Version VersionNumber { get; set; } = new Version(1, 0, 0); //Version Numbers (in order) are Major.Minor.Build.Revision
+        public static string VersionDate { get; set; } = "Augest 6 2025";
+        public static Version VersionNumber { get; set; } = new Version(1, 0, 1); //Version Numbers (in order) are Major.Minor.Build.Revision
 
         public static string TouhouLauncherPath { get; set; } = ""; //where this exe is. If in debug mode (coding / developer mode), its set to use the release folder on my local PC. 
         public static string ModsXMLLocation { get; set; } = "";

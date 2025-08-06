@@ -764,13 +764,18 @@ namespace WesternLauncherOfEasternOrigins
                 {
                     continue;
                 }
+                if (Game.Type == GameType.GARBAGE)
+                {
+                    continue;
+                }
+                
                 CreateMasterAchievementPanel(GameLauncher, Game);
             }
         }
 
         private void CreateMasterAchievementPanel(GameLauncher GameLauncher, GameData Game)
         {
-            if (Game.Type == GameType.Hidden) { return; }
+            if (Game.Type == GameType.Hidden || Game.Type == GameType.GARBAGE) { return; }
 
             List<string> DifficultyList = new();
             List<string> ShotTypeList = new();

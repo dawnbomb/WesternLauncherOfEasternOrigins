@@ -79,6 +79,7 @@ namespace WesternLauncherOfEasternOrigins.Editors
                     writer.WriteElementString("Type", Game.Type.ToString());
                     writer.WriteElementString("CodeName", Game.CodeName);
                     writer.WriteElementString("Description", Game.Description);
+                    writer.WriteElementString("Note", Game.Note);
                     writer.WriteElementString("ColorBorder", Game.ColorBorder);
                     writer.WriteElementString("ColorBack", Game.ColorBack);
                     writer.WriteElementString("ColorText", Game.ColorText);

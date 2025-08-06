@@ -9,7 +9,7 @@
     <Grid Background="Black">        
         <DockPanel LastChildFill="True">
             <DockPanel Width="1100" DockPanel.Dock="Left">
-                <local:GameEditor x:Name="TheGameEditor" DockPanel.Dock="Top" Height="700" />
+                <local:GameEditor x:Name="TheGameEditor" DockPanel.Dock="Top" Height="800" />
 
                 <local:AchievementEditor x:Name="TheAchievementEditor" DockPanel.Dock="Top" />
             </DockPanel>
