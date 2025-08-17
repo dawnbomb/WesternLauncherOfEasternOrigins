@@ -257,7 +257,7 @@ namespace WesternLauncherOfEasternOrigins
         {
             if (Properties.Settings.Default.AutoPractise == true)
             {
-                Task.Delay(2000).Wait(); //really long incase of updates, lag, etc?
+                Task.Delay(6000).Wait(); //really long incase of updates, lag, etc?
 
                 //Becuase updates change the name of the exe, i search for every program with thprac prefix, and run the first one i find.
                 string exeDirectory = Path.Combine(LibraryTouhou.TouhouLauncherPath, "Other\\Extra Programs");
