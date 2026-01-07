@@ -123,9 +123,17 @@ namespace WesternLauncherOfEasternOrigins
             //All 1CCs above Lv0 goto the Levels List. 
             foreach (Achievement achievement in LibraryTouhou.MasterAchievementsList)
             {                
-                if (achievement.PlayerText == "1CC" && achievement.Level != 0)
+                if (achievement.Level != 0)
                 {
-                    Levels.Add(achievement.Level);
+                    if (achievement.PlayerText == "1CC" || achievement.PlayerText == "1cc" || achievement.PlayerText == "NB" || achievement.PlayerText == "Clear" || achievement.PlayerText == "✓" || achievement.PlayerText == "✔" || achievement.PlayerText == "ND" || achievement.PlayerText == "NM" || achievement.PlayerText.Contains("!") ) 
+                    {
+                        if (!achievement.PlayerText.Contains("@") && !achievement.PlayerText.Contains("#") && !achievement.PlayerText.Contains("$")) 
+                        {
+                            Levels.Add(achievement.Level);
+                        }
+                        
+                    }
+                    
                 }
             }           
             Levels.Sort((a, b) => b.CompareTo(a));  //Sort the levels list.
@@ -179,8 +187,12 @@ namespace WesternLauncherOfEasternOrigins
                             if (AB.TheGame == achievement.TheGame && AB.ShotType == achievement.ShotType && AB.Difficulty != "Easy") 
                             {
                                 if ((AB.PlayerText.Contains("1CC") || AB.PlayerText.Contains("1cc") || AB.PlayerText.Contains("NB") || AB.PlayerText.Contains("Clear") || AB.PlayerText.Contains("✓") || AB.PlayerText.Contains("✔") || AB.PlayerText.Contains("ND") || AB.PlayerText.Contains("NM") || AB.PlayerText.Contains("!"))) 
-                                {
-                                    cleared = true;
+                                {                                    
+                                    if (!AB.PlayerText.Contains("@") && !AB.PlayerText.Contains("#") && !AB.PlayerText.Contains("$")) 
+                                    {
+                                        cleared = true;
+                                    }
+                                    
                                 }
                                 
                             }
@@ -934,7 +946,7 @@ namespace WesternLauncherOfEasternOrigins
                         DifficultyLabelBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#242563")); //1A0E3E  
                         DifficultyLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7973d4")); //725681
                     }
-                    if (Difficulty == "Phantasm" || Difficulty == "A-Extra" || Difficulty == "Carrefour" || Difficulty == "Sequal" || Difficulty == "E-Extra")
+                    if (Difficulty == "Phantasm" || Difficulty == "A-Extra" || Difficulty == "Carrefour" || Difficulty == "Sequal" || Difficulty == "E-Extra" || Difficulty == "EX-Ult")
                     {
                         DifficultyLabelBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#471759")); //2c0e3e
                         DifficultyLabel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b66eba")); //81567d
@@ -1242,7 +1254,7 @@ namespace WesternLauncherOfEasternOrigins
                     GoalBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7973d4"));
                     //GoalBox.FontWeight = FontWeights.Bold;
                 }
-                if (Difficulty == "Phantasm" || Difficulty == "A-Extra" || Difficulty == "Carrefour" || Difficulty == "Sequal" || Difficulty == "E-Extra")
+                if (Difficulty == "Phantasm" || Difficulty == "A-Extra" || Difficulty == "Carrefour" || Difficulty == "Sequal" || Difficulty == "E-Extra" || Difficulty == "EX-Ult")
                 {
                     GoalBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#471759"));
                     GoalBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b66eba"));
@@ -1317,6 +1329,12 @@ namespace WesternLauncherOfEasternOrigins
                 GoalBox.FontFamily = (FontFamily)GoalBox.FindResource("AppFont"); //new FontFamily("Dawns 10px ArkPixel");
             }
 
+            if (GoalBox.Text.Contains("@") || GoalBox.Text.Contains("#") || GoalBox.Text.Contains("$")) //If text contains any "Negation" characters, make the achievement box gray (and don't award EXP).
+            {
+                GoalBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3B3B3B"));
+                GoalBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B3B3B3"));
+            }
+            
 
         }
 
