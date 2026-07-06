@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Xml;
 
-namespace WesternLauncherOfEasternOrigins.Editors
+namespace Western_Launcher_Of_Eastern_Origins.Editors
 {
     class SaveGames
     {

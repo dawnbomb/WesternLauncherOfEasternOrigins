@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WesternLauncherOfEasternOrigins.Properties {
+namespace Western_Launcher_Of_Eastern_Origins.Properties {
     using System;
     
     

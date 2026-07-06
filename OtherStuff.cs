@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WesternLauncherOfEasternOrigins
+namespace Western_Launcher_Of_Eastern_Origins
 {
     internal class OtherStuff
     {

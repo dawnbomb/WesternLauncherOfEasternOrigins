@@ -17,7 +17,7 @@ using System.Windows.Controls;
 using PixelWPF;
 using NAudio.CoreAudioApi;
 
-namespace WesternLauncherOfEasternOrigins
+namespace Western_Launcher_Of_Eastern_Origins
 {
     public partial class GameLauncher
     {

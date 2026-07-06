@@ -33,7 +33,7 @@ using Newtonsoft.Json.Linq;
 using OfficeOpenXml;
 using Ookii.Dialogs.Wpf;
 using PixelWPF;
-using WesternLauncherOfEasternOrigins.Properties;
+using Western_Launcher_Of_Eastern_Origins.Properties;
 using Windows.Gaming.Preview.GamesEnumeration;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
@@ -60,7 +60,7 @@ using static OfficeOpenXml.ExcelErrorValue;
 //Note 2: Mods update after CLOSING the game / thcrap, they do NOT fully download from running thcrap, nor do they update before launching a game (this seems stupid)
 //This means to add a new mod, select it in thcrap, hit next, stop and set it up for my program. Then, run the game, close it, then copy it to the mods folder. 
 
-namespace WesternLauncherOfEasternOrigins
+namespace Western_Launcher_Of_Eastern_Origins
 {
 
     //Ship with *most* mods.
@@ -132,9 +132,10 @@ namespace WesternLauncherOfEasternOrigins
             Loading.LoadTheGames();   //Loads all game data, their achievements, and mods for them from mod list.               
 
             Achievements Achievements = new();
+            Quests Quests = new();
             Achievements.LoadAllPlayers(this); //Loads all player names into combobox. Also selects a player.
             Achievements.LoadPlayerAchievements(); //Loads the currently selected player's achievement data.
-            Achievements.CreateQuestBoard(this); //Decides a list of recommended quests based on the current players skill level and achievements. 
+            Quests.CreateQuestBoard(this); //Decides a list of recommended quests based on the current players skill level and achievements. 
             Achievements.CreateAchievementsBoard(this);  //Shows every achievement in a master list, and the current players progression for all of them.
 
             //TouhouGames TouhouGames = new(); //THE OLD REFERENCE
@@ -432,7 +433,7 @@ namespace WesternLauncherOfEasternOrigins
 
 
 
-                ModsPanel.Children.Clear();
+            ModsPanel.Children.Clear();
             EnabledMods.Clear();
             List<string> loadedMods = LoadGameInfoFromXml(Game.CodeName);
 
@@ -615,7 +616,7 @@ namespace WesternLauncherOfEasternOrigins
                 }
                 else 
                 {
-                    GameLocationTextbox.Foreground = Brushes.Gray;
+                    GameLocationTextbox.Foreground = Brushes.DarkRed;
                 }
 
                 var mods = xmlDoc.Descendants("Mod");
@@ -895,8 +896,9 @@ namespace WesternLauncherOfEasternOrigins
             Properties.Settings.Default.Save();
 
             Achievements Achievements = new();
+            Quests Quests = new();
             Achievements.LoadPlayerAchievements(); //Loads the currently selected player's achievement data.
-            Achievements.CreateQuestBoard(this); //Decides a list of recommended quests based on the current players skill level and achievements. 
+            Quests.CreateQuestBoard(this); //Decides a list of recommended quests based on the current players skill level and achievements. 
             Achievements.CreateAchievementsBoard(this);  //Shows every achievement in a master list, and the current players progression for all of them.
         }
 
@@ -905,6 +907,7 @@ namespace WesternLauncherOfEasternOrigins
             RefreshGameCards();
 
             Achievements Achievements = new();
+            Quests Quests = new();
             Achievements.LoadPlayerAchievements(); //Loads the currently selected player's achievement data.
 
             if (Properties.Settings.Default.ShowQuestBoard == false)
@@ -918,7 +921,7 @@ namespace WesternLauncherOfEasternOrigins
             }
 
 
-            Achievements.CreateQuestBoard(this); //Decides a list of recommended quests based on the current players skill level and achievements. 
+            Quests.CreateQuestBoard(this); //Decides a list of recommended quests based on the current players skill level and achievements. 
             Achievements.CreateAchievementsBoard(this);  //Shows every achievement in a master list, and the current players progression for all of them.                       
 
         }
@@ -1116,5 +1119,66 @@ namespace WesternLauncherOfEasternOrigins
                 context.IsOpen = true;
             }
         }
+
+        private void LvInfoButtonClick(object sender, RoutedEventArgs e)
+        {
+            List<Achievement> TopTen = LibraryTouhou.GetTopTen(this);
+
+            PixelWPF.LibraryPixel.Notification("Player Skill Lv Info.", "" +
+                //"Player Lv = Your 6th best achievement.\n" +
+                //"OR your 10th best +1.\n" +
+                "Player Lv = Your 6th best, or 10th best +1.\n" +
+                "\n" +
+                "Your top 10 1CCs:\n" +
+                "Lv" + TopTen[0].Level + ": " + TopTen[0].TheGame.SubtitleName + " - " + TopTen[0].ShotType + "\n" +
+                "Lv" + TopTen[1].Level + ": " + TopTen[1].TheGame.SubtitleName + " - " + TopTen[1].ShotType + "\n" +
+                "Lv" + TopTen[2].Level + ": " + TopTen[2].TheGame.SubtitleName + " - " + TopTen[2].ShotType + "\n" +
+                "Lv" + TopTen[3].Level + ": " + TopTen[3].TheGame.SubtitleName + " - " + TopTen[3].ShotType + "\n" +
+                "Lv" + TopTen[4].Level + ": " + TopTen[4].TheGame.SubtitleName + " - " + TopTen[4].ShotType + "\n" +
+                "- - - - - - - - - - - - - - - - - - - -\n" +
+                "Lv" + TopTen[5].Level + ": " + TopTen[5].TheGame.SubtitleName + " - " + TopTen[5].ShotType + "\n" +
+                
+                "Lv" + TopTen[6].Level + ": " + TopTen[6].TheGame.SubtitleName + " - " + TopTen[6].ShotType + "\n" +
+                "Lv" + TopTen[7].Level + ": " + TopTen[7].TheGame.SubtitleName + " - " + TopTen[7].ShotType + "\n" +
+                "Lv" + TopTen[8].Level + ": " + TopTen[8].TheGame.SubtitleName + " - " + TopTen[8].ShotType + "\n" +
+                "Lv" + TopTen[9].Level + ": " + TopTen[9].TheGame.SubtitleName + " - " + TopTen[9].ShotType + "\n" +
+                "\n\n" +
+                //"+1 if your top 10 are all the same Lv, +1 (or more) if your top 5 are WAY higher lv." +
+                //"\n\n\n" +
+                "Info on the 5 quest board quests:\n" +
+                "1st: last launched game.\n" +
+                "2nd: usually new game or extra.\n" +
+                "3rd: Below player Lv.\n" +
+                "4th: Same as player Lv.\n" +
+                "5th: Above player Lv.\n"
+            );
+
+
+
+            //PixelWPF.LibraryPixel.Notification("Level Info", "" +
+            //    "First, your Lv is whatever is the highest number of the following: \n" +
+            //    "1st highest 1CC Lv -5. \n" +
+            //    "2nd highest 1CC Lv -4. \n" +
+            //    "3rd highest 1CC Lv -3. \n" +
+            //    "4th highest 1CC Lv -2. \n" +
+            //    "5th highest 1CC Lv -1. \n" +
+            //    "6th highest 1CC Lv. \n\n" +
+            //    "So generally your 6th most difficult 1CC represents your skill Lv. I used this system instead of EXP because it doesn't make sense for someone to be Lv 10 when they only beat tons of Lv2s. " +
+            //    "\n\n" +
+            //    "This means if you beat 6 1CCs that are the same difficulty as your current skill Lv, your Lv will increase by 1. I think this makes sense because if you can beat plenty of diffrent 1CCs at your current level, then your probably ready for slightly harder challenges. " +
+            //    "\n\n\n" +
+            //    "Info on the quest board quests:\n" +
+            //    "1st Quest: Picks from last launched game.\n" +
+            //    "2nd Quest: Picks from new game or extra.\n" +
+            //    "        (25% chance to roll a 3rd quest.)\n" +
+            //    "3rd Quest: Picks from below player Lv.\n" +
+            //    "4th Quest: Picks from same as player Lv.\n" +
+            //    "5th Quest: Picks from above player Lv.\n" +
+            //    "\n" +
+            //    "If quests 3 and 4 stop seeming very random, that would just be because you cleared most quests at that Lv."
+            //);
+        }
+
+        
     }
 }

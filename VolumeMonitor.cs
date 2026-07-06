@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using NAudio.CoreAudioApi;
 using NAudio.CoreAudioApi.Interfaces;
 
-namespace WesternLauncherOfEasternOrigins
+namespace Western_Launcher_Of_Eastern_Origins
 {
     public static class VolumeMonitor
     {

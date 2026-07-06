@@ -1,11 +1,11 @@
-﻿<Window x:Class="WesternLauncherOfEasternOrigins.GameLauncher"
+﻿<Window x:Class="Western_Launcher_Of_Eastern_Origins.GameLauncher"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:properties="clr-namespace:WesternLauncherOfEasternOrigins.Properties"
-        xmlns:local="clr-namespace:WesternLauncherOfEasternOrigins"
+        xmlns:properties="clr-namespace:Western_Launcher_Of_Eastern_Origins.Properties"
+        xmlns:local="clr-namespace:Western_Launcher_Of_Eastern_Origins"
         mc:Ignorable="d"
         Title="Western Launcher of Eastern Origins  v1.xx" Height="1000" Width="1820">
     <Window.Resources>
@@ -58,6 +58,7 @@
                     <MenuItem Header="Link: Difficulty Tierlist JP Shump " Click="LinkSTGDifficultyChart"/>
                     <Separator Style="{DynamicResource DashLineForMenu}"/>
                     <MenuItem Header="Link: Touhou Ultra Patches" Click="LinkTouhouUltraPatches"/>
+                    <MenuItem Header="Link: THCRAP Patches Center" Click="LinkTHCRAPPatchesCenter"/>
 
                 </MenuItem>
                 <MenuItem Header="🛠 Tools">
@@ -98,13 +99,26 @@
                     <MenuItem Name="HiddenGameMenu" Header="Games: Show HIDDEN games."     IsCheckable="True" IsChecked="{Binding Path=ShowHiddenGames,        Mode=TwoWay}" Click="RefreshAchievements" ToolTip="Shows my hidden upcoming games." />
 
 
-                    <Separator Style="{DynamicResource DashLineForMenu}"/>
-                    <MenuItem Header="Achievements: Quest Board."    IsCheckable="True"  IsChecked="{Binding Path=ShowQuestBoard,    Mode=TwoWay}" Click="RefreshAchievements" ToolTip="The quest board recommends achievements for your skill level. &#xD;It's recommended, but you can disable it if your super good and don't need help :p &#xD;&#xD;PS: For challenge runners doing NoBomb runs, typing NB in a achievement box counts as a clear."/>
+                    <Separator Style="{DynamicResource DashLineForMenu}"/>                    
                     <MenuItem Header="Achievements: Game Special Achievements (Like in th08, th13, and th17)."           IsCheckable="True"  IsChecked="{Binding Path=ShowTouhouSpecialAchievements,    Mode=TwoWay}" Click="RefreshAchievements" ToolTip="This is for the achievements for games with an achievement system. &#xD;If this is ON, you can track these special achievements just like all the others. &#xD;If this is OFF they are hidden but the standard achievement chart still appears.&#xD;  &#xD;Note that games that ONLY have special achievements, such as the photography games, &#xD;will always show those achievements even if this is set to OFF. "/>
                     <MenuItem Header="Achievements: Extra Stage 2 replaces Easy Mode. (th07 and some fangames)."    IsCheckable="True"  IsChecked="{Binding Path=ShowEx2,    Mode=TwoWay}" Click="RefreshAchievements" ToolTip="The quest board doesn't require Extra to ask for Phantasm. &#xD;This was decided because they are the same difficulty level, and needing extra is implied."/>
                     <MenuItem Header="Achievements: Extra Stage 3 replaces Normal Mode. (Only fangames have an EX3)."    IsCheckable="True"  IsChecked="{Binding Path=ShowEx3,    Mode=TwoWay}" Click="RefreshAchievements" ToolTip="The only games i know using EX3 are the fangames Treasure Castle Labyrinth and Dream Logical World. &#xD;That said i'd love to see more games have an EX3! "/>
                     <MenuItem Header="Achievements: Game specific colors for achievements."    IsCheckable="True"  IsChecked="{Binding Path=ColorAchievements,    Mode=TwoWay}" Click="RefreshAchievements" ToolTip="Use game specific colors for the achievement chart. &#xD;If this is OFF the border is a standard dark mode but the chart still uses 1 of the colors.."/>
-
+                    
+                    <Separator Style="{DynamicResource DashLineForMenu}"/>
+                    <MenuItem Header="Quests: Show the Quest Board."    IsCheckable="True"  IsChecked="{Binding Path=ShowQuestBoard,    Mode=TwoWay}" Click="RefreshAchievements" ToolTip="The quest board recommends achievements for your skill level. &#xD;It's recommended, but you can disable it if your super good and don't need help :p &#xD;&#xD;PS: For challenge runners doing NoBomb runs, &#xD;typing NB in any achievement box counts as a clear."/>
+                    <MenuItem Header="Quests: Allow PC98 Games."  IsCheckable="True" IsChecked="{Binding Path=QuestsPC98,    Mode=TwoWay}" Click="RefreshAchievements" />
+                    <MenuItem Header="Quests: Require beating the games in chonological order.*" IsCheckable="True"  IsChecked="{Binding Path=QuestsChronological,    Mode=TwoWay}" Click="RefreshAchievements"  ToolTip="For example, in order for touhou 7 to appear as a quest,  &#xD;touhou 6 must have atleast one 1CC on normal or higher. &#xD; &#xD;*You can skip 11 and 12 with an easy mode 1CC and return to them later"/>
+                    <MenuItem Header="Quests: 1st quest picks from the last launched game.."  IsCheckable="True" IsChecked="{Binding Path=Quest1LastGame,    Mode=TwoWay}" Click="RefreshAchievements" />
+                    
+                    
+                    <!--<MenuItem Header="Quests: Focus on Extra Stages."  IsCheckable="True"   ToolTip=""/>-->
+                    <!--<MenuItem Header="Quests: Only show quests for games with valid .exe path."  IsCheckable="True"   Click="RefreshAchievements" />-->
+                    <!--<MenuItem Header="Quests: Include easy mode quests."  IsCheckable="True"   ToolTip=""/>-->
+                    <!--<MenuItem Header="Quests: Include normal mode quests."  IsCheckable="True"   ToolTip=""/>-->
+                    <!--<MenuItem Header="Quests: Include extra stage quests."  IsCheckable="True"   ToolTip=""/>-->
+                    <!--<MenuItem Header="Quests: Allow Lv0 difficulty quests. (Fighting games, photography, etc)."  IsCheckable="True"   ToolTip=""/>-->
+                    
                     <Separator Style="{DynamicResource DashLineForMenu}"/>
 
 
@@ -151,6 +165,7 @@
 
 
             <DockPanel Background="Transparent" LastChildFill="False" DockPanel.Dock="Right" Margin="0,-3,0,0">   <!--#FF424242-->
+                <Button Content=" Lv Info " Margin="5" Click="LvInfoButtonClick" />
                 <DockPanel Name="PlayerLvPanel" Background="Transparent">
                     <Label Content="Player Skill Lv:"/>
                     <Label Name="LabelPlayerLevel" Content="X"/>
@@ -254,9 +269,9 @@
                                     Unchecked="CheckboxBorderless_Unchecked"/>-->
                                 </DockPanel>
 
-                                <DockPanel DockPanel.Dock="Top" Margin="5,5,10,10">
-                                    <Button DockPanel.Dock="Right" Content=" Open " Click="OpenGameFolder" />
-                                    <Button x:Name="BrowseButton"  Content=" Browse... " Click="SetGameLocation" />
+                                <DockPanel DockPanel.Dock="Top" Margin="5,5,10,10" Background="Transparent">
+                                    <Button DockPanel.Dock="Right" Content="Open" Click="OpenGameFolder" Margin="3,0,0,0" />
+                                    <Button x:Name="BrowseButton"  Content="Browse..." Click="SetGameLocation" Margin="0,0,3,0" />
                                     <TextBox x:Name="GameLocationTextbox" Background="#FF232323" Foreground="#FFD6D6D6" BorderBrush="#FF5D5D5D" />
                                 </DockPanel>
 
