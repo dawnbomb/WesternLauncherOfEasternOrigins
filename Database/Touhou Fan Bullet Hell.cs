@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace WesternLauncherOfEasternOrigins
+namespace Western_Launcher_Of_Eastern_Origins
 {
     public partial class GameLauncher : Window
     {

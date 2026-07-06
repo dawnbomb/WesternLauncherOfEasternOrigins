@@ -11,9 +11,9 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Linq;
-using WesternLauncherOfEasternOrigins.Properties;
+using Western_Launcher_Of_Eastern_Origins.Properties;
 
-namespace WesternLauncherOfEasternOrigins
+namespace Western_Launcher_Of_Eastern_Origins
 {
     class Loading
     {

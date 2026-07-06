@@ -17,10 +17,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WesternLauncherOfEasternOrigins.Editors;
+using Western_Launcher_Of_Eastern_Origins.Editors;
 
 
-namespace WesternLauncherOfEasternOrigins
+namespace Western_Launcher_Of_Eastern_Origins
 {
     /// <summary>
     /// Interaction logic for GameEditor.xaml

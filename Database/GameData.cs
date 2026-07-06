@@ -7,7 +7,7 @@ using System.Windows;
 using System.Drawing;
 
 
-namespace WesternLauncherOfEasternOrigins
+namespace Western_Launcher_Of_Eastern_Origins
 {
     
     public class GameData

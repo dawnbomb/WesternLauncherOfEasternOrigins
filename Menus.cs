@@ -14,8 +14,12 @@ using Microsoft.Web.WebView2.Core;
 using Windows.UI.Composition;
 using static System.Net.WebRequestMethods;
 using System.Windows.Media; // for swapping font family.
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
-namespace WesternLauncherOfEasternOrigins
+
+namespace Western_Launcher_Of_Eastern_Origins
 {
     public partial class GameLauncher
     {
@@ -119,6 +123,11 @@ namespace WesternLauncherOfEasternOrigins
         private void LinkTouhouUltraPatches(object sender, RoutedEventArgs e)
         {
             OpenLink("https://touhouprojectlovers.blogspot.com/p/touhou-project-ultra-patch.html");
+        }
+
+        private void LinkTHCRAPPatchesCenter(object sender, RoutedEventArgs e)
+        {
+            OpenLink("https://mirrors.thpatch.net/?C=M&O=D");
         }
 
         private void LinkMyWebsite(object sender, RoutedEventArgs e)
@@ -244,6 +253,7 @@ namespace WesternLauncherOfEasternOrigins
 
         public bool AutoMinimize
         {
+            
             get { return Properties.Settings.Default.AutoMinimize; }
             set
             {
@@ -364,19 +374,7 @@ namespace WesternLauncherOfEasternOrigins
         }       
 
         
-        public bool ShowQuestBoard
-        {
-            get { return Properties.Settings.Default.ShowQuestBoard; }
-            set
-            {
-                if (Properties.Settings.Default.ShowQuestBoard != value)
-                {
-                    Properties.Settings.Default.ShowQuestBoard = value;
-                    Properties.Settings.Default.Save();
-                    OnPropertyChanged();
-                }
-            }
-        }
+        
 
         public bool OpenVolumeMixerAt100Volume
         {
@@ -534,6 +532,65 @@ namespace WesternLauncherOfEasternOrigins
                 }
             }
         }
+
+        public bool ShowQuestBoard
+        {
+            get { return Properties.Settings.Default.ShowQuestBoard; }
+            set
+            {
+                if (Properties.Settings.Default.ShowQuestBoard != value)
+                {
+                    Properties.Settings.Default.ShowQuestBoard = value;
+                    Properties.Settings.Default.Save();
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool QuestsChronological
+        {
+            get { return Properties.Settings.Default.QuestsChronological; }
+            set
+            {
+                if (Properties.Settings.Default.QuestsChronological != value)
+                {
+                    Properties.Settings.Default.QuestsChronological = value;
+                    Properties.Settings.Default.Save();
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool Quest1LastGame
+        {
+            get { return Properties.Settings.Default.Quest1LastGame; }
+            set
+            {
+                if (Properties.Settings.Default.Quest1LastGame != value)
+                {
+                    Properties.Settings.Default.Quest1LastGame = value;
+                    Properties.Settings.Default.Save();
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool QuestsPC98
+        {
+            get { return Properties.Settings.Default.QuestsPC98; }
+            set
+            {
+                if (Properties.Settings.Default.QuestsPC98 != value)
+                {
+                    Properties.Settings.Default.QuestsPC98 = value;
+                    Properties.Settings.Default.Save();
+                    OnPropertyChanged();
+                }
+            }
+        }
+        
+
+
 
         public bool ShowNewPlayerButton
         {
